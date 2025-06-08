@@ -30,6 +30,7 @@ public class Jogo {
     public List<int> PosicoesIASelecionadas = new(); // usado nos novos endpoints da IA
 
     private bool pontuacaoSalva = false;
+    private List<int> _humanOpenedCards = new List<int>();
 
 
     public Jogo(string nome, string modo, string nivel, int tamanho)
@@ -65,6 +66,7 @@ public class Jogo {
 
         return lista;
     }
+
 
     public void EmbaralharBaixo() {
         if (especiaisUsados >= MAX_ESPECIAIS) return;
@@ -128,57 +130,85 @@ public class Jogo {
             return ObterEstado();
         }
 
-        var cartasAbertasAtualmente = Deck
-            .Where(c => c.Visivel && !c.Encontrada)
-            .ToList();
-
-        if (cartasAbertasAtualmente.Count == 0) {
-            _tempoInicioJogada = DateTime.UtcNow; // Inicia a contagem do tempo para a jogada
+        if (Deck[pos].Visivel || Deck[pos].Encontrada) {
+            return ObterEstado(); // Retorna o estado atual sem alterações se a carta já estiver aberta
         }
 
-         AbrirCarta(Humano, pos); // Adiciona 200 pontos por carta virada aqui
-
-        int req = Nivel == "Facil" ? 2 : 3;
-
-        var abertas = Deck
-            .Select((c, i) => new { c, i })
-            .Where(x => x.c.Visivel && !x.c.Encontrada)
-            .Select(x => x.i)
-            .ToList();
-
-        if (abertas.Count == req) {
-            var valores = abertas.Select(i => Deck[i].Valor).ToList();
-            if (valores.All(v => v == valores[0])) {
-                foreach (var i in abertas)
-                    Deck[i].Encontrada = true;
-
-                RegistrarGrupoFormado();
-                
-                // Calcular pontuação baseada no tempo
-                var tempoResposta = (DateTime.UtcNow - _tempoInicioJogada).TotalSeconds;
-                int pontosGanhosPorAcerto = 500; // Pontuação base por acerto
-
-                if (tempoResposta <= 2) {
-                    pontosGanhosPorAcerto += 1000; // Bônus por tempo <= 2 segundos
-                } else if (tempoResposta <= 4) {
-                    pontosGanhosPorAcerto += 500; // Bônus por tempo <= 4 segundos
-                } else if (tempoResposta <= 6) {
-                    pontosGanhosPorAcerto += 200; // Bônus por tempo <= 6 segundos
-                }
-                // Se for mais de 6 segundos, nenhum bônus extra é adicionado (pontosGanhosPorAcerto permanece 500)
-
-                Humano.Pontos += pontosGanhosPorAcerto;
-                Console.WriteLine($"Grupo formado! Pontos ganhos: {pontosGanhosPorAcerto}. Pontuação total: {Humano.Pontos}");
-            } else {
-                foreach (var i in abertas)
-                    Deck[i].Visivel = false; // Fecha as cartas erradas
-                Humano.Pontos = Math.Max(0, Humano.Pontos - 10); // Penalidade por errar DE -10 PONTOS
-                Console.WriteLine($"Combinação errada! Pontos perdidos: 10. Pontuação total: {Humano.Pontos}"); 
-            }
+        // Limpa as cartas abertas anteriormente se este for o início de um novo turno
+        if (_humanOpenedCards.Count == 0) {
+            _tempoInicioJogada = DateTime.UtcNow;
         }
+
+        Deck[pos].Visivel = true;
+        Humano.Pontos += 30; // 30 PONTOS A CADA CARTA QUE FOR ABERTA
+
+        _humanOpenedCards.Add(pos);
 
         return ObterEstado();
-}
+
+    }
+
+     public Estado ProcessarJogadaHumano()
+    {
+        int req = Nivel == "Facil" ? 2 : 3;
+        
+
+        if (_humanOpenedCards.Count != req)
+        {
+            return ObterEstado();
+        }
+
+        var openedCardsValues = new List<string>();
+        foreach (int pos in _humanOpenedCards)
+        {
+            openedCardsValues.Add(Deck[pos].Valor);
+        }
+
+        bool allMatch = openedCardsValues.All(v => v == openedCardsValues[0]);
+
+        if (allMatch)
+        {
+            foreach (var pos in _humanOpenedCards)
+            {
+                Deck[pos].Encontrada = true;
+            }
+
+            RegistrarGrupoFormado();
+
+            // Calcula a pontuação com base no tempo
+            var tempoResposta = (DateTime.UtcNow - _tempoInicioJogada).TotalSeconds;
+            int pontosGanhosPorAcerto = 500; // Pontuação base para um acerto correto
+
+            if (tempoResposta <= 2)
+            {
+                pontosGanhosPorAcerto += 1000; // Bônus para <= 2 segundos
+            }
+            else if (tempoResposta <= 4)
+            {
+                pontosGanhosPorAcerto += 500; // Bônus para <= 4 segundos
+            }
+            else if (tempoResposta <= 6)
+            {
+                pontosGanhosPorAcerto += 200; // Bônus para <= 6 segundos
+            } //mais de 6s não há bonus
+
+            Humano.Pontos += pontosGanhosPorAcerto;
+            Console.WriteLine($"Grupo formado! Pontos ganhos: {pontosGanhosPorAcerto}. Pontuação total: {Humano.Pontos}");
+        }
+        else
+        {
+            foreach (var pos in _humanOpenedCards)
+            {
+                Deck[pos].Visivel = false; // Fecha as cartas erradas
+            }
+            Humano.Pontos = Math.Max(0, Humano.Pontos - 10); // Penalidade por erro -10 pontos
+            Console.WriteLine($"Combinação errada! Pontos perdidos: 10. Pontuação total: {Humano.Pontos}");
+        }
+
+        _humanOpenedCards.Clear(); // Limpa para o próximo turno
+
+        return ObterEstado();
+    }
 
     private void AbrirCarta(Jogador j, int pos) {
         var carta = Deck[pos];

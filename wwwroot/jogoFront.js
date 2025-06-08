@@ -1,3 +1,4 @@
+// laryssa-finizola/pp/PP-b120e24693914edde64dbdb9581263ca7a04411b/wwwroot/jogoFront.js
 const API_BASE = 'http://localhost:5091/api/jogo';
 const canvas   = document.getElementById('gameCanvas');
 const ctx      = canvas.getContext('2d');
@@ -28,7 +29,7 @@ class InterfaceJogo {
     this.nome   = nome;
     this.estado = null;
     this.turno  = 'humano';
-    this.abertas = [];
+    this.abertas = []; // Este array agora é usado para rastrear as cartas abertas no CLIENTE para controle de fluxo
     this.travado = false;
     canvas.addEventListener('click', e => this.fazerJogada(e));
     this.pontuacaoDisplay = document.getElementById('pontuacaoAtual');
@@ -59,37 +60,42 @@ async fazerJogada(evt) {
   if (x < 0 || x >= COLUNAS || y < 0 || y >= LINHAS) return;
 
   const pos = y * COLUNAS + x;
-  if (this.estado.cartas[pos].visivel) return;
+  if (this.estado.cartas[pos].visivel || this.estado.cartas[pos].encontrada) return; // Garante que não clicamos em cartas já viradas ou encontradas
 
-  const resp = await fetch(`${API_BASE}/jogada`, {
+  this.travado = true; // Bloqueia cliques adicionais enquanto a jogada é processada
+
+  // 1. Envia a solicitação para o backend APENAS virar a carta.
+  const openResp = await fetch(`${API_BASE}/jogada/abrir`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ posicao: pos })
   });
-  this.estado = await resp.json();
-  this.desenhar(); // Renderiza a carta que acabou de ser virada 
+  this.estado = await openResp.json(); // Atualiza o estado para refletir a carta virada
+  this.desenhar(); // IMPORTANTE: Renderiza a carta que acabou de ser virada, GARANTINDO QUE ELA APAREÇA
 
-  await new Promise(r => setTimeout(r, 50));
-  
-  this.abertas.push(pos);
+  // Determina o número de cartas necessárias para um par/trio
   const req = this.nivel === 'Facil' ? 2 : 3;
 
-  // Se o número de cartas abertas ainda não é suficiente para uma verificação, apenas retorna
-  if (this.abertas.length < req) {
+  // Filtra as cartas atualmente visíveis e não encontradas no estado do frontend
+  const currentlyVisibleOnFrontend = this.estado.cartas.filter(c => c.visivel && !c.encontrada).length;
+
+  // Se o número de cartas abertas ainda não é suficiente para uma verificação de par/trio, apenas retorna
+  if (currentlyVisibleOnFrontend < req) {
+      this.travado = false; // Desbloqueia para que o jogador possa virar a próxima carta
       return;
   }
 
-  this.travado = true;
-
-  // Aguarda 2s para o jogador ver as cartas
+  // Se 'req' cartas estão agora visíveis, aguarda 2 segundos para o jogador ver as cartas
   await new Promise(r => setTimeout(r, 2000));
 
-  // Consulta o estado real do backend após o tempo de exibição
-  const atualiza = await fetch(`${API_BASE}/estado`);
-  this.estado = await atualiza.json();
-  this.abertas = [];
-  this.desenhar();
+  // 2. Após o atraso de visualização, solicita ao backend para VERIFICAR a jogada.
+  // O backend agora contém a lógica para determinar se é um par/trio,
+  // aplicar pontuação/penalidade e virar as cartas para baixo, se necessário.
+  const verifyResp = await fetch(`${API_BASE}/jogada/verificar`, { method: 'POST' });
+  this.estado = await verifyResp.json(); // Recebe o estado FINAL da jogada (cartas viradas para baixo ou encontradas)
+  this.desenhar(); // Renderiza o estado final da jogada
 
+  // A partir daqui, a lógica de fim de jogo e turno da IA permanece a mesma
   if (this.estado.finalizado){
     alert('Partida encerrada!');
     return
@@ -307,5 +313,3 @@ function carregarTop5() {
             console.error(error);
         });
 }
-
-
