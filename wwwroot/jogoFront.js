@@ -53,83 +53,173 @@ class InterfaceJogo {
   }
 
 async fazerJogada(evt) {
-  if (this.turno !== 'humano' || this.estado.finalizado || this.travado) return;
-
-  const x = Math.floor(evt.offsetX / TAM);
-  const y = Math.floor(evt.offsetY / TAM);
-  if (x < 0 || x >= COLUNAS || y < 0 || y >= LINHAS) return;
-
-  const pos = y * COLUNAS + x;
-  if (this.estado.cartas[pos].visivel || this.estado.cartas[pos].encontrada) return; // Garante que não clicamos em cartas já viradas ou encontradas
-
-  this.travado = true; // Bloqueia cliques adicionais enquanto a jogada é processada
-
-  // 1. Envia a solicitação para o backend APENAS virar a carta.
-  const openResp = await fetch(`${API_BASE}/jogada/abrir`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ posicao: pos })
-  });
-  this.estado = await openResp.json(); // Atualiza o estado para refletir a carta virada
-  this.desenhar(); // IMPORTANTE: Renderiza a carta que acabou de ser virada, GARANTINDO QUE ELA APAREÇA
-
-  // Determina o número de cartas necessárias para um par/trio
-  const req = this.nivel === 'Facil' ? 2 : 3;
-
-  // Filtra as cartas atualmente visíveis e não encontradas no estado do frontend
-  const currentlyVisibleOnFrontend = this.estado.cartas.filter(c => c.visivel && !c.encontrada).length;
-
-  // Se o número de cartas abertas ainda não é suficiente para uma verificação de par/trio, apenas retorna
-  if (currentlyVisibleOnFrontend < req) {
-      this.travado = false; // Desbloqueia para que o jogador possa virar a próxima carta
+  try {
+    console.log('--- Início fazerJogada ---'); // Log de início da função
+    if (this.turno !== 'humano' || this.estado.finalizado || this.travado) {
+      console.log('Condição de saída inicial em fazerJogada:', {
+        turno: this.turno,
+        finalizado: this.estado.finalizado,
+        travado: this.travado
+      });
       return;
+    }
+
+    const x = Math.floor(evt.offsetX / TAM);
+    const y = Math.floor(evt.offsetY / TAM);
+    if (x < 0 || x >= COLUNAS || y < 0 || y >= LINHAS) {
+      console.log('Clique fora do canvas.');
+      return;
+    }
+
+    const pos = y * COLUNAS + x;
+    if (this.estado.cartas[pos].visivel || this.estado.cartas[pos].encontrada) {
+      console.log(`Carta na posição ${pos} já visível ou encontrada.`);
+      return;
+    }
+
+    this.travado = true; // Bloqueia cliques adicionais enquanto a jogada é processada
+    console.log('Interface travada. Carta clicada na posição:', pos);
+
+    // 1. Envia a solicitação para o backend APENAS virar a carta.
+    console.log('Chamando API: jogada/abrir para posição', pos);
+    const openResp = await fetch(`${API_BASE}/jogada/abrir`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ posicao: pos })
+    });
+
+    if (!openResp.ok) {
+        const errorText = await openResp.text();
+        console.error(`Erro na API jogada/abrir: ${openResp.status} - ${errorText}`);
+        alert('Erro ao virar carta. Tente novamente.');
+        return; // Sai se houver erro na resposta da API
+    }
+    
+    this.estado = await openResp.json();
+    this.desenhar();
+    console.log('Carta virada na UI. Estado atual:', this.estado.pontuacao);
+
+    const req = this.nivel === 'Facil' ? 2 : 3;
+    const currentlyVisibleOnFrontend = this.estado.cartas.filter(c => c.visivel && !c.encontrada).length;
+
+    console.log(`Cartas visíveis no frontend: ${currentlyVisibleOnFrontend}, Requisito: ${req}`);
+
+    if (currentlyVisibleOnFrontend < req) {
+        console.log('Ainda não há cartas suficientes para verificação. Aguardando próximo clique.');
+        // O finally abaixo garantirá o destravamento.
+        return; 
+    }
+
+    console.log(`Número de cartas (${req}) atingido. Aguardando 2s para visualização...`);
+    // Se 'req' cartas estão agora visíveis, aguarda 2 segundos para o jogador ver as cartas
+    await new Promise(r => setTimeout(r, 2000));
+    console.log('Tempo de visualização de 2s concluído.');
+
+    // 2. Após o atraso de visualização, solicita ao backend para VERIFICAR a jogada.
+    console.log('Chamando API: jogada/verificar para processar a jogada.');
+    const verifyResp = await fetch(`${API_BASE}/jogada/verificar`, { method: 'POST' });
+
+    if (!verifyResp.ok) {
+        const errorText = await verifyResp.text();
+        console.error(`Erro na API jogada/verificar: ${verifyResp.status} - ${errorText}`);
+        alert('Erro ao verificar jogada. Tente novamente.');
+        return; // Sai se houver erro na resposta da API
+    }
+
+    this.estado = await verifyResp.json();
+    this.desenhar();
+    console.log('Jogada verificada na UI. Pontuação atual:', this.estado.pontuacao);
+
+
+    if (this.estado.finalizado){
+      alert('Partida encerrada!');
+      console.log('JOGO FINALIZADO APÓS JOGADA HUMANA. IA NÃO JOGARÁ.'); // ADICIONAR ESTE LOG
+      return; 
+    }  
+
+    console.log('Turno Humano Concluído. Mudando para IA.'); // ADICIONAR ESTE LOG
+    this.turno = 'ia';
+    await this.jogadaIA(); // Chama a função da IA
+    
+  } catch (error) {
+    console.error('Erro inesperado em fazerJogada:', error);
+    alert('Ocorreu um erro no jogo. Por favor, reinicie.');
+  } finally {
+    // Garante que a interface esteja destravada após a execução de fazerJogada,
+    // exceto se o jogo estiver finalizado (o que é tratado internamente pela função).
+    if (!this.estado.finalizado) { 
+      this.travado = false;
+      console.log('Interface destravada no finally de fazerJogada. Turno atual:', this.turno); // ADICIONAR ESTE LOG
+    } else {
+        console.log('JOGO FINALIZADO NO FINALLY DE fazerJogada. Interface permanece travada.'); // ADICIONAR ESTE LOG
+    }
+    console.log('--- Fim fazerJogada ---'); // Log de fim da função
   }
+}
 
-  // Se 'req' cartas estão agora visíveis, aguarda 2 segundos para o jogador ver as cartas
-  await new Promise(r => setTimeout(r, 2000));
+async jogadaIA() {
+  try { // Adicione um bloco try-finally para garantir que this.travado seja resetado
+    console.log('--- Iniciando jogada da IA ---'); // ADICIONAR ESTE LOG
+    await new Promise(r => setTimeout(r, 1000)); // Espera 1 segundo
 
-  // 2. Após o atraso de visualização, solicita ao backend para VERIFICAR a jogada.
-  // O backend agora contém a lógica para determinar se é um par/trio,
-  // aplicar pontuação/penalidade e virar as cartas para baixo, se necessário.
-  const verifyResp = await fetch(`${API_BASE}/jogada/verificar`, { method: 'POST' });
-  this.estado = await verifyResp.json(); // Recebe o estado FINAL da jogada (cartas viradas para baixo ou encontradas)
-  this.desenhar(); // Renderiza o estado final da jogada
+    // Parte 1: IA abre cartas
+    console.log('Chamando API: ia/abrir');
+    const abrir = await fetch(`${API_BASE}/ia/abrir`, { method: 'POST' });
 
-  // A partir daqui, a lógica de fim de jogo e turno da IA permanece a mesma
-  if (this.estado.finalizado){
-    alert('Partida encerrada!');
-    return
-  }  
+    if (!abrir.ok) {
+        const errorText = await abrir.text();
+        console.error(`Erro na API ia/abrir: ${abrir.status} - ${errorText}`);
+        alert('Erro na jogada da IA (abrir).');
+        return;
+    }
 
-  this.turno = 'ia';
-  await this.jogadaIA();
-  this.travado = false;
+    this.estado = await abrir.json();
+    this.desenhar();
+    console.log('IA abriu cartas. Estado atual:', this.estado.pontuacao);
+
+    // Aguarda visualização
+    console.log('IA aguardando 2s para visualização...');
+    await new Promise(r => setTimeout(r, 2000));
+    console.log('IA concluiu visualização.');
+
+    // Parte 2: IA resolve
+    console.log('Chamando API: ia/resolver');
+    const resolver = await fetch(`${API_BASE}/ia/resolver`, { method: 'POST' });
+
+    if (!resolver.ok) {
+        const errorText = await resolver.text();
+        console.error(`Erro na API ia/resolver: ${resolver.status} - ${errorText}`);
+        alert('Erro na jogada da IA (resolver).');
+        return;
+    }
+
+    this.estado = await resolver.json();
+    this.desenhar();
+    console.log('IA resolveu a jogada. Estado atual:', this.estado.pontuacao);
+
+    if (this.estado.finalizado) {
+      alert('Partida encerrada!');
+      console.log('JOGO FINALIZADO APÓS JOGADA DA IA.'); // ADICIONAR ESTE LOG
+      return;
+    }
+    this.turno = 'humano';
+    console.log('Jogada da IA concluída. Mudando para Humano.'); // ADICIONAR ESTE LOG
+
+  } catch (error) {
+    console.error('Erro inesperado em jogadaIA:', error);
+    alert('Ocorreu um erro no turno da IA.');
+  } finally {
+    if (!this.estado.finalizado) {
+      this.travado = false;
+      console.log('Interface destravada no finally de jogadaIA. Turno atual:', this.turno); // ADICIONAR ESTE LOG
+    } else {
+        console.log('JOGO FINALIZADO NO FINALLY DA jogadaIA. Interface permanece travada.'); // ADICIONAR ESTE LOG
+    }
+    console.log('--- Fim jogadaIA ---'); // Log de fim da função
+  }
 }
 
 
-  async jogadaIA() {
-    await new Promise(r => setTimeout(r, 1000));
-
-    // Parte 1: IA abre cartas
-    const abrir = await fetch(`${API_BASE}/ia/abrir`, { method: 'POST' });
-    this.estado = await abrir.json();
-    this.desenhar();
-
-    // Aguarda visualização
-    await new Promise(r => setTimeout(r, 2000));
-
-    // Parte 2: IA resolve
-    const resolver = await fetch(`${API_BASE}/ia/resolver`, { method: 'POST' });
-    this.estado = await resolver.json();
-    this.desenhar();
-
-    if (!this.estado.finalizado) {
-      this.turno = 'humano';
-      this.travado = false;
-    } else {
-      alert('Partida encerrada!');
-    }
-  }
 
   desenhar() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);

@@ -37,8 +37,14 @@ app.MapGet("/api/jogo/estado", (Repositorio repo) => {
     return Results.Json(repo.JogoAtual.ObterEstado());
 });
 
-app.MapPost("/api/jogo/jogada", (Jogada jogada, Repositorio repo) =>
+// Endpoint MODIFICADO: Agora para APENAS virar a carta
+app.MapPost("/api/jogo/jogada/abrir", (Jogada jogada, Repositorio repo) =>
     Results.Json(repo.ProcessarHumano(jogada.Posicao))
+);
+
+// NOVO Endpoint: Para verificar a jogada humana após as cartas serem viradas
+app.MapPost("/api/jogo/jogada/verificar", (Repositorio repo) =>
+    Results.Json(repo.VerificarJogadaHumano())
 );
 
 

@@ -144,29 +144,29 @@
       <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-8F5xwGkHrMx0ktcavoK4B8iZgwLmJEBxd6RPXPycDwA="}]]]></EndpointProperties>
       <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=3600, must-revalidate"},{"Name":"Content-Length","Value":"224493"},{"Name":"Content-Type","Value":"image/png"},{"Name":"ETag","Value":"\u00228F5xwGkHrMx0ktcavoK4B8iZgwLmJEBxd6RPXPycDwA=\u0022"},{"Name":"Last-Modified","Value":"Thu, 22 May 2025 00:35:47 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
-    <StaticWebAssetEndpoint Include="_content/MemoriaGameServer/index.4mryio733t.html">
+    <StaticWebAssetEndpoint Include="_content/MemoriaGameServer/index.3q54xwgbu2.html">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\index.html'))</AssetFile>
       <Selectors><![CDATA[[]]]></Selectors>
-      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"4mryio733t"},{"Name":"integrity","Value":"sha256-tF2/MXvacX6k\u002BwDS85rn2TBpPTwKRj8ah70L\u002BbZMXD0="},{"Name":"label","Value":"_content/MemoriaGameServer/index.html"}]]]></EndpointProperties>
-      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"2916"},{"Name":"Content-Type","Value":"text/html"},{"Name":"ETag","Value":"\u0022tF2/MXvacX6k\u002BwDS85rn2TBpPTwKRj8ah70L\u002BbZMXD0=\u0022"},{"Name":"Last-Modified","Value":"Sun, 08 Jun 2025 17:53:31 GMT"}]]]></ResponseHeaders>
+      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"3q54xwgbu2"},{"Name":"integrity","Value":"sha256-BQkH8mURrCvsDLo\u002B6axXsEdNmQdoECsf6uODu9Crwqo="},{"Name":"label","Value":"_content/MemoriaGameServer/index.html"}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"2962"},{"Name":"Content-Type","Value":"text/html"},{"Name":"ETag","Value":"\u0022BQkH8mURrCvsDLo\u002B6axXsEdNmQdoECsf6uODu9Crwqo=\u0022"},{"Name":"Last-Modified","Value":"Sun, 08 Jun 2025 20:41:20 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
     <StaticWebAssetEndpoint Include="_content/MemoriaGameServer/index.html">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\index.html'))</AssetFile>
       <Selectors><![CDATA[[]]]></Selectors>
-      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-tF2/MXvacX6k\u002BwDS85rn2TBpPTwKRj8ah70L\u002BbZMXD0="}]]]></EndpointProperties>
-      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"2916"},{"Name":"Content-Type","Value":"text/html"},{"Name":"ETag","Value":"\u0022tF2/MXvacX6k\u002BwDS85rn2TBpPTwKRj8ah70L\u002BbZMXD0=\u0022"},{"Name":"Last-Modified","Value":"Sun, 08 Jun 2025 17:53:31 GMT"}]]]></ResponseHeaders>
+      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-BQkH8mURrCvsDLo\u002B6axXsEdNmQdoECsf6uODu9Crwqo="}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"2962"},{"Name":"Content-Type","Value":"text/html"},{"Name":"ETag","Value":"\u0022BQkH8mURrCvsDLo\u002B6axXsEdNmQdoECsf6uODu9Crwqo=\u0022"},{"Name":"Last-Modified","Value":"Sun, 08 Jun 2025 20:41:20 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
-    <StaticWebAssetEndpoint Include="_content/MemoriaGameServer/jogoFront.1qfurvydvc.js">
+    <StaticWebAssetEndpoint Include="_content/MemoriaGameServer/jogoFront.757fgkplah.js">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\jogoFront.js'))</AssetFile>
       <Selectors><![CDATA[[]]]></Selectors>
-      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"1qfurvydvc"},{"Name":"integrity","Value":"sha256-GeL7xYIgOGxWS0GwhACudsbStHjioXDbMcbOG3Try\u002BM="},{"Name":"label","Value":"_content/MemoriaGameServer/jogoFront.js"}]]]></EndpointProperties>
-      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"10542"},{"Name":"Content-Type","Value":"text/javascript"},{"Name":"ETag","Value":"\u0022GeL7xYIgOGxWS0GwhACudsbStHjioXDbMcbOG3Try\u002BM=\u0022"},{"Name":"Last-Modified","Value":"Sun, 08 Jun 2025 19:21:10 GMT"}]]]></ResponseHeaders>
+      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"757fgkplah"},{"Name":"integrity","Value":"sha256-64HLiDfYqhNu81c1C3\u002BBdZWbHyni0E66CQSpRDnN7/I="},{"Name":"label","Value":"_content/MemoriaGameServer/jogoFront.js"}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"14054"},{"Name":"Content-Type","Value":"text/javascript"},{"Name":"ETag","Value":"\u002264HLiDfYqhNu81c1C3\u002BBdZWbHyni0E66CQSpRDnN7/I=\u0022"},{"Name":"Last-Modified","Value":"Sun, 08 Jun 2025 20:41:07 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
     <StaticWebAssetEndpoint Include="_content/MemoriaGameServer/jogoFront.js">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\jogoFront.js'))</AssetFile>
       <Selectors><![CDATA[[]]]></Selectors>
-      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-GeL7xYIgOGxWS0GwhACudsbStHjioXDbMcbOG3Try\u002BM="}]]]></EndpointProperties>
-      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"10542"},{"Name":"Content-Type","Value":"text/javascript"},{"Name":"ETag","Value":"\u0022GeL7xYIgOGxWS0GwhACudsbStHjioXDbMcbOG3Try\u002BM=\u0022"},{"Name":"Last-Modified","Value":"Sun, 08 Jun 2025 19:21:10 GMT"}]]]></ResponseHeaders>
+      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-64HLiDfYqhNu81c1C3\u002BBdZWbHyni0E66CQSpRDnN7/I="}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"14054"},{"Name":"Content-Type","Value":"text/javascript"},{"Name":"ETag","Value":"\u002264HLiDfYqhNu81c1C3\u002BBdZWbHyni0E66CQSpRDnN7/I=\u0022"},{"Name":"Last-Modified","Value":"Sun, 08 Jun 2025 20:41:07 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
   </ItemGroup>
 </Project>

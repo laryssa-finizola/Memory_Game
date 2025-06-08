@@ -1,3 +1,4 @@
+// laryssa-finizola/pp/PP-b120e24693914edde64dbdb9581263ca7a04411b/Models/Jogo.cs
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -30,6 +31,8 @@ public class Jogo {
     public List<int> PosicoesIASelecionadas = new(); // usado nos novos endpoints da IA
 
     private bool pontuacaoSalva = false;
+
+    // NOVO: Lista para rastrear as cartas abertas pelo humano no turno atual
     private List<int> _humanOpenedCards = new List<int>();
 
 
@@ -66,7 +69,6 @@ public class Jogo {
 
         return lista;
     }
-
 
     public void EmbaralharBaixo() {
         if (especiaisUsados >= MAX_ESPECIAIS) return;
@@ -124,37 +126,46 @@ public class Jogo {
         };
     }
 
+    // MODIFICADO: Este método agora SÓ abre a carta e adiciona à lista interna
     public Estado AbrirCartaHumano(int pos) {
         if (congeladas[pos]) {
             congeladas[pos] = false;
             return ObterEstado();
         }
 
+        // Verifica se a carta já está visível ou encontrada antes de abrir
         if (Deck[pos].Visivel || Deck[pos].Encontrada) {
             return ObterEstado(); // Retorna o estado atual sem alterações se a carta já estiver aberta
         }
 
         // Limpa as cartas abertas anteriormente se este for o início de um novo turno
+        // Isso garante que apenas as cartas do turno atual sejam rastreadas
         if (_humanOpenedCards.Count == 0) {
             _tempoInicioJogada = DateTime.UtcNow;
         }
 
+        // Abre a carta
         Deck[pos].Visivel = true;
         Humano.Pontos += 30; // 30 PONTOS A CADA CARTA QUE FOR ABERTA
 
         _humanOpenedCards.Add(pos);
 
+        // Este método apenas abre uma carta e a adiciona à lista de cartas abertas para o turno atual.
+        // A verificação de correspondência e o ajuste de pontuação ocorrerão em uma chamada separada
+        // depois que o frontend exibir as cartas por um breve período.
         return ObterEstado();
-
     }
 
-     public Estado ProcessarJogadaHumano()
+    // NOVO MÉTODO: Responsável por verificar a jogada humana após as cartas serem viradas
+    public Estado ProcessarJogadaHumano()
     {
         int req = Nivel == "Facil" ? 2 : 3;
-        
 
+        // Garante que exatamente 'req' cartas sejam abertas pelo humano para uma verificação de correspondência
         if (_humanOpenedCards.Count != req)
         {
+            // Isso não deve acontecer se a lógica do frontend estiver correta, mas é bom para robustez.
+            // Se menos de 'req' cartas foram abertas, simplesmente retorna o estado atual.
             return ObterEstado();
         }
 
@@ -190,7 +201,7 @@ public class Jogo {
             else if (tempoResposta <= 6)
             {
                 pontosGanhosPorAcerto += 200; // Bônus para <= 6 segundos
-            } //mais de 6s não há bonus
+            }
 
             Humano.Pontos += pontosGanhosPorAcerto;
             Console.WriteLine($"Grupo formado! Pontos ganhos: {pontosGanhosPorAcerto}. Pontuação total: {Humano.Pontos}");
@@ -209,6 +220,7 @@ public class Jogo {
 
         return ObterEstado();
     }
+
 
     private void AbrirCarta(Jogador j, int pos) {
         var carta = Deck[pos];
