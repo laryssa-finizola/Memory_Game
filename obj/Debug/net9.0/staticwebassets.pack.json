@@ -1,0 +1,81 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\lary\\Desktop\\MemoriaGameServer\\wwwroot\\img\\c1.png",
+      "PackagePath": "staticwebassets\\img\\c1.png"
+    },
+    {
+      "Id": "C:\\Users\\lary\\Desktop\\MemoriaGameServer\\wwwroot\\img\\c10.png",
+      "PackagePath": "staticwebassets\\img\\c10.png"
+    },
+    {
+      "Id": "C:\\Users\\lary\\Desktop\\MemoriaGameServer\\wwwroot\\img\\c11.png",
+      "PackagePath": "staticwebassets\\img\\c11.png"
+    },
+    {
+      "Id": "C:\\Users\\lary\\Desktop\\MemoriaGameServer\\wwwroot\\img\\c12.png",
+      "PackagePath": "staticwebassets\\img\\c12.png"
+    },
+    {
+      "Id": "C:\\Users\\lary\\Desktop\\MemoriaGameServer\\wwwroot\\img\\c2.png",
+      "PackagePath": "staticwebassets\\img\\c2.png"
+    },
+    {
+      "Id": "C:\\Users\\lary\\Desktop\\MemoriaGameServer\\wwwroot\\img\\c3.png",
+      "PackagePath": "staticwebassets\\img\\c3.png"
+    },
+    {
+      "Id": "C:\\Users\\lary\\Desktop\\MemoriaGameServer\\wwwroot\\img\\c4.png",
+      "PackagePath": "staticwebassets\\img\\c4.png"
+    },
+    {
+      "Id": "C:\\Users\\lary\\Desktop\\MemoriaGameServer\\wwwroot\\img\\c5.png",
+      "PackagePath": "staticwebassets\\img\\c5.png"
+    },
+    {
+      "Id": "C:\\Users\\lary\\Desktop\\MemoriaGameServer\\wwwroot\\img\\c6.png",
+      "PackagePath": "staticwebassets\\img\\c6.png"
+    },
+    {
+      "Id": "C:\\Users\\lary\\Desktop\\MemoriaGameServer\\wwwroot\\img\\c7.png",
+      "PackagePath": "staticwebassets\\img\\c7.png"
+    },
+    {
+      "Id": "C:\\Users\\lary\\Desktop\\MemoriaGameServer\\wwwroot\\img\\c8.png",
+      "PackagePath": "staticwebassets\\img\\c8.png"
+    },
+    {
+      "Id": "C:\\Users\\lary\\Desktop\\MemoriaGameServer\\wwwroot\\img\\c9.png",
+      "PackagePath": "staticwebassets\\img\\c9.png"
+    },
+    {
+      "Id": "C:\\Users\\lary\\Desktop\\MemoriaGameServer\\wwwroot\\index.html",
+      "PackagePath": "staticwebassets\\index.html"
+    },
+    {
+      "Id": "C:\\Users\\lary\\Desktop\\MemoriaGameServer\\wwwroot\\jogoFront.js",
+      "PackagePath": "staticwebassets\\jogoFront.js"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.MemoriaGameServer.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssetEndpoints.props"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.MemoriaGameServer.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.build.MemoriaGameServer.props",
+      "PackagePath": "build\\MemoriaGameServer.props"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.buildMultiTargeting.MemoriaGameServer.props",
+      "PackagePath": "buildMultiTargeting\\MemoriaGameServer.props"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.buildTransitive.MemoriaGameServer.props",
+      "PackagePath": "buildTransitive\\MemoriaGameServer.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jogo da Memória</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    #layout-jogo {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      gap: 40px;
+      padding: 20px;
+    }
+
+    #form-config {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 220px;
+    }
+
+    #form-config label {
+      font-weight: bold;
+    }
+
+    #form-config input,
+    #form-config select,
+    #form-config button {
+      padding: 6px;
+      font-size: 14px;
+    }
+
+    #gameCanvas {
+      border: 2px solid #333;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+
+    #top5-container table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+
+  #top5-container th,
+  #top5-container td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: center;
+    font-size: 14px;
+  }
+
+  #top5-container th {
+    background-color: #f0f0f0;
+    font-weight: bold;
+  }
+
+  /* Adicione algum estilo para a pontuação se desejar */
+  #pontuacaoAtual {
+    font-size: 24px; /* Aumenta o tamanho da fonte para visibilidade */
+    font-weight: bold;
+    color: #4CAF50; /* Uma cor verde para a pontuação */
+    margin-bottom: 10px; /* Espaçamento abaixo da pontuação */
+  }
+
+  </style>
+</head>
+<body>
+  <div id="layout-jogo">
+    <div id="form-config">
+      <label for="inputNome">Nome do jogador:</label>
+      <input type="text" id="inputNome" placeholder="Digite seu nome" required>
+
+      <label for="selModo">Modo de jogo:</label>
+      <select id="selModo">
+        <option value="PvAI">Competitivo</option>
+        <option value="PvAI">Cooperativo</option>
+      </select>
+
+      <label for="selNivel">Nível:</label>
+      <select id="selNivel">
+        <option value="Facil">Fácil</option>
+        <option value="Dificil">Difícil</option>
+      </select>
+
+      <button id="btnIniciar">Iniciar Jogo</button>
+      <button id="btn-top5">Top 5</button>
+    </div>
+
+    <div style="display: flex; flex-direction: column; align-items: flex-start;">
+        <p id="pontuacaoAtual">Pontuação: 0</p>
+        <canvas id="gameCanvas"></canvas>
+    </div>
+  </div>
+
+  <div id="modal-top5" class="modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 999;">
+    <div class="modal-content" style="background: #fff; padding: 20px; margin: 10% auto; width: 90%; max-width: 600px; position: relative; border-radius: 8px;">
+      <span id="fechar-modal" style="position: absolute; top: 10px; right: 15px; font-size: 20px; cursor: pointer;">&times;</span>
+      <div id="top5-container"></div>
+    </div>
+  </div>
+
+  <script src="jogoFront.js"></script>
+</body>
+</html>

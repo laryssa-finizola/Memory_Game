@@ -1,0 +1,172 @@
+C:\Users\ludmi\Jogo da memoria - PP\server\MemoriaGameServer\bin\Debug\net9.0\appsettings.Development.json
+C:\Users\ludmi\Jogo da memoria - PP\server\MemoriaGameServer\bin\Debug\net9.0\appsettings.json
+C:\Users\ludmi\Jogo da memoria - PP\server\MemoriaGameServer\bin\Debug\net9.0\MemoriaGameServer.staticwebassets.endpoints.json
+C:\Users\ludmi\Jogo da memoria - PP\server\MemoriaGameServer\bin\Debug\net9.0\MemoriaGameServer.exe
+C:\Users\ludmi\Jogo da memoria - PP\server\MemoriaGameServer\bin\Debug\net9.0\MemoriaGameServer.deps.json
+C:\Users\ludmi\Jogo da memoria - PP\server\MemoriaGameServer\bin\Debug\net9.0\MemoriaGameServer.runtimeconfig.json
+C:\Users\ludmi\Jogo da memoria - PP\server\MemoriaGameServer\bin\Debug\net9.0\MemoriaGameServer.dll
+C:\Users\ludmi\Jogo da memoria - PP\server\MemoriaGameServer\bin\Debug\net9.0\MemoriaGameServer.pdb
+C:\Users\ludmi\Jogo da memoria - PP\server\MemoriaGameServer\obj\Debug\net9.0\MemoriaGameServer.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ludmi\Jogo da memoria - PP\server\MemoriaGameServer\obj\Debug\net9.0\MemoriaGameServer.AssemblyInfoInputs.cache
+C:\Users\ludmi\Jogo da memoria - PP\server\MemoriaGameServer\obj\Debug\net9.0\MemoriaGameServer.AssemblyInfo.cs
+C:\Users\ludmi\Jogo da memoria - PP\server\MemoriaGameServer\obj\Debug\net9.0\MemoriaGameServer.csproj.CoreCompileInputs.cache
+C:\Users\ludmi\Jogo da memoria - PP\server\MemoriaGameServer\obj\Debug\net9.0\MemoriaGameServer.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\ludmi\Jogo da memoria - PP\server\MemoriaGameServer\obj\Debug\net9.0\scopedcss\bundle\MemoriaGameServer.styles.css
+C:\Users\ludmi\Jogo da memoria - PP\server\MemoriaGameServer\obj\Debug\net9.0\staticwebassets.build.json
+C:\Users\ludmi\Jogo da memoria - PP\server\MemoriaGameServer\obj\Debug\net9.0\staticwebassets.development.json
+C:\Users\ludmi\Jogo da memoria - PP\server\MemoriaGameServer\obj\Debug\net9.0\staticwebassets.build.endpoints.json
+C:\Users\ludmi\Jogo da memoria - PP\server\MemoriaGameServer\obj\Debug\net9.0\staticwebassets\msbuild.MemoriaGameServer.Microsoft.AspNetCore.StaticWebAssets.props
+C:\Users\ludmi\Jogo da memoria - PP\server\MemoriaGameServer\obj\Debug\net9.0\staticwebassets\msbuild.MemoriaGameServer.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+C:\Users\ludmi\Jogo da memoria - PP\server\MemoriaGameServer\obj\Debug\net9.0\staticwebassets\msbuild.build.MemoriaGameServer.props
+C:\Users\ludmi\Jogo da memoria - PP\server\MemoriaGameServer\obj\Debug\net9.0\staticwebassets\msbuild.buildMultiTargeting.MemoriaGameServer.props
+C:\Users\ludmi\Jogo da memoria - PP\server\MemoriaGameServer\obj\Debug\net9.0\staticwebassets\msbuild.buildTransitive.MemoriaGameServer.props
+C:\Users\ludmi\Jogo da memoria - PP\server\MemoriaGameServer\obj\Debug\net9.0\staticwebassets.pack.json
+C:\Users\ludmi\Jogo da memoria - PP\server\MemoriaGameServer\obj\Debug\net9.0\MemoriaGameServer.dll
+C:\Users\ludmi\Jogo da memoria - PP\server\MemoriaGameServer\obj\Debug\net9.0\refint\MemoriaGameServer.dll
+C:\Users\ludmi\Jogo da memoria - PP\server\MemoriaGameServer\obj\Debug\net9.0\MemoriaGameServer.pdb
+C:\Users\ludmi\Jogo da memoria - PP\server\MemoriaGameServer\obj\Debug\net9.0\MemoriaGameServer.genruntimeconfig.cache
+C:\Users\ludmi\Jogo da memoria - PP\server\MemoriaGameServer\obj\Debug\net9.0\ref\MemoriaGameServer.dll
+C:\Users\ludmi\Jogo da memoria - PP\server\MemoriaGameServer\bin\Debug\net9.0\Microsoft.Data.Sqlite.dll
+C:\Users\ludmi\Jogo da memoria - PP\server\MemoriaGameServer\bin\Debug\net9.0\SQLitePCLRaw.batteries_v2.dll
+C:\Users\ludmi\Jogo da memoria - PP\server\MemoriaGameServer\bin\Debug\net9.0\SQLitePCLRaw.core.dll
+C:\Users\ludmi\Jogo da memoria - PP\server\MemoriaGameServer\bin\Debug\net9.0\SQLitePCLRaw.provider.e_sqlite3.dll
+C:\Users\ludmi\Jogo da memoria - PP\server\MemoriaGameServer\bin\Debug\net9.0\runtimes\browser-wasm\nativeassets\net8.0\e_sqlite3.a
+C:\Users\ludmi\Jogo da memoria - PP\server\MemoriaGameServer\bin\Debug\net9.0\runtimes\linux-arm\native\libe_sqlite3.so
+C:\Users\ludmi\Jogo da memoria - PP\server\MemoriaGameServer\bin\Debug\net9.0\runtimes\linux-arm64\native\libe_sqlite3.so
+C:\Users\ludmi\Jogo da memoria - PP\server\MemoriaGameServer\bin\Debug\net9.0\runtimes\linux-armel\native\libe_sqlite3.so
+C:\Users\ludmi\Jogo da memoria - PP\server\MemoriaGameServer\bin\Debug\net9.0\runtimes\linux-mips64\native\libe_sqlite3.so
+C:\Users\ludmi\Jogo da memoria - PP\server\MemoriaGameServer\bin\Debug\net9.0\runtimes\linux-musl-arm\native\libe_sqlite3.so
+C:\Users\ludmi\Jogo da memoria - PP\server\MemoriaGameServer\bin\Debug\net9.0\runtimes\linux-musl-arm64\native\libe_sqlite3.so
+C:\Users\ludmi\Jogo da memoria - PP\server\MemoriaGameServer\bin\Debug\net9.0\runtimes\linux-musl-x64\native\libe_sqlite3.so
+C:\Users\ludmi\Jogo da memoria - PP\server\MemoriaGameServer\bin\Debug\net9.0\runtimes\linux-ppc64le\native\libe_sqlite3.so
+C:\Users\ludmi\Jogo da memoria - PP\server\MemoriaGameServer\bin\Debug\net9.0\runtimes\linux-s390x\native\libe_sqlite3.so
+C:\Users\ludmi\Jogo da memoria - PP\server\MemoriaGameServer\bin\Debug\net9.0\runtimes\linux-x64\native\libe_sqlite3.so
+C:\Users\ludmi\Jogo da memoria - PP\server\MemoriaGameServer\bin\Debug\net9.0\runtimes\linux-x86\native\libe_sqlite3.so
+C:\Users\ludmi\Jogo da memoria - PP\server\MemoriaGameServer\bin\Debug\net9.0\runtimes\maccatalyst-arm64\native\libe_sqlite3.dylib
+C:\Users\ludmi\Jogo da memoria - PP\server\MemoriaGameServer\bin\Debug\net9.0\runtimes\maccatalyst-x64\native\libe_sqlite3.dylib
+C:\Users\ludmi\Jogo da memoria - PP\server\MemoriaGameServer\bin\Debug\net9.0\runtimes\osx-arm64\native\libe_sqlite3.dylib
+C:\Users\ludmi\Jogo da memoria - PP\server\MemoriaGameServer\bin\Debug\net9.0\runtimes\osx-x64\native\libe_sqlite3.dylib
+C:\Users\ludmi\Jogo da memoria - PP\server\MemoriaGameServer\bin\Debug\net9.0\runtimes\win-arm\native\e_sqlite3.dll
+C:\Users\ludmi\Jogo da memoria - PP\server\MemoriaGameServer\bin\Debug\net9.0\runtimes\win-arm64\native\e_sqlite3.dll
+C:\Users\ludmi\Jogo da memoria - PP\server\MemoriaGameServer\bin\Debug\net9.0\runtimes\win-x64\native\e_sqlite3.dll
+C:\Users\ludmi\Jogo da memoria - PP\server\MemoriaGameServer\bin\Debug\net9.0\runtimes\win-x86\native\e_sqlite3.dll
+C:\Users\ludmi\Jogo da memoria - PP\server\MemoriaGameServer\obj\Debug\net9.0\MemoriaGameServer.csproj.AssemblyReference.cache
+C:\Users\ludmi\Jogo da memoria - PP\server\MemoriaGameServer\obj\Debug\net9.0\MemoriaG.C99662C6.Up2Date
+C:\Users\ludmi\Jogo da memoria - PP\server\MemoriaGameServer\bin\Debug\net9.0\MemoriaGameServer.staticwebassets.runtime.json
+C:\Users\ludmi\Jogo da memoria - PP\server\MemoriaGameServer\obj\Debug\net9.0\compressed\ackswxq8fd-h19bjmo7y3.gz
+C:\Users\ludmi\Jogo da memoria - PP\server\MemoriaGameServer\obj\Debug\net9.0\compressed\0t9cbvrr08-mi576r1e2r.gz
+C:\Users\ludmi\jogodamemoria\server\MemoriaGameServer\bin\Debug\net9.0\appsettings.Development.json
+C:\Users\ludmi\jogodamemoria\server\MemoriaGameServer\bin\Debug\net9.0\appsettings.json
+C:\Users\ludmi\jogodamemoria\server\MemoriaGameServer\bin\Debug\net9.0\MemoriaGameServer.staticwebassets.runtime.json
+C:\Users\ludmi\jogodamemoria\server\MemoriaGameServer\bin\Debug\net9.0\MemoriaGameServer.staticwebassets.endpoints.json
+C:\Users\ludmi\jogodamemoria\server\MemoriaGameServer\bin\Debug\net9.0\MemoriaGameServer.exe
+C:\Users\ludmi\jogodamemoria\server\MemoriaGameServer\bin\Debug\net9.0\MemoriaGameServer.deps.json
+C:\Users\ludmi\jogodamemoria\server\MemoriaGameServer\bin\Debug\net9.0\MemoriaGameServer.runtimeconfig.json
+C:\Users\ludmi\jogodamemoria\server\MemoriaGameServer\bin\Debug\net9.0\MemoriaGameServer.dll
+C:\Users\ludmi\jogodamemoria\server\MemoriaGameServer\bin\Debug\net9.0\MemoriaGameServer.pdb
+C:\Users\ludmi\jogodamemoria\server\MemoriaGameServer\bin\Debug\net9.0\Microsoft.Data.Sqlite.dll
+C:\Users\ludmi\jogodamemoria\server\MemoriaGameServer\bin\Debug\net9.0\SQLitePCLRaw.batteries_v2.dll
+C:\Users\ludmi\jogodamemoria\server\MemoriaGameServer\bin\Debug\net9.0\SQLitePCLRaw.core.dll
+C:\Users\ludmi\jogodamemoria\server\MemoriaGameServer\bin\Debug\net9.0\SQLitePCLRaw.provider.e_sqlite3.dll
+C:\Users\ludmi\jogodamemoria\server\MemoriaGameServer\bin\Debug\net9.0\runtimes\browser-wasm\nativeassets\net8.0\e_sqlite3.a
+C:\Users\ludmi\jogodamemoria\server\MemoriaGameServer\bin\Debug\net9.0\runtimes\linux-arm\native\libe_sqlite3.so
+C:\Users\ludmi\jogodamemoria\server\MemoriaGameServer\bin\Debug\net9.0\runtimes\linux-arm64\native\libe_sqlite3.so
+C:\Users\ludmi\jogodamemoria\server\MemoriaGameServer\bin\Debug\net9.0\runtimes\linux-armel\native\libe_sqlite3.so
+C:\Users\ludmi\jogodamemoria\server\MemoriaGameServer\bin\Debug\net9.0\runtimes\linux-mips64\native\libe_sqlite3.so
+C:\Users\ludmi\jogodamemoria\server\MemoriaGameServer\bin\Debug\net9.0\runtimes\linux-musl-arm\native\libe_sqlite3.so
+C:\Users\ludmi\jogodamemoria\server\MemoriaGameServer\bin\Debug\net9.0\runtimes\linux-musl-arm64\native\libe_sqlite3.so
+C:\Users\ludmi\jogodamemoria\server\MemoriaGameServer\bin\Debug\net9.0\runtimes\linux-musl-x64\native\libe_sqlite3.so
+C:\Users\ludmi\jogodamemoria\server\MemoriaGameServer\bin\Debug\net9.0\runtimes\linux-ppc64le\native\libe_sqlite3.so
+C:\Users\ludmi\jogodamemoria\server\MemoriaGameServer\bin\Debug\net9.0\runtimes\linux-s390x\native\libe_sqlite3.so
+C:\Users\ludmi\jogodamemoria\server\MemoriaGameServer\bin\Debug\net9.0\runtimes\linux-x64\native\libe_sqlite3.so
+C:\Users\ludmi\jogodamemoria\server\MemoriaGameServer\bin\Debug\net9.0\runtimes\linux-x86\native\libe_sqlite3.so
+C:\Users\ludmi\jogodamemoria\server\MemoriaGameServer\bin\Debug\net9.0\runtimes\maccatalyst-arm64\native\libe_sqlite3.dylib
+C:\Users\ludmi\jogodamemoria\server\MemoriaGameServer\bin\Debug\net9.0\runtimes\maccatalyst-x64\native\libe_sqlite3.dylib
+C:\Users\ludmi\jogodamemoria\server\MemoriaGameServer\bin\Debug\net9.0\runtimes\osx-arm64\native\libe_sqlite3.dylib
+C:\Users\ludmi\jogodamemoria\server\MemoriaGameServer\bin\Debug\net9.0\runtimes\osx-x64\native\libe_sqlite3.dylib
+C:\Users\ludmi\jogodamemoria\server\MemoriaGameServer\bin\Debug\net9.0\runtimes\win-arm\native\e_sqlite3.dll
+C:\Users\ludmi\jogodamemoria\server\MemoriaGameServer\bin\Debug\net9.0\runtimes\win-arm64\native\e_sqlite3.dll
+C:\Users\ludmi\jogodamemoria\server\MemoriaGameServer\bin\Debug\net9.0\runtimes\win-x64\native\e_sqlite3.dll
+C:\Users\ludmi\jogodamemoria\server\MemoriaGameServer\bin\Debug\net9.0\runtimes\win-x86\native\e_sqlite3.dll
+C:\Users\ludmi\jogodamemoria\server\MemoriaGameServer\obj\Debug\net9.0\MemoriaGameServer.csproj.AssemblyReference.cache
+C:\Users\ludmi\jogodamemoria\server\MemoriaGameServer\obj\Debug\net9.0\MemoriaGameServer.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ludmi\jogodamemoria\server\MemoriaGameServer\obj\Debug\net9.0\MemoriaGameServer.AssemblyInfoInputs.cache
+C:\Users\ludmi\jogodamemoria\server\MemoriaGameServer\obj\Debug\net9.0\MemoriaGameServer.AssemblyInfo.cs
+C:\Users\ludmi\jogodamemoria\server\MemoriaGameServer\obj\Debug\net9.0\MemoriaGameServer.csproj.CoreCompileInputs.cache
+C:\Users\ludmi\jogodamemoria\server\MemoriaGameServer\obj\Debug\net9.0\MemoriaGameServer.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\ludmi\jogodamemoria\server\MemoriaGameServer\obj\Debug\net9.0\MemoriaGameServer.sourcelink.json
+C:\Users\ludmi\jogodamemoria\server\MemoriaGameServer\obj\Debug\net9.0\scopedcss\bundle\MemoriaGameServer.styles.css
+C:\Users\ludmi\jogodamemoria\server\MemoriaGameServer\obj\Debug\net9.0\staticwebassets.build.json
+C:\Users\ludmi\jogodamemoria\server\MemoriaGameServer\obj\Debug\net9.0\staticwebassets.development.json
+C:\Users\ludmi\jogodamemoria\server\MemoriaGameServer\obj\Debug\net9.0\staticwebassets.build.endpoints.json
+C:\Users\ludmi\jogodamemoria\server\MemoriaGameServer\obj\Debug\net9.0\staticwebassets\msbuild.MemoriaGameServer.Microsoft.AspNetCore.StaticWebAssets.props
+C:\Users\ludmi\jogodamemoria\server\MemoriaGameServer\obj\Debug\net9.0\staticwebassets\msbuild.MemoriaGameServer.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+C:\Users\ludmi\jogodamemoria\server\MemoriaGameServer\obj\Debug\net9.0\staticwebassets\msbuild.build.MemoriaGameServer.props
+C:\Users\ludmi\jogodamemoria\server\MemoriaGameServer\obj\Debug\net9.0\staticwebassets\msbuild.buildMultiTargeting.MemoriaGameServer.props
+C:\Users\ludmi\jogodamemoria\server\MemoriaGameServer\obj\Debug\net9.0\staticwebassets\msbuild.buildTransitive.MemoriaGameServer.props
+C:\Users\ludmi\jogodamemoria\server\MemoriaGameServer\obj\Debug\net9.0\staticwebassets.pack.json
+C:\Users\ludmi\jogodamemoria\server\MemoriaGameServer\obj\Debug\net9.0\MemoriaG.C99662C6.Up2Date
+C:\Users\ludmi\jogodamemoria\server\MemoriaGameServer\obj\Debug\net9.0\MemoriaGameServer.dll
+C:\Users\ludmi\jogodamemoria\server\MemoriaGameServer\obj\Debug\net9.0\refint\MemoriaGameServer.dll
+C:\Users\ludmi\jogodamemoria\server\MemoriaGameServer\obj\Debug\net9.0\MemoriaGameServer.pdb
+C:\Users\ludmi\jogodamemoria\server\MemoriaGameServer\obj\Debug\net9.0\MemoriaGameServer.genruntimeconfig.cache
+C:\Users\ludmi\jogodamemoria\server\MemoriaGameServer\obj\Debug\net9.0\ref\MemoriaGameServer.dll
+C:\Users\ludmi\jogodamemoria\server\MemoriaGameServer\obj\Debug\net9.0\compressed\ackswxq8fd-bz49qwboig.gz
+C:\Users\ludmi\jogodamemoria\server\MemoriaGameServer\obj\Debug\net9.0\compressed\0t9cbvrr08-k1m9zx590k.gz
+C:\Users\lary\Desktop\MemoriaGameServer\bin\Debug\net9.0\appsettings.Development.json
+C:\Users\lary\Desktop\MemoriaGameServer\bin\Debug\net9.0\appsettings.json
+C:\Users\lary\Desktop\MemoriaGameServer\bin\Debug\net9.0\MemoriaGameServer.staticwebassets.runtime.json
+C:\Users\lary\Desktop\MemoriaGameServer\bin\Debug\net9.0\MemoriaGameServer.staticwebassets.endpoints.json
+C:\Users\lary\Desktop\MemoriaGameServer\bin\Debug\net9.0\MemoriaGameServer.exe
+C:\Users\lary\Desktop\MemoriaGameServer\bin\Debug\net9.0\MemoriaGameServer.deps.json
+C:\Users\lary\Desktop\MemoriaGameServer\bin\Debug\net9.0\MemoriaGameServer.runtimeconfig.json
+C:\Users\lary\Desktop\MemoriaGameServer\bin\Debug\net9.0\MemoriaGameServer.dll
+C:\Users\lary\Desktop\MemoriaGameServer\bin\Debug\net9.0\MemoriaGameServer.pdb
+C:\Users\lary\Desktop\MemoriaGameServer\bin\Debug\net9.0\Microsoft.Data.Sqlite.dll
+C:\Users\lary\Desktop\MemoriaGameServer\bin\Debug\net9.0\SQLitePCLRaw.batteries_v2.dll
+C:\Users\lary\Desktop\MemoriaGameServer\bin\Debug\net9.0\SQLitePCLRaw.core.dll
+C:\Users\lary\Desktop\MemoriaGameServer\bin\Debug\net9.0\SQLitePCLRaw.provider.e_sqlite3.dll
+C:\Users\lary\Desktop\MemoriaGameServer\bin\Debug\net9.0\runtimes\browser-wasm\nativeassets\net8.0\e_sqlite3.a
+C:\Users\lary\Desktop\MemoriaGameServer\bin\Debug\net9.0\runtimes\linux-arm\native\libe_sqlite3.so
+C:\Users\lary\Desktop\MemoriaGameServer\bin\Debug\net9.0\runtimes\linux-arm64\native\libe_sqlite3.so
+C:\Users\lary\Desktop\MemoriaGameServer\bin\Debug\net9.0\runtimes\linux-armel\native\libe_sqlite3.so
+C:\Users\lary\Desktop\MemoriaGameServer\bin\Debug\net9.0\runtimes\linux-mips64\native\libe_sqlite3.so
+C:\Users\lary\Desktop\MemoriaGameServer\bin\Debug\net9.0\runtimes\linux-musl-arm\native\libe_sqlite3.so
+C:\Users\lary\Desktop\MemoriaGameServer\bin\Debug\net9.0\runtimes\linux-musl-arm64\native\libe_sqlite3.so
+C:\Users\lary\Desktop\MemoriaGameServer\bin\Debug\net9.0\runtimes\linux-musl-x64\native\libe_sqlite3.so
+C:\Users\lary\Desktop\MemoriaGameServer\bin\Debug\net9.0\runtimes\linux-ppc64le\native\libe_sqlite3.so
+C:\Users\lary\Desktop\MemoriaGameServer\bin\Debug\net9.0\runtimes\linux-s390x\native\libe_sqlite3.so
+C:\Users\lary\Desktop\MemoriaGameServer\bin\Debug\net9.0\runtimes\linux-x64\native\libe_sqlite3.so
+C:\Users\lary\Desktop\MemoriaGameServer\bin\Debug\net9.0\runtimes\linux-x86\native\libe_sqlite3.so
+C:\Users\lary\Desktop\MemoriaGameServer\bin\Debug\net9.0\runtimes\maccatalyst-arm64\native\libe_sqlite3.dylib
+C:\Users\lary\Desktop\MemoriaGameServer\bin\Debug\net9.0\runtimes\maccatalyst-x64\native\libe_sqlite3.dylib
+C:\Users\lary\Desktop\MemoriaGameServer\bin\Debug\net9.0\runtimes\osx-arm64\native\libe_sqlite3.dylib
+C:\Users\lary\Desktop\MemoriaGameServer\bin\Debug\net9.0\runtimes\osx-x64\native\libe_sqlite3.dylib
+C:\Users\lary\Desktop\MemoriaGameServer\bin\Debug\net9.0\runtimes\win-arm\native\e_sqlite3.dll
+C:\Users\lary\Desktop\MemoriaGameServer\bin\Debug\net9.0\runtimes\win-arm64\native\e_sqlite3.dll
+C:\Users\lary\Desktop\MemoriaGameServer\bin\Debug\net9.0\runtimes\win-x64\native\e_sqlite3.dll
+C:\Users\lary\Desktop\MemoriaGameServer\bin\Debug\net9.0\runtimes\win-x86\native\e_sqlite3.dll
+C:\Users\lary\Desktop\MemoriaGameServer\obj\Debug\net9.0\MemoriaGameServer.csproj.AssemblyReference.cache
+C:\Users\lary\Desktop\MemoriaGameServer\obj\Debug\net9.0\MemoriaGameServer.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\lary\Desktop\MemoriaGameServer\obj\Debug\net9.0\MemoriaGameServer.AssemblyInfoInputs.cache
+C:\Users\lary\Desktop\MemoriaGameServer\obj\Debug\net9.0\MemoriaGameServer.AssemblyInfo.cs
+C:\Users\lary\Desktop\MemoriaGameServer\obj\Debug\net9.0\MemoriaGameServer.csproj.CoreCompileInputs.cache
+C:\Users\lary\Desktop\MemoriaGameServer\obj\Debug\net9.0\MemoriaGameServer.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\lary\Desktop\MemoriaGameServer\obj\Debug\net9.0\scopedcss\bundle\MemoriaGameServer.styles.css
+C:\Users\lary\Desktop\MemoriaGameServer\obj\Debug\net9.0\staticwebassets.build.json
+C:\Users\lary\Desktop\MemoriaGameServer\obj\Debug\net9.0\staticwebassets.development.json
+C:\Users\lary\Desktop\MemoriaGameServer\obj\Debug\net9.0\staticwebassets.build.endpoints.json
+C:\Users\lary\Desktop\MemoriaGameServer\obj\Debug\net9.0\staticwebassets\msbuild.MemoriaGameServer.Microsoft.AspNetCore.StaticWebAssets.props
+C:\Users\lary\Desktop\MemoriaGameServer\obj\Debug\net9.0\staticwebassets\msbuild.MemoriaGameServer.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+C:\Users\lary\Desktop\MemoriaGameServer\obj\Debug\net9.0\staticwebassets\msbuild.build.MemoriaGameServer.props
+C:\Users\lary\Desktop\MemoriaGameServer\obj\Debug\net9.0\staticwebassets\msbuild.buildMultiTargeting.MemoriaGameServer.props
+C:\Users\lary\Desktop\MemoriaGameServer\obj\Debug\net9.0\staticwebassets\msbuild.buildTransitive.MemoriaGameServer.props
+C:\Users\lary\Desktop\MemoriaGameServer\obj\Debug\net9.0\staticwebassets.pack.json
+C:\Users\lary\Desktop\MemoriaGameServer\obj\Debug\net9.0\MemoriaG.C99662C6.Up2Date
+C:\Users\lary\Desktop\MemoriaGameServer\obj\Debug\net9.0\MemoriaGameServer.dll
+C:\Users\lary\Desktop\MemoriaGameServer\obj\Debug\net9.0\refint\MemoriaGameServer.dll
+C:\Users\lary\Desktop\MemoriaGameServer\obj\Debug\net9.0\MemoriaGameServer.pdb
+C:\Users\lary\Desktop\MemoriaGameServer\obj\Debug\net9.0\MemoriaGameServer.genruntimeconfig.cache
+C:\Users\lary\Desktop\MemoriaGameServer\obj\Debug\net9.0\ref\MemoriaGameServer.dll
+C:\Users\lary\Desktop\MemoriaGameServer\obj\Debug\net9.0\compressed\ackswxq8fd-4mryio733t.gz
+C:\Users\lary\Desktop\MemoriaGameServer\obj\Debug\net9.0\compressed\0t9cbvrr08-knpeorcm2j.gz
