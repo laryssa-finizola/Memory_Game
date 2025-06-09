@@ -1,9 +1,8 @@
-// laryssa-finizola/pp/PP-b120e24693914edde64dbdb9581263ca7a04411b/wwwroot/jogoFront.js
 const API_BASE = 'http://localhost:5091/api/jogo';
 const canvas   = document.getElementById('gameCanvas');
 const ctx      = canvas.getContext('2d');
 
-const COLUNAS = 6, LINHAS = 4, TAM = 80;
+const COLUNAS = 8, LINHAS = 6, TAM = 80;
 canvas.width  = COLUNAS * TAM;
 canvas.height = LINHAS  * TAM;
 
@@ -20,7 +19,7 @@ function preloadImagens(urls) {
     }))
   );
 }
-const urls = Array.from({ length: 12 }, (_, i) => `img/c${i+1}.png`);
+const urls = Array.from({ length: 24 }, (_, i) => `img/c${i+1}.png`);
 
 class InterfaceJogo {
   constructor(modo, nivel, nome) {
@@ -54,7 +53,7 @@ class InterfaceJogo {
 
 async fazerJogada(evt) {
   try {
-    console.log('--- Início fazerJogada ---'); // Log de início da função
+    console.log('--- Início fazerJogada ---');
     if (this.turno !== 'humano' || this.estado.finalizado || this.travado) {
       console.log('Condição de saída inicial em fazerJogada:', {
         turno: this.turno,
@@ -92,26 +91,26 @@ async fazerJogada(evt) {
         const errorText = await openResp.text();
         console.error(`Erro na API jogada/abrir: ${openResp.status} - ${errorText}`);
         alert('Erro ao virar carta. Tente novamente.');
-        return; // Sai se houver erro na resposta da API
+        return;
     }
     
     this.estado = await openResp.json();
     this.desenhar();
     console.log('Carta virada na UI. Estado atual:', this.estado.pontuacao);
 
-    const req = this.nivel === 'Facil' ? 2 : 3;
+    // ALTERADO AQUI: "Dificil" para "Medio"
+    const req = this.nivel === 'Facil' ? 2 : (this.nivel === 'Medio' ? 3 : 2); // Adicionado 'Medio'
+
     const currentlyVisibleOnFrontend = this.estado.cartas.filter(c => c.visivel && !c.encontrada).length;
 
     console.log(`Cartas visíveis no frontend: ${currentlyVisibleOnFrontend}, Requisito: ${req}`);
 
     if (currentlyVisibleOnFrontend < req) {
         console.log('Ainda não há cartas suficientes para verificação. Aguardando próximo clique.');
-        // O finally abaixo garantirá o destravamento.
         return; 
     }
 
     console.log(`Número de cartas (${req}) atingido. Aguardando 2s para visualização...`);
-    // Se 'req' cartas estão agora visíveis, aguarda 2 segundos para o jogador ver as cartas
     await new Promise(r => setTimeout(r, 2000));
     console.log('Tempo de visualização de 2s concluído.');
 
@@ -123,7 +122,7 @@ async fazerJogada(evt) {
         const errorText = await verifyResp.text();
         console.error(`Erro na API jogada/verificar: ${verifyResp.status} - ${errorText}`);
         alert('Erro ao verificar jogada. Tente novamente.');
-        return; // Sai se houver erro na resposta da API
+        return; 
     }
 
     this.estado = await verifyResp.json();
@@ -133,34 +132,32 @@ async fazerJogada(evt) {
 
     if (this.estado.finalizado){
       alert('Partida encerrada!');
-      console.log('JOGO FINALIZADO APÓS JOGADA HUMANA. IA NÃO JOGARÁ.'); // ADICIONAR ESTE LOG
+      console.log('JOGO FINALIZADO APÓS JOGADA HUMANA. IA NÃO JOGARÁ.');
       return; 
     }  
 
-    console.log('Turno Humano Concluído. Mudando para IA.'); // ADICIONAR ESTE LOG
+    console.log('Turno Humano Concluído. Mudando para IA.');
     this.turno = 'ia';
-    await this.jogadaIA(); // Chama a função da IA
+    await this.jogadaIA();
     
   } catch (error) {
     console.error('Erro inesperado em fazerJogada:', error);
     alert('Ocorreu um erro no jogo. Por favor, reinicie.');
   } finally {
-    // Garante que a interface esteja destravada após a execução de fazerJogada,
-    // exceto se o jogo estiver finalizado (o que é tratado internamente pela função).
     if (!this.estado.finalizado) { 
       this.travado = false;
-      console.log('Interface destravada no finally de fazerJogada. Turno atual:', this.turno); // ADICIONAR ESTE LOG
+      console.log('Interface destravada no finally de fazerJogada. Turno atual:', this.turno);
     } else {
-        console.log('JOGO FINALIZADO NO FINALLY DE fazerJogada. Interface permanece travada.'); // ADICIONAR ESTE LOG
+        console.log('JOGO FINALIZADO NO FINALLY DE fazerJogada. Interface permanece travada.');
     }
-    console.log('--- Fim fazerJogada ---'); // Log de fim da função
+    console.log('--- Fim fazerJogada ---');
   }
 }
 
 async jogadaIA() {
-  try { // Adicione um bloco try-finally para garantir que this.travado seja resetado
-    console.log('--- Iniciando jogada da IA ---'); // ADICIONAR ESTE LOG
-    await new Promise(r => setTimeout(r, 1000)); // Espera 1 segundo
+  try { 
+    console.log('--- Iniciando jogada da IA ---');
+    await new Promise(r => setTimeout(r, 1000));
 
     // Parte 1: IA abre cartas
     console.log('Chamando API: ia/abrir');
@@ -199,11 +196,11 @@ async jogadaIA() {
 
     if (this.estado.finalizado) {
       alert('Partida encerrada!');
-      console.log('JOGO FINALIZADO APÓS JOGADA DA IA.'); // ADICIONAR ESTE LOG
+      console.log('JOGO FINALIZADO APÓS JOGADA DA IA.');
       return;
     }
     this.turno = 'humano';
-    console.log('Jogada da IA concluída. Mudando para Humano.'); // ADICIONAR ESTE LOG
+    console.log('Jogada da IA concluída. Mudando para Humano.');
 
   } catch (error) {
     console.error('Erro inesperado em jogadaIA:', error);
@@ -211,11 +208,11 @@ async jogadaIA() {
   } finally {
     if (!this.estado.finalizado) {
       this.travado = false;
-      console.log('Interface destravada no finally de jogadaIA. Turno atual:', this.turno); // ADICIONAR ESTE LOG
+      console.log('Interface destravada no finally de jogadaIA. Turno atual:', this.turno);
     } else {
-        console.log('JOGO FINALIZADO NO FINALLY DA jogadaIA. Interface permanece travada.'); // ADICIONAR ESTE LOG
+        console.log('JOGO FINALIZADO NO FINALLY DA jogadaIA. Interface permanece travada.');
     }
-    console.log('--- Fim jogadaIA ---'); // Log de fim da função
+    console.log('--- Fim jogadaIA ---');
   }
 }
 

@@ -41,7 +41,7 @@ public class Jogo {
         Modo = modo;
         Nivel = nivel;
         Humano = new Jogador { Nome = nome };
-        int mem = nivel == "Facil" ? 1 : 3;
+        int mem = Nivel == "Facil" ? 1 : (Nivel == "Medio" ? 3 : 1); // Garante 1 para Facil, 3 para Medio, default 1
         Maquina = new AIPlayer(mem);
         Deck = GerarDeck(tamanho);
         congeladas = new bool[tamanho];
@@ -51,7 +51,7 @@ public class Jogo {
 
     private List<Carta> GerarDeck(int tam) {
         var lista = new List<Carta>();
-        int grupo = Nivel == "Facil" ? 2 : 3;
+        int grupo = Nivel == "Facil" ? 2 : (Nivel == "Medio" ? 3 : 2); // Garante 2 para Facil, 3 para Medio, default 2
         int pares = tam / grupo;
 
         for (int i = 0; i < pares; i++) {
@@ -93,7 +93,7 @@ public class Jogo {
     }
 
     public Estado ObterEstado() {
-        bool finalizado = gruposFormados == Deck.Count / (Nivel == "Facil" ? 2 : 3);
+        bool finalizado = gruposFormados == Deck.Count / (Nivel == "Facil" ? 2 : (Nivel == "Medio" ? 3 : 2));
 
         // salvar a pontuação apenas uma vez ao final do jogo
         if (finalizado && !pontuacaoSalva) {
@@ -159,7 +159,7 @@ public class Jogo {
     // NOVO MÉTODO: Responsável por verificar a jogada humana após as cartas serem viradas
     public Estado ProcessarJogadaHumano()
     {
-        int req = Nivel == "Facil" ? 2 : 3;
+         int req = Nivel == "Facil" ? 2 : (Nivel == "Medio" ? 3 : 2);
 
         // Garante que exatamente 'req' cartas sejam abertas pelo humano para uma verificação de correspondência
         if (_humanOpenedCards.Count != req)
@@ -235,7 +235,7 @@ public class Jogo {
     public void RegistrarGrupoFormado() => gruposFormados++;
 
     public Estado JogadaIA_AbrirCartas() {
-        int req = Nivel == "Facil" ? 2 : 3;
+         int req = Nivel == "Facil" ? 2 : (Nivel == "Medio" ? 3 : 2);
         PosicoesIASelecionadas.Clear();
 
         foreach (var carta in Deck)
@@ -259,7 +259,7 @@ public class Jogo {
     }
 
     public Estado JogadaIA_Resolver() {
-        int req = Nivel == "Facil" ? 2 : 3;
+        int req = Nivel == "Facil" ? 2 : (Nivel == "Medio" ? 3 : 2);
         var valores = PosicoesIASelecionadas.Select(i => Deck[i].Valor).ToList();
         bool todasIguais = valores.Count == req && valores.All(v => v == valores[0]);
 
