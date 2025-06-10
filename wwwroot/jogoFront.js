@@ -28,17 +28,15 @@ class InterfaceJogo {
     this.nome   = nome;
     this.estado = null;
     this.turno  = 'humano';
-    this.travado = false; // Controla se o canvas está travado para cliques
+    this.travado = false; 
     canvas.addEventListener('click', e => this.fazerJogada(e));
     this.pontuacaoDisplay = document.getElementById('pontuacaoAtual');
 
-    // Referências aos elementos da UI dos poderes
     this.especiaisRestantesDisplay = document.getElementById('especiaisRestantes');
     this.dicasRestantesDisplay     = document.getElementById('dicasRestantes');
     this.dicaCooldownDisplay       = document.getElementById('dicaCooldown');
     this.cooldownSecDisplay        = document.getElementById('cooldownSec');
 
-    // Adicionar event listeners para os novos botões de poder
     document.getElementById('btnEmbaralhar').addEventListener('click', () => this.usarPoder('embaralhar'));
     document.getElementById('btnCongelar').addEventListener('click', () => this.usarPoder('congelar'));
     document.getElementById('btnDica').addEventListener('click', () => this.usarPoder('dica'));
@@ -57,20 +55,12 @@ class InterfaceJogo {
     this.turno = 'humano';
     this.travado = false;
     this.desenhar();
-    this.atualizarPoderesUI(); // Adicionar chamada para atualizar a UI dos poderes ao iniciar
+    this.atualizarPoderesUI();
   }
 
 async fazerJogada(evt) {
   try {
-    console.log('--- Início fazerJogada ---');
-    // Condição de saída:
-    // Se não for turno do humano, ou jogo finalizado, ou JÁ ESTIVER TRAVADO (processando clique anterior).
     if (this.turno !== 'humano' || this.estado.finalizado || this.travado) {
-      console.log('Condição de saída inicial em fazerJogada:', {
-        turno: this.turno,
-        finalizado: this.estado.finalizado,
-        travado: this.travado
-      });
       return;
     }
 
@@ -78,20 +68,12 @@ async fazerJogada(evt) {
     const y = Math.floor(evt.offsetY / TAM);
     const pos = y * COLUNAS + x;
 
-    // Verificações de clique inválido (fora do canvas ou carta já visível/encontrada)
     if (x < 0 || x >= COLUNAS || y < 0 || y >= LINHAS || this.estado.cartas[pos].visivel || this.estado.cartas[pos].encontrada) {
-      console.log(`Clique inválido na posição ${pos}. Carta já visível/encontrada ou fora do canvas.`);
       return;
     }
 
-    // *** PONTO CHAVE DA CORREÇÃO: Trava a interface aqui ***
     this.travado = true; 
-    console.log('Interface travada. Carta clicada na posição:', pos);
-    console.log(`Estado da carta ${pos} ANTES de abrir (frontend): visivel=${this.estado.cartas[pos].visivel}, encontrada=${this.estado.cartas[pos].encontrada}`);
 
-
-    // 1. Envia a solicitação para o backend APENAS virar a carta.
-    console.log('Chamando API: jogada/abrir para posição', pos);
     const openResp = await fetch(`${API_BASE}/jogada/abrir`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -100,99 +82,64 @@ async fazerJogada(evt) {
 
     if (!openResp.ok) {
         const errorText = await openResp.text();
-        console.error(`Erro na API jogada/abrir: ${openResp.status} - ${errorText}`);
         alert('Erro ao virar carta. Tente novamente.');
-        this.travado = false; // Destrava em caso de erro na abertura
+        this.travado = false; 
         return;
     }
     
     this.estado = await openResp.json();
-    this.desenhar(); // Redesenha para mostrar a carta virada
+    this.desenhar(); 
     this.atualizarPoderesUI(); 
-    console.log('Carta virada na UI. Estado atual:', this.estado.pontuacao);
-    // LOGS DE DEBUG ADICIONADOS
-    console.log(`Estado da carta ${pos} DEPOIS de abrir (backend response): visivel=${this.estado.cartas[pos].visivel}, encontrada=${this.estado.cartas[pos].encontrada}`);
-    const allVisible = this.estado.cartas.map((c, i) => c.visivel && !c.encontrada ? `pos ${i}: ${c.valor}` : null).filter(Boolean);
-    console.log("Cartas atualmente visíveis e não encontradas (do backend):", allVisible);
 
-
-    const req = this.nivel === 'Facil' ? 2 : (this.nivel === 'Medio' ? 3 : 2); // Quantidade de cartas para o turno
+    const req = this.nivel === 'Facil' ? 2 : (this.nivel === 'Medio' ? 3 : 2); 
     const currentlyVisibleOnBackend = this.estado.cartas.filter(c => c.visivel && !c.encontrada).length;
 
-    console.log(`Cartas visíveis no backend: ${currentlyVisibleOnBackend}, Requisito: ${req}`);
-
-    // *** PONTO CHAVE DA CORREÇÃO: AQUI DESTRAMOS SE AINDA PRECISAMOS DE MAIS CLIQUES ***
-    // Se o número de cartas abertas ainda é menor que o necessário para o turno,
-    // destravamos a interface para permitir o próximo clique do jogador e retornamos.
     if (currentlyVisibleOnBackend < req) {
-        console.log('Ainda não há cartas suficientes para verificação. Aguardando próximo clique.');
-        this.travado = false; // <<< Destrava a interface para permitir o próximo clique
-        return; // Retorna para esperar o próximo clique do usuário
+        this.travado = false; 
+        return; 
     }
 
-    // Se chegamos aqui, significa que o número 'req' de cartas foi virado.
-    // A interface permanece travada (pois `this.travado` ainda é `true`).
-    console.log(`Número de cartas (${req}) atingido. Aguardando 2s para visualização...`);
     await new Promise(r => setTimeout(r, 2000)); 
-    console.log('Tempo de visualização de 2s concluído.');
 
-    // 2. Após o atraso de visualização, solicita ao backend para VERIFICAR a jogada.
-    console.log('Chamando API: jogada/verificar para processar a jogada.');
     const verifyResp = await fetch(`${API_BASE}/jogada/verificar`, { method: 'POST' });
 
     if (!verifyResp.ok) {
         const errorText = await verifyResp.text();
-        console.error(`Erro na API jogada/verificar: ${verifyResp.status} - ${errorText}`);
         alert('Erro ao verificar jogada. Tente novamente.');
         return; 
     }
 
     this.estado = await verifyResp.json();
-    this.desenhar(); // Redesenha após a verificação (cartas podem ter virado novamente ou sido encontradas)
+    this.desenhar();
     this.atualizarPoderesUI();
-    console.log('Jogada verificada na UI. Pontuação atual:', this.estado.pontuacao);
 
     if (this.estado.finalizado){
       alert('Partida encerrada!');
-      console.log('JOGO FINALIZADO APÓS JOGADA HUMANA. IA NÃO JOGARÁ.');
       return; 
     }  
 
-    console.log('Turno Humano Concluído. Mudando para IA.');
     this.turno = 'ia';
-    await this.jogadaIA(); 
+    await this.jogadaIA();
     
   } catch (error) {
-    console.error('Erro inesperado em fazerJogada:', error);
     alert('Ocorreu um erro no jogo. Por favor, reinicie.');
   } finally {
-    // *** PONTO CHAVE DA CORREÇÃO: Remoção da lógica complexa do finally ***
-    // O `this.travado` é gerenciado explicitamente nos `if`s acima.
-    // Aqui no finally, apenas garantimos que, se o jogo não finalizou e o turno ainda é humano
-    // (o que significa que houve um erro e não um fluxo normal de espera de cliques),
-    // a interface seja destravada para não ficar presa.
     if (!this.estado.finalizado && this.turno === 'humano') {
         this.travado = false;
-        console.log('Interface destravada no finally (erro/interrupção). Turno atual:', this.turno);
     }
-    // Se o turno for 'ia' ou 'finalizado', o destravamento será tratado por `jogadaIA` ou o jogo permanecerá finalizado.
-    console.log('--- Fim fazerJogada ---');
   }
 }
 
 async jogadaIA() {
   try { 
-    console.log('--- Iniciando jogada da IA ---');
     await new Promise(r => setTimeout(r, 1000)); 
 
-    this.travado = true; // Trava a interface durante toda a jogada da IA
+    this.travado = true; 
 
-    console.log('Chamando API: ia/abrir');
     const abrir = await fetch(`${API_BASE}/ia/abrir`, { method: 'POST' });
 
     if (!abrir.ok) {
         const errorText = await abrir.text();
-        console.error(`Erro na API ia/abrir: ${abrir.status} - ${errorText}`);
         alert('Erro na jogada da IA (abrir).');
         return;
     }
@@ -200,18 +147,13 @@ async jogadaIA() {
     this.estado = await abrir.json();
     this.desenhar();
     this.atualizarPoderesUI();
-    console.log('IA abriu cartas. Estado atual:', this.estado.pontuacao);
 
-    console.log('IA aguardando 2s para visualização...');
     await new Promise(r => setTimeout(r, 2000));
-    console.log('IA concluiu visualização.');
 
-    console.log('Chamando API: ia/resolver');
     const resolver = await fetch(`${API_BASE}/ia/resolver`, { method: 'POST' });
 
     if (!resolver.ok) {
         const errorText = await resolver.text();
-        console.error(`Erro na API ia/resolver: ${resolver.status} - ${errorText}`);
         alert('Erro na jogada da IA (resolver).');
         return; 
     }
@@ -219,37 +161,28 @@ async jogadaIA() {
     this.estado = await resolver.json();
     this.desenhar();
     this.atualizarPoderesUI();
-    console.log('IA resolveu a jogada. Estado atual:', this.estado.pontuacao);
 
     if (this.estado.finalizado) {
       alert('Partida encerrada!');
-      console.log('JOGO FINALIZADO APÓS JOGADA DA IA.');
       return;
     }
     this.turno = 'humano';
-    console.log('Jogada da IA concluída. Mudando para Humano.');
 
   } catch (error) {
-    console.error('Erro inesperado em jogadaIA:', error);
     alert('Ocorreu um erro no turno da IA.');
   } finally {
     if (!this.estado.finalizado) {
-      this.travado = false; // Destrava a interface para o turno humano
-      console.log('Interface destravada no finally de jogadaIA. Turno atual:', this.turno);
-    } else {
-        console.log('JOGO FINALIZADO NO FINALLY DA jogadaIA. Interface permanece travada.');
+      this.travado = false;
     }
-    console.log('--- Fim jogadaIA ---');
   }
 }
 
   async usarPoder(poder) {
     if (!jogoUI || this.turno !== 'humano' || this.travado) {
-      console.warn('Não é possível usar poder neste momento.');
       return;
     }
 
-    this.travado = true; // Trava a interface enquanto o poder é processado
+    this.travado = true; 
 
     try {
       let resp;
@@ -269,13 +202,11 @@ async jogadaIA() {
       } else if (poder === 'dica') {
         resp = await fetch(`${API_BASE}/poder/dica`, { method: 'POST' });
       } else {
-        console.warn('Poder desconhecido:', poder);
         return;
       }
 
       if (!resp.ok) {
         const errorText = await resp.text();
-        console.error(`Erro ao usar ${poder}: ${resp.status} - ${errorText}`);
         try {
             const { erro } = JSON.parse(errorText); 
             alert(`Não foi possível usar ${poder}: ${erro}`);
@@ -293,10 +224,9 @@ async jogadaIA() {
         }
       }
     } catch (error) {
-      console.error(`Erro inesperado ao usar poder ${poder}:`, error);
       alert(`Ocorreu um erro ao usar ${poder}.`);
     } finally {
-      this.travado = false; // Destrava a interface após o uso do poder
+      this.travado = false; 
     }
   }
 
@@ -325,12 +255,11 @@ async jogadaIA() {
       const cy = Math.floor(i / COLUNAS) * TAM;
       ctx.strokeStyle = '#333';
       ctx.strokeRect(cx, cy, TAM, TAM);
-      // Destaca cartas congeladas
       if (this.estado.cartasCongeladas[i]) {
-          ctx.fillStyle = 'rgba(0, 0, 255, 0.3)'; // Azul transparente
+          ctx.fillStyle = 'rgba(0, 0, 255, 0.3)'; 
           ctx.fillRect(cx, cy, TAM, TAM);
       }
-      if (!c.visivel) return; // Se a carta não está visível, não desenha a imagem/texto
+      if (!c.visivel) return; 
       const img = imagens[c.valor];
       if (img) ctx.drawImage(img, cx, cy, TAM, TAM);
       else {
