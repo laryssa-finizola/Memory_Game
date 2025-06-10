@@ -83,6 +83,7 @@ public class Jogo {
             Deck[indices[i]] = Deck[indices[j]];
             Deck[indices[j]] = tmp;
         }
+        Console.WriteLine($"[BACKEND LOG] Embaralhar: Cartas embaralhadas."); // Adicionado log
     }
 
     public void CongelarCarta(int pos) {
@@ -90,6 +91,7 @@ public class Jogo {
         if (Deck[pos].Encontrada || Deck[pos].Visivel) return;
         especiaisUsados++;
         congeladas[pos] = true;
+        Console.WriteLine($"[BACKEND LOG] Congelar: Carta na posição {pos} congelada."); // Adicionado log
     }
 
     public Estado ObterEstado() {
@@ -107,10 +109,19 @@ public class Jogo {
 
             });
             pontuacaoSalva = true;
+            Console.WriteLine($"[BACKEND LOG] Jogo finalizado! Pontuação salva para {Humano.Nome}."); // Adicionado log
         }
 
         var agora = DateTime.UtcNow;
         var segundosDesdeUltima = (agora - ultimaDica).TotalSeconds;
+
+        // Adiciona um log para o estado das cartas visíveis e não encontradas
+        var visibleButNotFound = Deck.Select((c, i) => new { c, i })
+                                     .Where(x => x.c.Visivel && !x.c.Encontrada)
+                                     .Select(x => $"pos {x.i}: {x.c.Valor}")
+                                     .ToList();
+        Console.WriteLine($"[BACKEND LOG] ObterEstado: Cartas visíveis e não encontradas: [{string.Join(", ", visibleButNotFound)}]");
+
         return new Estado {
             Cartas = Deck,
             Finalizado = gruposFormados == Deck.Count / (Nivel == "Facil" ? 2 : 3),
@@ -126,46 +137,50 @@ public class Jogo {
         };
     }
 
-    // MODIFICADO: Este método agora SÓ abre a carta e adiciona à lista interna
     public Estado AbrirCartaHumano(int pos) {
+        Console.WriteLine($"[BACKEND LOG] AbrirCartaHumano: Tentativa de abrir carta na posição {pos}."); // Log inicial
         if (congeladas[pos]) {
             congeladas[pos] = false;
+            Console.WriteLine($"[BACKEND LOG] AbrirCartaHumano: Carta {pos} estava congelada. Descongelando."); // Adicionado log
             return ObterEstado();
         }
 
-        // Verifica se a carta já está visível ou encontrada antes de abrir
         if (Deck[pos].Visivel || Deck[pos].Encontrada) {
-            return ObterEstado(); // Retorna o estado atual sem alterações se a carta já estiver aberta
+            Console.WriteLine($"[BACKEND LOG] AbrirCartaHumano: Carta na posição {pos} já visível ou encontrada. Não virando."); // Adicionado log
+            return ObterEstado();
         }
 
-        // Limpa as cartas abertas anteriormente se este for o início de um novo turno
-        // Isso garante que apenas as cartas do turno atual sejam rastreadas
         if (_humanOpenedCards.Count == 0) {
+            // Antes de limpar, loga as cartas que estavam abertas do turno anterior se houver
+            if (Deck.Any(c => c.Visivel && !c.Encontrada)) {
+                Console.WriteLine($"[BACKEND LOG] AbrirCartaHumano: Limpando cartas visíveis anteriores antes de novo turno humano.");
+                foreach(var carta in Deck) {
+                    if (carta.Visivel && !carta.Encontrada) {
+                        carta.Visivel = false; // Garante que as cartas viradas do turno anterior sejam fechadas.
+                    }
+                }
+            }
             _tempoInicioJogada = DateTime.UtcNow;
+            Console.WriteLine($"[BACKEND LOG] AbrirCartaHumano: Novo turno humano iniciado. _humanOpenedCards.Count = 0.");
         }
 
-        // Abre a carta
         Deck[pos].Visivel = true;
-        Humano.Pontos += 30; // 30 PONTOS A CADA CARTA QUE FOR ABERTA
-
+        Humano.Pontos += 30; 
         _humanOpenedCards.Add(pos);
+        Console.WriteLine($"[BACKEND LOG] AbrirCartaHumano: Carta {pos} virada para CIMA. Valor: {Deck[pos].Valor}. Pontos: {Humano.Pontos}."); // Adicionado log
+        Console.WriteLine($"[BACKEND LOG] AbrirCartaHumano: _humanOpenedCards agora contém: [{string.Join(", ", _humanOpenedCards)}]"); // Adicionado log
 
-        // Este método apenas abre uma carta e a adiciona à lista de cartas abertas para o turno atual.
-        // A verificação de correspondência e o ajuste de pontuação ocorrerão em uma chamada separada
-        // depois que o frontend exibir as cartas por um breve período.
         return ObterEstado();
     }
 
-    // NOVO MÉTODO: Responsável por verificar a jogada humana após as cartas serem viradas
     public Estado ProcessarJogadaHumano()
     {
-         int req = Nivel == "Facil" ? 2 : (Nivel == "Medio" ? 3 : 2);
+        Console.WriteLine($"[BACKEND LOG] ProcessarJogadaHumano: Iniciando processamento de jogada humana."); // Log inicial
+        int req = Nivel == "Facil" ? 2 : (Nivel == "Medio" ? 3 : 2);
 
-        // Garante que exatamente 'req' cartas sejam abertas pelo humano para uma verificação de correspondência
         if (_humanOpenedCards.Count != req)
         {
-            // Isso não deve acontecer se a lógica do frontend estiver correta, mas é bom para robustez.
-            // Se menos de 'req' cartas foram abertas, simplesmente retorna o estado atual.
+            Console.WriteLine($"[BACKEND LOG] ProcessarJogadaHumano: Número incorreto de cartas abertas ({_humanOpenedCards.Count} vs {req}). Retornando estado atual."); // Adicionado log
             return ObterEstado();
         }
 
@@ -174,8 +189,9 @@ public class Jogo {
         {
             openedCardsValues.Add(Deck[pos].Valor);
         }
-
+        
         bool allMatch = openedCardsValues.All(v => v == openedCardsValues[0]);
+        Console.WriteLine($"[BACKEND LOG] ProcessarJogadaHumano: Cartas abertas para verificação: [{string.Join(", ", _humanOpenedCards.Select(p => $"pos {p}: {Deck[p].Valor}"))}]. Correspondem? {allMatch}"); // Adicionado log
 
         if (allMatch)
         {
@@ -186,25 +202,24 @@ public class Jogo {
 
             RegistrarGrupoFormado();
 
-            // Calcula a pontuação com base no tempo
             var tempoResposta = (DateTime.UtcNow - _tempoInicioJogada).TotalSeconds;
-            int pontosGanhosPorAcerto = 500; // Pontuação base para um acerto correto
+            int pontosGanhosPorAcerto = 500; 
 
             if (tempoResposta <= 2)
             {
-                pontosGanhosPorAcerto += 1000; // Bônus para <= 2 segundos
+                pontosGanhosPorAcerto += 1000; 
             }
             else if (tempoResposta <= 4)
             {
-                pontosGanhosPorAcerto += 500; // Bônus para <= 4 segundos
+                pontosGanhosPorAcerto += 500; 
             }
             else if (tempoResposta <= 6)
             {
-                pontosGanhosPorAcerto += 200; // Bônus para <= 6 segundos
+                pontosGanhosPorAcerto += 200; 
             }
 
             Humano.Pontos += pontosGanhosPorAcerto;
-            Console.WriteLine($"Grupo formado! Pontos ganhos: {pontosGanhosPorAcerto}. Pontuação total: {Humano.Pontos}");
+            Console.WriteLine($"[BACKEND LOG] Grupo formado! Pontos ganhos: {pontosGanhosPorAcerto}. Pontuação total: {Humano.Pontos}");
         }
         else
         {
@@ -212,32 +227,45 @@ public class Jogo {
             {
                 Deck[pos].Visivel = false; // Fecha as cartas erradas
             }
-            Humano.Pontos = Math.Max(0, Humano.Pontos - 10); // Penalidade por erro -10 pontos
-            Console.WriteLine($"Combinação errada! Pontos perdidos: 10. Pontuação total: {Humano.Pontos}");
+            Humano.Pontos = Math.Max(0, Humano.Pontos - 10); 
+            Console.WriteLine($"[BACKEND LOG] Combinação errada! Pontos perdidos: 10. Pontuação total: {Humano.Pontos}");
         }
 
         _humanOpenedCards.Clear(); // Limpa para o próximo turno
+        Console.WriteLine($"[BACKEND LOG] ProcessarJogadaHumano: _humanOpenedCards limpas. Turno humano concluído."); // Adicionado log
 
         return ObterEstado();
     }
 
 
-    private void AbrirCarta(Jogador j, int pos) {
+    private void AbrirCarta(Jogador j, int pos) { // Este método parece não estar sendo usado pelo fluxo principal do humano, mas é bom logar nele também.
+        Console.WriteLine($"[BACKEND LOG] AbrirCarta (genérico): Tentativa de abrir carta na posição {pos} por {j.Nome}.");
         var carta = Deck[pos];
-        if (carta.Visivel || carta.Encontrada) return;
+        if (carta.Visivel || carta.Encontrada) {
+            Console.WriteLine($"[BACKEND LOG] AbrirCarta (genérico): Carta {pos} já visível ou encontrada. Não virando.");
+            return;
+        }
         carta.Visivel = true;
         j.Pontos += 30; //30 PONTOS A CADA CARTA QUE FOR ABERTA
+        Console.WriteLine($"[BACKEND LOG] AbrirCarta (genérico): Carta {pos} virada para CIMA por {j.Nome}. Valor: {Deck[pos].Valor}.");
+
 
         if (j == Maquina)
             Maquina.Lembrar(pos, carta.Valor);
     }
 
-    public void RegistrarGrupoFormado() => gruposFormados++;
+    public void RegistrarGrupoFormado() {
+        gruposFormados++;
+        Console.WriteLine($"[BACKEND LOG] Grupo formado! Total de grupos: {gruposFormados}."); // Adicionado log
+    }
 
     public Estado JogadaIA_AbrirCartas() {
-         int req = Nivel == "Facil" ? 2 : (Nivel == "Medio" ? 3 : 2);
-        PosicoesIASelecionadas.Clear();
+        Console.WriteLine($"[BACKEND LOG] JogadaIA_AbrirCartas: Iniciando abertura de cartas pela IA."); // Log inicial
+        int req = Nivel == "Facil" ? 2 : (Nivel == "Medio" ? 3 : 2);
+        PosicoesIASelecionadas.Clear(); // Limpa as seleções anteriores da IA
 
+        // Garante que as cartas visíveis de turnos anteriores (humanos ou IA) sejam fechadas antes da IA abrir novas
+        Console.WriteLine($"[BACKEND LOG] JogadaIA_AbrirCartas: Fechando cartas visíveis não encontradas antes da IA jogar.");
         foreach (var carta in Deck)
             if (carta.Visivel && !carta.Encontrada)
                 carta.Visivel = false;
@@ -251,14 +279,15 @@ public class Jogo {
                 Deck[pos].Visivel = true;
                 Maquina.Lembrar(pos, Deck[pos].Valor);
                 PosicoesIASelecionadas.Add(pos);
-                Console.WriteLine($"IA abriu posição {pos} -> {Deck[pos].Valor}");
+                Console.WriteLine($"[BACKEND LOG] IA abriu posição {pos} -> {Deck[pos].Valor}");
             }
         }
-
+        Console.WriteLine($"[BACKEND LOG] JogadaIA_AbrirCartas: IA abriu {PosicoesIASelecionadas.Count} cartas: [{string.Join(", ", PosicoesIASelecionadas)}]."); // Adicionado log
         return ObterEstado();
     }
 
     public Estado JogadaIA_Resolver() {
+        Console.WriteLine($"[BACKEND LOG] JogadaIA_Resolver: Iniciando resolução de jogada pela IA."); // Log inicial
         int req = Nivel == "Facil" ? 2 : (Nivel == "Medio" ? 3 : 2);
         var valores = PosicoesIASelecionadas.Select(i => Deck[i].Valor).ToList();
         bool todasIguais = valores.Count == req && valores.All(v => v == valores[0]);
@@ -267,26 +296,32 @@ public class Jogo {
             foreach (var i in PosicoesIASelecionadas)
                 Deck[i].Encontrada = true;
             RegistrarGrupoFormado();
-            Console.WriteLine("IA acertou o grupo!");
+            Console.WriteLine("[BACKEND LOG] IA acertou o grupo!"); // Log no backend
         }
         else
         {
             foreach (var i in PosicoesIASelecionadas)
                 Deck[i].Visivel = false;
-            Console.WriteLine("IA errou o grupo.");
+            Console.WriteLine("[BACKEND LOG] IA errou o grupo."); // Log no backend
         }
 
         PosicoesIASelecionadas.Clear();
+        Console.WriteLine($"[BACKEND LOG] JogadaIA_Resolver: Cartas da IA processadas. _PosicoesIASelecionadas limpas."); // Adicionado log
         return ObterEstado();
     }
 
     public Estado UsarDica() {
+        Console.WriteLine($"[BACKEND LOG] UsarDica: Tentativa de usar dica."); // Log inicial
         var agora = DateTime.UtcNow;
         var segundosDesdeUltima = (agora - ultimaDica).TotalSeconds;
-        if (dicasUsadas >= MAX_DICAS)
+        if (dicasUsadas >= MAX_DICAS) {
+            Console.WriteLine($"[BACKEND LOG] UsarDica: Limite de 3 dicas atingido ({dicasUsadas})."); // Adicionado log
             throw new InvalidOperationException("Limite de 3 dicas atingido.");
-        if (segundosDesdeUltima < DICA_COOLDOWN_SEC)
+        }
+        if (segundosDesdeUltima < DICA_COOLDOWN_SEC) {
+            Console.WriteLine($"[BACKEND LOG] UsarDica: Cooldown ativo. Aguarde {DICA_COOLDOWN_SEC - (int)segundosDesdeUltima}s."); // Adicionado log
             throw new InvalidOperationException($"Aguarde {DICA_COOLDOWN_SEC - (int)segundosDesdeUltima}s antes de nova dica.");
+        }
 
         dicasUsadas++;
         ultimaDica = agora;
@@ -295,9 +330,18 @@ public class Jogo {
             .Where(x => !x.c.Visivel && !x.c.Encontrada)
             .OrderBy(_ => rnd.Next())
             .Take(2).ToList();
-        foreach (var (c, _) in fechadas)
-            c.Visivel = true;
-
+        
+        if (fechadas.Count == 0) {
+            Console.WriteLine($"[BACKEND LOG] UsarDica: Não há cartas fechadas para dar dica.");
+            // Você pode decidir como lidar com isso. Talvez não contar a dica, ou lançar outra exceção.
+            // Por enquanto, vamos retornar o estado sem virar nada e ainda assim usar a dica (se passou pelos checks iniciais)
+        } else {
+            foreach (var (c, pos) in fechadas) { // Percorre a lista com a posição também para logar
+                c.Visivel = true;
+                Console.WriteLine($"[BACKEND LOG] UsarDica: Revelando carta na posição {pos} (Valor: {c.Valor})."); // Adicionado log
+            }
+        }
+        Console.WriteLine($"[BACKEND LOG] UsarDica: Dica usada. Dicas restantes: {MAX_DICAS - dicasUsadas}."); // Adicionado log
         return ObterEstado();
     }
 }
