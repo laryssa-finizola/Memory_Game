@@ -1,4 +1,3 @@
-// Models/Estado.cs
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 

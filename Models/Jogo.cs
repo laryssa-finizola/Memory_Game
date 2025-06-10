@@ -50,6 +50,8 @@ public class Jogo
         {
             Pontos = 0
         };
+        // Define a referência do jogo na IA, o que também define o deck.
+        Maquina.SetJogoReference(this); 
         Deck = GerarDeck(tamanho);
         congeladas = new bool[tamanho];
         cronometro = Stopwatch.StartNew();
@@ -258,7 +260,7 @@ public class Jogo
             Nivel = Nivel,
             Pontuacao = Humano.Pontos,
             DuracaoSec = (int)cronometro.Elapsed.TotalSeconds,
-            EspeciaisRestantes = MAX_ESPECIAIS - especiaisUsados,
+            EspeciaisRestantes = MAX_ESPECIAIS - especiaisUsados, // Propriedade corrigida em Estado.cs
             DicasRestantes = MAX_DICAS - dicasUsadas,
             CooldownDicaSec = dicasUsadas >= MAX_DICAS ? 0 :
                 Math.Max(0, DICA_COOLDOWN_SEC - (int)segundosDesdeUltima),
@@ -313,6 +315,9 @@ public class Jogo
 
         if (_humanOpenedCards.Count != cartasParaVirar)
         {
+            // Se o número de cartas viradas não for o esperado para o turno,
+            // algo inesperado aconteceu (ex: UI não enviou todas as cartas).
+            // Retorna o estado atual sem processar a jogada como completa.
             return ObterEstado();
         }
 
@@ -367,8 +372,8 @@ public class Jogo
             Humano.Pontos = Math.Max(0, Humano.Pontos - 50); //perda de 50 pontos se não acertar
         }
 
-        _humanOpenedCards.Clear();
-        DescongelarCartasAntigas();
+        _humanOpenedCards.Clear(); // Limpa as cartas viradas pelo humano para o próximo turno
+        DescongelarCartasAntigas(); // Descongela cartas da rodada anterior, se houver
 
         return ObterEstado();
     }
@@ -393,46 +398,86 @@ public class Jogo
         gruposFormados++;
     }
 
+    /// <summary>
+    /// Gerencia a ação da IA de abrir cartas. A IA tenta virar o número de cartas necessárias para o turno,
+    /// escolhendo entre as cartas não visíveis, não encontradas e não congeladas.
+    /// </summary>
+    /// <returns>O estado atualizado do jogo.</returns>
     public Estado JogadaIA_AbrirCartas()
     {
-        int cartasParaVirar = 4; // Para o nível Extremo, IA sempre vira 4 cartas
-        if (Nivel != "Extremo")
+        int cartasParaVirar = Nivel == "Facil" ? 2 : (Nivel == "Medio" ? 3 : 4);
+        if (Nivel == "Extremo")
         {
-            cartasParaVirar = Nivel == "Facil" ? 2 : (Nivel == "Medio" ? 3 : 4);
+            cartasParaVirar = 4; // Garante que Extremo sempre vira 4
         }
+        
+        PosicoesIASelecionadas.Clear(); // Limpa as posições selecionadas pela IA no turno anterior
 
-        PosicoesIASelecionadas.Clear(); // Limpa as posições selecionadas pela IA
-
-        // Esconde cartas visíveis que não foram encontradas antes do turno da IA
+        // Esconde cartas que foram viradas pelo humano mas não formaram par
+        // antes do turno da IA começar, garantindo um tabuleiro limpo.
         foreach (var carta in Deck)
             if (carta.Visivel && !carta.Encontrada)
                 carta.Visivel = false;
 
-        int tentativas = 0, maxTentativas = 200;
-        // A IA tenta virar o número de cartas necessárias para o turno
-        while (PosicoesIASelecionadas.Count < cartasParaVirar && tentativas < maxTentativas)
-        {
-            int pos = Maquina.EscolherPosicao(Deck); // IA escolhe uma posição
-            tentativas++;
+        // Coleta todas as posições de cartas que a IA pode virar:
+        // - Não visíveis (fechadas)
+        // - Não encontradas (ainda não formaram par)
+        // - Não congeladas (não estão temporariamente bloqueadas)
+        var availablePositions = Deck.Select((c, i) => i)
+                                     .Where(i => !Deck[i].Visivel && !Deck[i].Encontrada && !congeladas[i])
+                                     .ToList();
+        var rnd = new Random();
 
-            if (!Deck[pos].Visivel && !Deck[pos].Encontrada && !PosicoesIASelecionadas.Contains(pos) && !congeladas[pos])
+        // A IA tenta virar o número de cartas necessárias para o turno,
+        // escolhendo-as de forma inteligente (via Maquina.EscolherPosicao)
+        // ou aleatoriamente se não houver correspondências conhecidas.
+        for (int i = 0; i < cartasParaVirar; i++)
+        {
+            // Se não houver mais cartas disponíveis para virar, a IA para.
+            if (availablePositions.Count == 0) break; 
+
+            // A IA escolhe uma posição. Maquina.EscolherPosicao usa a memória da IA
+            // para tentar encontrar correspondências ou escolhe aleatoriamente.
+            // AQUI ESTÁ A CHAMA CORRIGIDA PARA Maquina.EscolherPosicao
+            int pos = Maquina.EscolherPosicao(availablePositions); 
+
+            // Garante que a posição escolhida é realmente válida antes de virar
+            // (evita virar cartas já viradas, encontradas ou congeladas,
+            // embora 'availablePositions' já devesse ter filtrado isso).
+            if (pos != -1 && !Deck[pos].Visivel && !Deck[pos].Encontrada && !congeladas[pos] && PosicoesIASelecionadas.All(p => p != pos))
             {
-                Deck[pos].Visivel = true;
-                Maquina.Lembrar(pos, Deck[pos].Valor);
-                PosicoesIASelecionadas.Add(pos);
+                Deck[pos].Visivel = true; // Vira a carta
+                Maquina.Lembrar(pos, Deck[pos].Valor); // IA adiciona a carta à sua memória
+                PosicoesIASelecionadas.Add(pos); // Adiciona à lista de cartas viradas pela IA neste turno
+
+                // Remove a posição da lista de disponíveis para evitar que a IA tente virar a mesma carta novamente no mesmo turno.
+                // É importante remover de availablePositions para que Maquina.EscolherPosicao não a escolha novamente
+                availablePositions.Remove(pos); 
+            } else {
+                // Se, por alguma razão, a carta escolhida não for válida (e.g. já foi virada por um bug),
+                // tenta escolher outra, mas dentro do limite do loop for.
+                // É mais robusto que o loop 'while' anterior, pois o 'availablePositions' já é pré-filtrado.
+                i--; // Decrementa 'i' para tentar encontrar outra carta, pois esta não foi válida
             }
         }
-        return ObterEstado();
+        return ObterEstado(); // Retorna o estado atualizado do jogo
     }
 
+    /// <summary>
+    /// Processa o resultado da jogada da IA, verificando se há correspondências
+    /// e atualizando pontuações e estado do tabuleiro.
+    /// </summary>
+    /// <returns>O estado atualizado do jogo.</returns>
     public Estado JogadaIA_Resolver()
     {
-        int cartasParaVirar = 4;
-        if (Nivel != "Extremo")
+        // Define o número de cartas para virar com base no nível (para referência, não para lógica de virar)
+        int cartasParaVirar = Nivel == "Facil" ? 2 : (Nivel == "Medio" ? 3 : 4);
+        if (Nivel == "Extremo")
         {
-            cartasParaVirar = Nivel == "Facil" ? 2 : (Nivel == "Medio" ? 3 : 4);
+            cartasParaVirar = 4;
         }
 
+        // Agrupa as cartas viradas pela IA por valor para verificar correspondências
         var groupedCardsIA = PosicoesIASelecionadas
             .Select(pos => new { Pos = pos, Card = Deck[pos] })
             .GroupBy(x => x.Card.Valor)
@@ -445,20 +490,21 @@ public class Jogo
         {
             if (RequisitoGrupoPorValor.TryGetValue(group.Key, out int requiredCount))
             {
+                // Se a quantidade de cartas viradas for suficiente para um grupo
                 if (group.Count() >= requiredCount)
                 {
                     algumaCorrespondenciaIA = true;
-                    pontosGanhosIA += 300;
+                    pontosGanhosIA += 300; // Pontos por acerto da IA
                     foreach (var item in group.Take(requiredCount))
                     {
-                        Deck[item.Pos].Encontrada = true;
+                        Deck[item.Pos].Encontrada = true; // Marca as cartas como encontradas
                     }
-                    RegistrarGrupoFormado();
+                    RegistrarGrupoFormado(); // Incrementa o contador de grupos formados
                 }
             }
         }
 
-        // Lógica de atribuição de pontos com base no modo de jogo
+        // Lógica de atribuição de pontos com base no modo de jogo (PvAI ou Coop)
         if (Modo == "PvAI") // Modo Competitivo (Player vs AI)
         {
             if (algumaCorrespondenciaIA)
@@ -467,33 +513,38 @@ public class Jogo
             }
             else
             {
-                // Se não houve nenhuma correspondência, a IA vira as cartas para baixo e perde pontos
+                // Se a IA não acertou, vira as cartas para baixo e perde pontos
                 foreach (var i in PosicoesIASelecionadas)
                     Deck[i].Visivel = false;
-                Maquina.Pontos = Math.Max(0, Maquina.Pontos - 20);
+                Maquina.Pontos = Math.Max(0, Maquina.Pontos - 20); // Garante que a pontuação não seja negativa
             }
         }
-        else
+        else // Modo Cooperativo (Coop)
         {
             if (algumaCorrespondenciaIA)
             {
-                Humano.Pontos += pontosGanhosIA;
+                Humano.Pontos += pontosGanhosIA; // No coop, os pontos da IA são somados ao jogador humano
             }
             else
             {
-
+                // No coop, se a IA errou, as cartas viram para baixo e o jogador humano perde pontos
                 foreach (var i in PosicoesIASelecionadas)
                     Deck[i].Visivel = false;
                 Humano.Pontos = Math.Max(0, Humano.Pontos - 20);
             }
         }
 
-        PosicoesIASelecionadas.Clear();
-        DescongelarCartasAntigas();
+        PosicoesIASelecionadas.Clear(); // Limpa as posições da IA para o próximo turno dela
+        DescongelarCartasAntigas(); // Descongela cartas da rodada anterior, se houver
 
-        return ObterEstado();
+        return ObterEstado(); // Retorna o estado atualizado do jogo
     }
 
+    /// <summary>
+    /// Permite ao jogador usar uma "dica" para revelar duas cartas aleatórias não encontradas.
+    /// </summary>
+    /// <returns>O estado atualizado do jogo.</returns>
+    /// <exception cref="InvalidOperationException">Lançada se o limite de dicas for atingido ou o cooldown estiver ativo.</exception>
     public Estado UsarDica()
     {
         var agora = DateTime.UtcNow;
@@ -510,19 +561,19 @@ public class Jogo
         dicasUsadas++;
         ultimaDica = agora;
         var rnd = new Random();
+        // Seleciona 2 cartas aleatórias que não estão visíveis e não foram encontradas
         var fechadas = Deck.Select((c, i) => (c, i))
             .Where(x => !x.c.Visivel && !x.c.Encontrada)
-            .OrderBy(_ => rnd.Next())
-            .Take(2).ToList();
+            .OrderBy(_ => rnd.Next()) // Embaralha para pegar aleatoriamente
+            .Take(2).ToList(); // Pega as duas primeiras
 
         if (fechadas.Count > 0)
         {
             foreach (var (c, _) in fechadas)
             {
-                c.Visivel = true;
+                c.Visivel = true; // Vira as cartas selecionadas
             }
         }
         return ObterEstado();
     }
 }
-
