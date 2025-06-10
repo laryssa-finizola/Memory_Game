@@ -22,7 +22,7 @@ public class Estado {
     [JsonPropertyName("cooldownDicaSec")]
     public int CooldownDicaSec { get; init; }
     [JsonPropertyName("cartasCongeladas")]
-    public bool[] CartasCongeladas { get; init; }
+    public required bool[] CartasCongeladas { get; init; } 
     
     [JsonPropertyName("tempoRestanteCoop")]
     public int TempoRestanteCoop { get; init; }

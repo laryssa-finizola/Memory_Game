@@ -11,11 +11,13 @@ public class Repositorio {
         return JogoAtual;
     }
 
+    // MODIFICADO: Agora apenas chama AbrirCartaHumano do JogoAtual
     public Estado ProcessarHumano(int pos){
         return JogoAtual.AbrirCartaHumano(pos);
     }
 
-        public Estado VerificarJogadaHumano(){
+    // NOVO: Método para verificar a jogada completa
+    public Estado VerificarJogadaHumano(){
         return JogoAtual.ProcessarJogadaHumano();
     }
 }
