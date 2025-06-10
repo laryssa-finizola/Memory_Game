@@ -361,7 +361,7 @@ class InterfaceJogo {
     }
   }
 
-  atualizarPoderesUI() {
+    atualizarPoderesUI() {
     if (this.estado) {
       this.especiaisRestantesDisplay.innerText = this.estado.especiaisRestantes;
       this.dicasRestantesDisplay.innerText = this.estado.dicasRestantes;
@@ -403,6 +403,7 @@ class InterfaceJogo {
       }
     }
   }
+
 
   desenhar() {
     ctx.clearRect(0, 0, canvas.width, canvas.height); 

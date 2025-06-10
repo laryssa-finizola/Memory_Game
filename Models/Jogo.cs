@@ -441,7 +441,7 @@ public class Jogo {
                 // Se não houve nenhuma correspondência, a IA vira as cartas para baixo e perde pontos
                 foreach (var i in PosicoesIASelecionadas)
                     Deck[i].Visivel = false;
-                Maquina.Pontos = Math.Max(0, Maquina.Pontos - 5); // IA perde pontos
+                Maquina.Pontos = Math.Max(0, Maquina.Pontos - 10); // IA perde pontos (ajustado de 5 para 10 para simetria com humano)
             }
         }
         else // Modo Cooperativo (Coop)
@@ -455,7 +455,7 @@ public class Jogo {
                 // Se não houve nenhuma correspondência, a IA vira as cartas para baixo e o time perde pontos
                 foreach (var i in PosicoesIASelecionadas)
                     Deck[i].Visivel = false;
-                Humano.Pontos = Math.Max(0, Humano.Pontos - 5); // Time perde pontos
+                Humano.Pontos = Math.Max(0, Humano.Pontos - 10); // Time perde pontos (ajustado de 5 para 10 para simetria com humano)
             }
         }
 
