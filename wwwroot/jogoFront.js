@@ -32,6 +32,17 @@ class InterfaceJogo {
     this.travado = false;
     canvas.addEventListener('click', e => this.fazerJogada(e));
     this.pontuacaoDisplay = document.getElementById('pontuacaoAtual');
+
+    // Referências aos elementos da UI dos poderes
+    this.especiaisRestantesDisplay = document.getElementById('especiaisRestantes');
+    this.dicasRestantesDisplay     = document.getElementById('dicasRestantes');
+    this.dicaCooldownDisplay       = document.getElementById('dicaCooldown');
+    this.cooldownSecDisplay        = document.getElementById('cooldownSec');
+
+    // Adicionar event listeners para os novos botões de poder
+    document.getElementById('btnEmbaralhar').addEventListener('click', () => this.usarPoder('embaralhar'));
+    document.getElementById('btnCongelar').addEventListener('click', () => this.usarPoder('congelar'));
+    document.getElementById('btnDica').addEventListener('click', () => this.usarPoder('dica'));
   }
 
   async iniciar() {
@@ -49,6 +60,7 @@ class InterfaceJogo {
     this.abertas = [];
     this.travado = false;
     this.desenhar();
+    this.atualizarPoderesUI(); // Adicionar chamada para atualizar a UI dos poderes ao iniciar
   }
 
 async fazerJogada(evt) {
@@ -96,6 +108,7 @@ async fazerJogada(evt) {
     
     this.estado = await openResp.json();
     this.desenhar();
+    this.atualizarPoderesUI(); // Atualizar a UI dos poderes após cada jogada
     console.log('Carta virada na UI. Estado atual:', this.estado.pontuacao);
 
     // ALTERADO AQUI: "Dificil" para "Medio"
@@ -107,6 +120,7 @@ async fazerJogada(evt) {
 
     if (currentlyVisibleOnFrontend < req) {
         console.log('Ainda não há cartas suficientes para verificação. Aguardando próximo clique.');
+        this.travado = false; // Destrava se ainda precisa de mais cliques humanos
         return; 
     }
 
@@ -127,6 +141,7 @@ async fazerJogada(evt) {
 
     this.estado = await verifyResp.json();
     this.desenhar();
+    this.atualizarPoderesUI(); // Atualizar a UI dos poderes após a verificação
     console.log('Jogada verificada na UI. Pontuação atual:', this.estado.pontuacao);
 
 
@@ -172,6 +187,7 @@ async jogadaIA() {
 
     this.estado = await abrir.json();
     this.desenhar();
+    this.atualizarPoderesUI(); // Atualizar a UI dos poderes após jogada da IA
     console.log('IA abriu cartas. Estado atual:', this.estado.pontuacao);
 
     // Aguarda visualização
@@ -187,11 +203,12 @@ async jogadaIA() {
         const errorText = await resolver.text();
         console.error(`Erro na API ia/resolver: ${resolver.status} - ${errorText}`);
         alert('Erro na jogada da IA (resolver).');
-        return;
+        return; 
     }
 
     this.estado = await resolver.json();
     this.desenhar();
+    this.atualizarPoderesUI(); // Atualizar a UI dos poderes após jogada da IA
     console.log('IA resolveu a jogada. Estado atual:', this.estado.pontuacao);
 
     if (this.estado.finalizado) {
@@ -216,6 +233,72 @@ async jogadaIA() {
   }
 }
 
+  // NOVO: Método para usar poderes
+  async usarPoder(poder) {
+    if (!jogoUI || this.turno !== 'humano' || this.travado) {
+      console.warn('Não é possível usar poder neste momento.');
+      return;
+    }
+
+    this.travado = true; // Trava a interface enquanto o poder é processado
+
+    try {
+      let resp;
+      if (poder === 'embaralhar') {
+        resp = await fetch(`${API_BASE}/poder/embaralhar`, { method: 'POST' });
+      } else if (poder === 'congelar') {
+        const pos = parseInt(prompt('Qual posição (0–23) deseja congelar?'), 10);
+        if (isNaN(pos) || pos < 0 || pos >= COLUNAS * LINHAS) {
+          alert('Posição inválida.');
+          return;
+        }
+        resp = await fetch(`${API_BASE}/poder/congelar`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ posicao: pos })
+        });
+      } else if (poder === 'dica') {
+        resp = await fetch(`${API_BASE}/poder/dica`, { method: 'POST' });
+      } else {
+        console.warn('Poder desconhecido:', poder);
+        return;
+      }
+
+      if (!resp.ok) {
+        const { erro } = await resp.json();
+        alert(`Não foi possível usar ${poder}: ${erro}`);
+      } else {
+        this.estado = await resp.json();
+        this.desenhar();
+        this.atualizarPoderesUI();
+        if (poder === 'dica') {
+          alert(`Dica usada! Restam ${this.estado.dicasRestantes} dicas.` +
+            (this.estado.cooldownDicaSec
+              ? ` Aguarde ${this.estado.cooldownDicaSec}s para a próxima.` : ''));
+        }
+      }
+    } catch (error) {
+      console.error(`Erro ao usar poder ${poder}:`, error);
+      alert(`Ocorreu um erro ao usar ${poder}.`);
+    } finally {
+      this.travado = false; // Destrava a interface
+    }
+  }
+
+  // NOVO: Método para atualizar a UI dos poderes
+  atualizarPoderesUI() {
+    if (this.estado) {
+      this.especiaisRestantesDisplay.innerText = this.estado.especiaisRestantes;
+      this.dicasRestantesDisplay.innerText     = this.estado.dicasRestantes;
+
+      if (this.estado.cooldownDicaSec > 0) {
+        this.dicaCooldownDisplay.style.display = 'block';
+        this.cooldownSecDisplay.innerText = this.estado.cooldownDicaSec;
+      } else {
+        this.dicaCooldownDisplay.style.display = 'none';
+      }
+    }
+  }
 
 
   desenhar() {
@@ -261,40 +344,41 @@ window.onload = async () => {
   });
 };
 
-window.addEventListener('keydown', async e => {
-  if (!jogoUI) return;
+// REMOVIDO: Os event listeners de teclado para poderes foram movidos para os botões da UI.
+// window.addEventListener('keydown', async e => {
+//   if (!jogoUI) return;
 
-  if (e.key === 'E') {
-    const resp = await fetch(`${API_BASE}/poder/embaralhar`, { method: 'POST' });
-    jogoUI.estado = await resp.json();
-    jogoUI.desenhar();
-  }
+//   if (e.key === 'E') {
+//     const resp = await fetch(`${API_BASE}/poder/embaralhar`, { method: 'POST' });
+//     jogoUI.estado = await resp.json();
+//     jogoUI.desenhar();
+//   }
 
-  if (e.key === 'C') {
-    const pos = parseInt(prompt('Qual posição (0–23) deseja congelar?'), 10);
-    const resp = await fetch(`${API_BASE}/poder/congelar`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ posicao: pos })
-    });
-    jogoUI.estado = await resp.json();
-    jogoUI.desenhar();
-  }
+//   if (e.key === 'C') {
+//     const pos = parseInt(prompt('Qual posição (0–23) deseja congelar?'), 10);
+//     const resp = await fetch(`${API_BASE}/poder/congelar`, {
+//       method: 'POST',
+//       headers: { 'Content-Type': 'application/json' },
+//       body: JSON.stringify({ posicao: pos })
+//     });
+//     jogoUI.estado = await resp.json();
+//     jogoUI.desenhar();
+//   }
 
-  if (e.key === 'D') {
-    const resp = await fetch(`${API_BASE}/poder/dica`, { method: 'POST' });
-    if (!resp.ok) {
-      const { erro } = await resp.json();
-      alert("Não foi possível usar dica: " + erro);
-    } else {
-      jogoUI.estado = await resp.json();
-      jogoUI.desenhar();
-      alert(`Dica usada! Restam ${jogoUI.estado.dicasRestantes} dicas.` +
-        (jogoUI.estado.cooldownDicaSec
-          ? ` Aguarde ${jogoUI.estado.cooldownDicaSec}s.` : ''));
-    }
-  }
-});
+//   if (e.key === 'D') {
+//     const resp = await fetch(`${API_BASE}/poder/dica`, { method: 'POST' });
+//     if (!resp.ok) {
+//       const { erro } = await resp.json();
+//       alert("Não foi possível usar dica: " + erro);
+//     } else {
+//       jogoUI.estado = await resp.json();
+//       jogoUI.desenhar();
+//       alert(`Dica usada! Restam ${jogoUI.estado.dicasRestantes} dicas.` +
+//         (jogoUI.estado.cooldownDicaSec
+//           ? ` Aguarde ${jogoUI.estado.cooldownDicaSec}s.` : ''));
+//     }
+//   }
+// });
 
 function carregarTop5() {
     fetch('/api/ranking/top5')
