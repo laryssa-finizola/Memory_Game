@@ -45,7 +45,9 @@ public class Jogo {
         Nivel = nivel;
         Humano = new Jogador { Nome = nome };
         int mem = Nivel == "Facil" ? 1 : (Nivel == "Medio" ? 3 : (Nivel == "Dificil" ? 4 : (Nivel == "Extremo" ? 4 : 1)));
-        Maquina = new AIPlayer(mem);
+        Maquina = new AIPlayer(mem) {
+            Pontos = 0 // Garante que a pontuação da IA comece em zero
+        };
         Deck = GerarDeck(tamanho);
         congeladas = new bool[tamanho];
         cronometro = Stopwatch.StartNew();
@@ -72,6 +74,7 @@ public class Jogo {
 
             // Garantir que o tamanho do deck seja suficiente para os grupos definidos
             // Se o tamanho fornecido for menor, ajusta para um mínimo que possa acomodar os grupos
+            // Aqui estamos usando um tamanho fixo de 48 para garantir que todos os grupos se encaixem
             if (tam < (numPares * 2 + numTrios * 3 + numQuadras * 4)) {
                  tam = 48; // Um tamanho razoável para o exemplo de Extremo
             }
@@ -184,7 +187,7 @@ public class Jogo {
 
         especiaisUsados++;
         congeladas[pos] = true;
-        posicaoCongeladaNaRodadaAnterior = pos;
+        posicaoCongeladaNaRodadaAnterior = null; // Garante que apenas uma carta por vez está congelada
     }
 
     private void DescongelarCartasAntigas() {
@@ -216,7 +219,9 @@ public class Jogo {
                 Nome = Humano.Nome,
                 Modo = Modo,
                 Nivel = Nivel,
-                Pontuacao = Humano.Pontos,
+                // No modo competitivo (PvAI), o ranking deve salvar a pontuação do Humano.
+                // No modo cooperativo (Coop), ele salva a pontuação combinada (Humano.Pontos).
+                Pontuacao = (Modo == "PvAI") ? Humano.Pontos : Humano.Pontos, // Se for PvAI salva só a do humano, se for Coop salva a do time
                 DataHora = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
             });
             pontuacaoSalva = true;
@@ -233,7 +238,8 @@ public class Jogo {
             Finalizado = finalizado,
             Modo = Modo,
             Nivel = Nivel,
-            Pontuacao = Humano.Pontos,
+            // Para pontuação geral, use a do humano (para coop) ou como fallback
+            Pontuacao = Humano.Pontos, 
             DuracaoSec = (int)cronometro.Elapsed.TotalSeconds,
             EspeciaisRestantes = MAX_ESPECIAIS - especiaisUsados,
             DicasRestantes = MAX_DICAS - dicasUsadas,
@@ -242,7 +248,10 @@ public class Jogo {
             CartasCongeladas = congeladas,
             TempoRestanteCoop = tempoRestanteCoop,
             TempoEsgotado = tempoEsgotado,
-            TodasCartasEncontradas = todasCartasEncontradas
+            TodasCartasEncontradas = todasCartasEncontradas,
+            // NOVAS PROPRIEDADES PARA PONTUAÇÕES SEPARADAS
+            PontuacaoHumano = Humano.Pontos,
+            PontuacaoMaquina = Maquina.Pontos 
         };
     }
 
@@ -420,16 +429,34 @@ public class Jogo {
             }
         }
 
-        if (algumaCorrespondenciaIA)
+        // Lógica de atribuição de pontos com base no modo de jogo
+        if (Modo == "PvAI") // Modo Competitivo (Player vs AI)
         {
-            Humano.Pontos += pontosGanhosIA; // IA ganha pontos, que são adicionados à pontuação do humano em modo coop ou competitivo
+            if (algumaCorrespondenciaIA)
+            {
+                Maquina.Pontos += pontosGanhosIA; // IA ganha seus próprios pontos
+            }
+            else
+            {
+                // Se não houve nenhuma correspondência, a IA vira as cartas para baixo e perde pontos
+                foreach (var i in PosicoesIASelecionadas)
+                    Deck[i].Visivel = false;
+                Maquina.Pontos = Math.Max(0, Maquina.Pontos - 5); // IA perde pontos
+            }
         }
-        else
+        else // Modo Cooperativo (Coop)
         {
-            // Se não houve nenhuma correspondência, vira as cartas para baixo e perde pontos
-            foreach (var i in PosicoesIASelecionadas)
-                Deck[i].Visivel = false;
-            Humano.Pontos = Math.Max(0, Humano.Pontos - 5); // Garante que a pontuação não seja negativa
+            if (algumaCorrespondenciaIA)
+            {
+                Humano.Pontos += pontosGanhosIA; // IA ganha pontos, que são adicionados à pontuação combinada (Humano.Pontos)
+            }
+            else
+            {
+                // Se não houve nenhuma correspondência, a IA vira as cartas para baixo e o time perde pontos
+                foreach (var i in PosicoesIASelecionadas)
+                    Deck[i].Visivel = false;
+                Humano.Pontos = Math.Max(0, Humano.Pontos - 5); // Time perde pontos
+            }
         }
 
         PosicoesIASelecionadas.Clear(); // Limpa as posições selecionadas pela IA

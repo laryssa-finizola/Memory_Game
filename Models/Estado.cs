@@ -1,3 +1,4 @@
+// Models/Estado.cs
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
@@ -30,4 +31,9 @@ public class Estado {
     public bool TempoEsgotado { get; init; }
     [JsonPropertyName("todasCartasEncontradas")]
     public bool TodasCartasEncontradas { get; init; }
+
+    [JsonPropertyName("pontuacaoHumano")]
+    public int PontuacaoHumano { get; init; }
+    [JsonPropertyName("pontuacaoMaquina")]
+    public int PontuacaoMaquina { get; init; }
 }
