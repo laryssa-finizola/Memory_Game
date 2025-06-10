@@ -29,7 +29,9 @@ class InterfaceJogo {
     this.estado = null;
     this.turno  = 'humano';
     this.travado = false; 
-    canvas.addEventListener('click', e => this.fazerJogada(e));
+    this.modoCongelamentoAtivo = false; //Flag para indicar se o modo de congelamento está ativo
+
+    canvas.addEventListener('click', e => this.lidarComClique(e)); 
     this.pontuacaoDisplay = document.getElementById('pontuacaoAtual');
 
     this.especiaisRestantesDisplay = document.getElementById('especiaisRestantes');
@@ -38,7 +40,7 @@ class InterfaceJogo {
     this.cooldownSecDisplay        = document.getElementById('cooldownSec');
 
     document.getElementById('btnEmbaralhar').addEventListener('click', () => this.usarPoder('embaralhar'));
-    document.getElementById('btnCongelar').addEventListener('click', () => this.usarPoder('congelar'));
+    document.getElementById('btnCongelar').addEventListener('click', () => this.ativarModoCongelamento()); 
     document.getElementById('btnDica').addEventListener('click', () => this.usarPoder('dica'));
   }
 
@@ -54,8 +56,48 @@ class InterfaceJogo {
     this.estado = await resp.json();
     this.turno = 'humano';
     this.travado = false;
+    this.modoCongelamentoAtivo = false; // Garante que esteja falso ao iniciar
     this.desenhar();
     this.atualizarPoderesUI();
+  }
+
+  // diferenciar entre congelamento e jogada normal
+  async lidarComClique(evt) {
+    if (this.modoCongelamentoAtivo) {
+        this.processarCliqueCongelamento(evt);
+    } else {
+        this.fazerJogada(evt);
+    }
+  }
+
+  
+  ativarModoCongelamento() {
+    if (this.travado || this.estado.especiaisRestantes <= 0) { // Adiciona uma verificação para especiais restantes
+      alert("Não é possível congelar agora ou você não tem especiais restantes.");
+      return;
+    }
+    this.modoCongelamentoAtivo = true;
+    alert("Modo de congelamento ativado. Clique na carta que deseja congelar.");
+  }
+
+  async processarCliqueCongelamento(evt) {
+    if (this.travado) {
+        return;
+    }
+    
+    const x = Math.floor(evt.offsetX / TAM);
+    const y = Math.floor(evt.offsetY / TAM);
+    const pos = y * COLUNAS + x;
+
+    if (x < 0 || x >= COLUNAS || y < 0 || y >= LINHAS || this.estado.cartas[pos].encontrada) {
+        alert("Não é possível congelar uma posição inválida ou uma carta já encontrada.");
+        this.modoCongelamentoAtivo = false; // Sai do modo de congelamento
+        return;
+    }
+    
+    // Chama usarPoder com 'congelar' e a posição clicada
+    await this.usarPoder('congelar', pos);
+    this.modoCongelamentoAtivo = false; // Sai do modo de congelamento após processar
   }
 
 async fazerJogada(evt) {
@@ -68,7 +110,12 @@ async fazerJogada(evt) {
     const y = Math.floor(evt.offsetY / TAM);
     const pos = y * COLUNAS + x;
 
-    if (x < 0 || x >= COLUNAS || y < 0 || y >= LINHAS || this.estado.cartas[pos].visivel || this.estado.cartas[pos].encontrada) {
+    // Se a carta já está visível, encontrada ou congelada, não faz nada
+    if (x < 0 || x >= COLUNAS || y < 0 || y >= LINHAS || this.estado.cartas[pos].visivel || this.estado.cartas[pos].encontrada || this.estado.cartasCongeladas[pos]) {
+      // Se a carta está congelada, exibe uma mensagem específica
+      if (this.estado.cartasCongeladas[pos]) {
+          alert('Esta carta está congelada e não pode ser virada nesta rodada.');
+      }
       return;
     }
 
@@ -82,7 +129,17 @@ async fazerJogada(evt) {
 
     if (!openResp.ok) {
         const errorText = await openResp.text();
-        alert('Erro ao virar carta. Tente novamente.');
+        try {
+            const { erro } = JSON.parse(errorText);
+            // Captura a mensagem de erro do backend para "carta congelada"
+            if (erro.includes("carta congelada")) { // Verifica se a mensagem de erro contém a frase
+                alert('Não é possível virar esta carta, ela está congelada.');
+            } else {
+                alert(`Erro ao virar carta: ${erro}. Tente novamente.`);
+            }
+        } catch (parseError) {
+            alert('Erro ao virar carta. Tente novamente.');
+        }
         this.travado = false; 
         return;
     }
@@ -130,54 +187,55 @@ async fazerJogada(evt) {
   }
 }
 
-async jogadaIA() {
-  try { 
-    await new Promise(r => setTimeout(r, 1000)); 
+  async jogadaIA() {
+    try { 
+      await new Promise(r => setTimeout(r, 1000)); 
 
-    this.travado = true; 
+      this.travado = true; 
 
-    const abrir = await fetch(`${API_BASE}/ia/abrir`, { method: 'POST' });
+      const abrir = await fetch(`${API_BASE}/ia/abrir`, { method: 'POST' });
 
-    if (!abrir.ok) {
-        const errorText = await abrir.text();
-        alert('Erro na jogada da IA (abrir).');
+      if (!abrir.ok) {
+          const errorText = await abrir.text();
+          alert('Erro na jogada da IA (abrir).');
+          return;
+      }
+
+      this.estado = await abrir.json();
+      this.desenhar();
+      this.atualizarPoderesUI();
+
+      await new Promise(r => setTimeout(r, 2000));
+
+      const resolver = await fetch(`${API_BASE}/ia/resolver`, { method: 'POST' });
+
+      if (!resolver.ok) {
+          const errorText = await resolver.text();
+          alert('Erro na jogada da IA (resolver).');
+          return; 
+      }
+
+      this.estado = await resolver.json();
+      this.desenhar();
+      this.atualizarPoderesUI();
+
+      if (this.estado.finalizado) {
+        alert('Partida encerrada!');
         return;
-    }
+      }
+      this.turno = 'humano';
 
-    this.estado = await abrir.json();
-    this.desenhar();
-    this.atualizarPoderesUI();
-
-    await new Promise(r => setTimeout(r, 2000));
-
-    const resolver = await fetch(`${API_BASE}/ia/resolver`, { method: 'POST' });
-
-    if (!resolver.ok) {
-        const errorText = await resolver.text();
-        alert('Erro na jogada da IA (resolver).');
-        return; 
-    }
-
-    this.estado = await resolver.json();
-    this.desenhar();
-    this.atualizarPoderesUI();
-
-    if (this.estado.finalizado) {
-      alert('Partida encerrada!');
-      return;
-    }
-    this.turno = 'humano';
-
-  } catch (error) {
-    alert('Ocorreu um erro no turno da IA.');
-  } finally {
-    if (!this.estado.finalizado) {
-      this.travado = false;
+    } catch (error) {
+      alert('Ocorreu um erro no turno da IA.');
+    } finally {
+      if (!this.estado.finalizado) {
+        this.travado = false;
+      }
     }
   }
-}
 
-  async usarPoder(poder) {
+
+  async usarPoder(poder, pos = -1) { 
     if (!jogoUI || this.turno !== 'humano' || this.travado) {
       return;
     }
@@ -189,10 +247,9 @@ async jogadaIA() {
       if (poder === 'embaralhar') {
         resp = await fetch(`${API_BASE}/poder/embaralhar`, { method: 'POST' });
       } else if (poder === 'congelar') {
-        const pos = parseInt(prompt('Qual posição (0–23) deseja congelar?'), 10);
-        if (isNaN(pos) || pos < 0 || pos >= COLUNAS * LINHAS) {
-          alert('Posição inválida.');
-          return;
+        if (pos === -1) { //não deve acontecer se chamado corretamente
+            alert("Erro: Posição para congelar não fornecida.");
+            return;
         }
         resp = await fetch(`${API_BASE}/poder/congelar`, {
           method: 'POST',
@@ -221,6 +278,8 @@ async jogadaIA() {
           alert(`Dica usada! Restam ${this.estado.dicasRestantes} dicas.` +
             (this.estado.cooldownDicaSec
               ? ` Aguarde ${this.estado.cooldownDicaSec}s para a próxima.` : ''));
+        } else if (poder === 'congelar') { // NOVO: Confirmação para congelamento
+          alert(`Carta na posição ${pos} congelada!`);
         }
       }
     } catch (error) {

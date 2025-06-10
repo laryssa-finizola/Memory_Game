@@ -19,6 +19,9 @@ public class Jogo {
     private int dicasUsadas = 0;
     private DateTime ultimaDica = DateTime.MinValue;
 
+    // Campo para rastrear a posição da carta congelada na rodada anterior
+    private int? posicaoCongeladaNaRodadaAnterior = null;
+
     private const int MAX_ESPECIAIS = 3;
     private const int MAX_DICAS = 3;
     private const int DICA_COOLDOWN_SEC = 10;
@@ -84,11 +87,30 @@ public class Jogo {
     }
 
     public void CongelarCarta(int pos) {
-        if (especiaisUsados >= MAX_ESPECIAIS) return;
-        if (Deck[pos].Encontrada || Deck[pos].Visivel) return;
+        if (especiaisUsados >= MAX_ESPECIAIS) {
+            throw new InvalidOperationException("Limite de poderes especiais atingido.");
+        }
+        if (Deck[pos].Encontrada || Deck[pos].Visivel) {
+            throw new InvalidOperationException("Não é possível congelar uma carta já encontrada ou visível.");
+        }
+        if (congeladas[pos]) { // Previne congelar uma carta já congelada
+            throw new InvalidOperationException("Esta carta já está congelada.");
+        }
+
         especiaisUsados++;
         congeladas[pos] = true;
+        // Registra a carta congelada para descongelamento na próxima rodada
+        posicaoCongeladaNaRodadaAnterior = pos;
     }
+
+    // Método para descongelar cartas ao final de uma rodada
+    private void DescongelarCartasAntigas() {
+        if (posicaoCongeladaNaRodadaAnterior.HasValue) {
+            congeladas[posicaoCongeladaNaRodadaAnterior.Value] = false;
+            posicaoCongeladaNaRodadaAnterior = null; // Reseta a referência
+        }
+    }
+
 
     public Estado ObterEstado() {
         bool finalizado = gruposFormados == Deck.Count / (Nivel == "Facil" ? 2 : (Nivel == "Medio" ? 3 : 2));
@@ -126,8 +148,7 @@ public class Jogo {
 
     public Estado AbrirCartaHumano(int pos) {
         if (congeladas[pos]) {
-            congeladas[pos] = false;
-            return ObterEstado();
+            throw new InvalidOperationException("Não é possível virar uma carta congelada.");
         }
 
         if (Deck[pos].Visivel || Deck[pos].Encontrada) {
@@ -135,6 +156,9 @@ public class Jogo {
         }
 
         if (_humanOpenedCards.Count == 0) {
+            // REMOVIDO: Chamada DescongelarCartasAntigas() daqui.
+            // A carta congelada agora durará a jogada do humano e da IA.
+
             foreach(var carta in Deck) {
                 if (carta.Visivel && !carta.Encontrada) {
                     carta.Visivel = false; 
@@ -226,6 +250,9 @@ public class Jogo {
     }
 
     public Estado JogadaIA_AbrirCartas() {
+        // REMOVIDO: Chamada DescongelarCartasAntigas() daqui.
+        // A carta congelada agora será descongelada ao final da jogada da IA.
+
         int req = Nivel == "Facil" ? 2 : (Nivel == "Medio" ? 3 : 2);
         PosicoesIASelecionadas.Clear(); 
 
@@ -238,7 +265,7 @@ public class Jogo {
             int pos = Maquina.EscolherPosicao(Deck);
             tentativas++;
 
-            if (!Deck[pos].Visivel && !Deck[pos].Encontrada && !PosicoesIASelecionadas.Contains(pos)) {
+            if (!Deck[pos].Visivel && !Deck[pos].Encontrada && !PosicoesIASelecionadas.Contains(pos) && !congeladas[pos]) { // Adicionado check para carta congelada
                 Deck[pos].Visivel = true;
                 Maquina.Lembrar(pos, Deck[pos].Valor);
                 PosicoesIASelecionadas.Add(pos);
@@ -264,6 +291,10 @@ public class Jogo {
         }
 
         PosicoesIASelecionadas.Clear();
+        
+        // NOVO LOCAL: Descongelar cartas ao final da jogada da IA
+        DescongelarCartasAntigas();
+
         return ObterEstado();
     }
 
