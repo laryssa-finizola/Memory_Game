@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
@@ -43,57 +43,58 @@
     }
 
     #top5-container table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
-  }
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
 
-  #top5-container th,
-  #top5-container td {
-    border: 1px solid #ccc;
-    padding: 8px;
-    text-align: center;
-    font-size: 14px;
-  }
+    #top5-container th,
+    #top5-container td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: center;
+      font-size: 14px;
+    }
 
-  #top5-container th {
-    background-color: #f0f0f0;
-    font-weight: bold;
-  }
+    #top5-container th {
+      background-color: #f0f0f0;
+      font-weight: bold;
+    }
 
-  /* Adicione algum estilo para a pontuação se desejar */
-  #pontuacaoAtual {
-    font-size: 24px; /* Aumenta o tamanho da fonte para visibilidade */
-    font-weight: bold;
-    color: #4CAF50; /* Uma cor verde para a pontuação */
-    margin-bottom: 10px; /* Espaçamento abaixo da pontuação */
-  }
+    #pontuacaoAtual {
+      font-size: 24px;
+      font-weight: bold;
+      color: #4CAF50;
+      margin-bottom: 10px;
+    }
 
-  /* Estilo adicional para os botões de poder */
-  #power-buttons {
-    margin-top: 10px; /* Reduzi o margin-top para ficar mais próximo */
-    padding-top: 10px;
-    border-top: 1px solid #eee; /* Linha divisória suave */
-  }
-  #power-buttons h3 {
-    margin-top: 0; /* Remove a margem superior do título */
-    margin-bottom: 5px; /* Adiciona um pouco de espaço abaixo do título */
-  }
-  /* Estilo para garantir que os botões de poder herdem os estilos dos botões existentes */
-  #power-buttons button {
-    width: 100%; /* Ocupar a largura total como os outros botões */
-    margin-bottom: 5px; /* Espaço entre os botões de poder */
-    /* Não defina background-color, color, border, cursor aqui
-       para herdar do #form-config button
-       Se precisar de uma cor diferente, adicione aqui
-    */
-  }
-  /* Estilo para os parágrafos de status dos poderes */
-  #power-buttons p {
-    font-size: 12px; /* Fonte menor para os status */
-    margin-bottom: 3px; /* Espaçamento menor entre os status */
-  }
+    #tempoRestante {
+      font-size: 20px;
+      font-weight: bold;
+      color: #e44d26;
+      margin-bottom: 10px;
+    }
 
+    #power-buttons {
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid #eee;
+    }
+
+    #power-buttons h3 {
+      margin-top: 0;
+      margin-bottom: 5px;
+    }
+
+    #power-buttons button {
+      width: 100%;
+      margin-bottom: 5px;
+    }
+
+    #power-buttons p {
+      font-size: 12px;
+      margin-bottom: 3px;
+    }
   </style>
 </head>
 <body>
@@ -105,16 +106,17 @@
       <label for="selModo">Modo de jogo:</label>
       <select id="selModo">
         <option value="PvAI">Competitivo</option>
-        <option value="PvAI">Cooperativo</option>
+        <option value="Coop">Cooperativo</option> 
       </select>
 
       <label for="selNivel">Nível:</label>
       <select id="selNivel">
         <option value="Facil">Fácil</option>
-        <option value="Medio">Médio</option> </select>
+        <option value="Medio">Médio</option>
+      </select>
 
       <button id="btnIniciar">Iniciar Jogo</button>
-      <button id="btn-top5">Top 5</button>
+      <button id="btn-top5">Top 5 Global</button>
 
       <div id="power-buttons">
         <h3>Poderes</h3>
@@ -125,10 +127,11 @@
         <p>Dicas Restantes: <span id="dicasRestantes">0</span></p>
         <p id="dicaCooldown" style="display: none;">Cooldown Dica: <span id="cooldownSec">0</span>s</p>
       </div>
-      </div>
+    </div>
 
     <div style="display: flex; flex-direction: column; align-items: flex-start;">
         <p id="pontuacaoAtual">Pontuação: 0</p>
+        <p id="tempoRestante">Tempo: --:--</p>
         <canvas id="gameCanvas"></canvas>
     </div>
   </div>

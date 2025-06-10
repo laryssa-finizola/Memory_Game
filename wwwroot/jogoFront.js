@@ -1,10 +1,10 @@
-const API_BASE = 'http://localhost:5091/api/jogo';
-const canvas   = document.getElementById('gameCanvas');
-const ctx      = canvas.getContext('2d');
+const API_BASE = 'http://localhost:5091/api/jogo'; 
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
 
 const COLUNAS = 8, LINHAS = 6, TAM = 80;
-canvas.width  = COLUNAS * TAM;
-canvas.height = LINHAS  * TAM;
+canvas.width = COLUNAS * TAM;
+canvas.height = LINHAS * TAM;
 
 let jogoUI;
 
@@ -15,7 +15,7 @@ function preloadImagens(urls) {
       const img = new Image();
       img.src = u;
       img.onload = () => { imagens[u] = img; res(); };
-      img.onerror = () => { console.warn(`Falha ao carregar ${u}`); res(); };
+      img.onerror = () => { res(); };
     }))
   );
 }
@@ -23,21 +23,23 @@ const urls = Array.from({ length: 24 }, (_, i) => `img/c${i+1}.png`);
 
 class InterfaceJogo {
   constructor(modo, nivel, nome) {
-    this.modo   = modo;
-    this.nivel  = nivel;
-    this.nome   = nome;
+    this.modo = modo;
+    this.nivel = nivel;
+    this.nome = nome;
     this.estado = null;
-    this.turno  = 'humano';
+    this.turno = 'humano';
     this.travado = false; 
-    this.modoCongelamentoAtivo = false; //Flag para indicar se o modo de congelamento está ativo
+    this.modoCongelamentoAtivo = false; 
+    this.intervaloTempo = null;
 
     canvas.addEventListener('click', e => this.lidarComClique(e)); 
     this.pontuacaoDisplay = document.getElementById('pontuacaoAtual');
+    this.tempoRestanteDisplay = document.getElementById('tempoRestante');
 
     this.especiaisRestantesDisplay = document.getElementById('especiaisRestantes');
-    this.dicasRestantesDisplay     = document.getElementById('dicasRestantes');
-    this.dicaCooldownDisplay       = document.getElementById('dicaCooldown');
-    this.cooldownSecDisplay        = document.getElementById('cooldownSec');
+    this.dicasRestantesDisplay = document.getElementById('dicasRestantes');
+    this.dicaCooldownDisplay = document.getElementById('dicaCooldown');
+    this.cooldownSecDisplay = document.getElementById('cooldownSec');
 
     document.getElementById('btnEmbaralhar').addEventListener('click', () => this.usarPoder('embaralhar'));
     document.getElementById('btnCongelar').addEventListener('click', () => this.ativarModoCongelamento()); 
@@ -56,23 +58,56 @@ class InterfaceJogo {
     this.estado = await resp.json();
     this.turno = 'humano';
     this.travado = false;
-    this.modoCongelamentoAtivo = false; // Garante que esteja falso ao iniciar
+    this.modoCongelamentoAtivo = false; 
     this.desenhar();
     this.atualizarPoderesUI();
-  }
 
-  // diferenciar entre congelamento e jogada normal
-  async lidarComClique(evt) {
-    if (this.modoCongelamentoAtivo) {
-        this.processarCliqueCongelamento(evt);
+    if (this.modo === 'Coop') {
+      if (this.intervaloTempo) {
+        clearInterval(this.intervaloTempo);
+      }
+      this.atualizarTempoUI(); 
+      this.intervaloTempo = setInterval(() => this.atualizarTempoUI(), 1000);
     } else {
-        this.fazerJogada(evt);
+      if (this.intervaloTempo) {
+        clearInterval(this.intervaloTempo);
+        this.intervaloTempo = null;
+      }
+      this.tempoRestanteDisplay.innerText = '';
     }
   }
 
-  
+  atualizarTempoUI() {
+    if (this.estado && this.modo === 'Coop') {
+      const segundos = this.estado.tempoRestanteCoop;
+      const minutos = Math.floor(segundos / 60);
+      const segundosFormatados = (segundos % 60).toString().padStart(2, '0');
+      this.tempoRestanteDisplay.innerText = `Tempo: ${minutos}:${segundosFormatados}`;
+
+      if (this.estado.finalizado) {
+        if (this.intervaloTempo) {
+          clearInterval(this.intervaloTempo);
+          this.intervaloTempo = null;
+        }
+        if (!this.estado.tempoEsgotado && this.estado.todasCartasEncontradas) {
+          alert('Parabéns, equipe! Vocês revelaram todas as cartas a tempo!');
+        } else if (this.estado.tempoEsgotado) {
+          alert('O tempo esgotou! A equipe não conseguiu revelar todas as cartas. Tente novamente!');
+        }
+      }
+    }
+  }
+
+  async lidarComClique(evt) {
+    if (this.modoCongelamentoAtivo) {
+      this.processarCliqueCongelamento(evt);
+    } else {
+      this.fazerJogada(evt);
+    }
+  }
+
   ativarModoCongelamento() {
-    if (this.travado || this.estado.especiaisRestantes <= 0) { // Adiciona uma verificação para especiais restantes
+    if (this.travado || this.estado.especiaisRestantes <= 0) { 
       alert("Não é possível congelar agora ou você não tem especiais restantes.");
       return;
     }
@@ -81,124 +116,119 @@ class InterfaceJogo {
   }
 
   async processarCliqueCongelamento(evt) {
-    if (this.travado) {
-        return;
-    }
+    if (this.travado) return;
     
     const x = Math.floor(evt.offsetX / TAM);
     const y = Math.floor(evt.offsetY / TAM);
     const pos = y * COLUNAS + x;
 
     if (x < 0 || x >= COLUNAS || y < 0 || y >= LINHAS || this.estado.cartas[pos].encontrada) {
-        alert("Não é possível congelar uma posição inválida ou uma carta já encontrada.");
-        this.modoCongelamentoAtivo = false; // Sai do modo de congelamento
-        return;
+      alert("Não é possível congelar uma posição inválida ou uma carta já encontrada.");
+      this.modoCongelamentoAtivo = false; 
+      return;
     }
     
-    // Chama usarPoder com 'congelar' e a posição clicada
     await this.usarPoder('congelar', pos);
-    this.modoCongelamentoAtivo = false; // Sai do modo de congelamento após processar
+    this.modoCongelamentoAtivo = false; 
   }
 
-async fazerJogada(evt) {
-  try {
-    if (this.turno !== 'humano' || this.estado.finalizado || this.travado) {
-      return;
-    }
+  async fazerJogada(evt) { 
+    try {
+      if (this.turno !== 'humano' || this.estado.finalizado || this.travado) return;
 
-    const x = Math.floor(evt.offsetX / TAM);
-    const y = Math.floor(evt.offsetY / TAM);
-    const pos = y * COLUNAS + x;
+      const x = Math.floor(evt.offsetX / TAM);
+      const y = Math.floor(evt.offsetY / TAM);
+      const pos = y * COLUNAS + x;
 
-    // Se a carta já está visível, encontrada ou congelada, não faz nada
-    if (x < 0 || x >= COLUNAS || y < 0 || y >= LINHAS || this.estado.cartas[pos].visivel || this.estado.cartas[pos].encontrada || this.estado.cartasCongeladas[pos]) {
-      // Se a carta está congelada, exibe uma mensagem específica
-      if (this.estado.cartasCongeladas[pos]) {
+      if (x < 0 || x >= COLUNAS || y < 0 || y >= LINHAS || this.estado.cartas[pos].visivel || this.estado.cartas[pos].encontrada || this.estado.cartasCongeladas[pos]) {
+        if (this.estado.cartasCongeladas[pos]) {
           alert('Esta carta está congelada e não pode ser virada nesta rodada.');
+        }
+        return;
       }
-      return;
-    }
 
-    this.travado = true; 
+      this.travado = true; 
 
-    const openResp = await fetch(`${API_BASE}/jogada/abrir`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ posicao: pos })
-    });
+      const openResp = await fetch(`${API_BASE}/jogada/abrir`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ posicao: pos })
+      });
 
-    if (!openResp.ok) {
+      if (!openResp.ok) {
         const errorText = await openResp.text();
         try {
-            const { erro } = JSON.parse(errorText);
-            // Captura a mensagem de erro do backend para "carta congelada"
-            if (erro.includes("carta congelada")) { // Verifica se a mensagem de erro contém a frase
-                alert('Não é possível virar esta carta, ela está congelada.');
-            } else {
-                alert(`Erro ao virar carta: ${erro}. Tente novamente.`);
-            }
-        } catch (parseError) {
-            alert('Erro ao virar carta. Tente novamente.');
+          const { erro } = JSON.parse(errorText);
+          if (erro.includes("carta congelada")) { 
+            alert('Não é possível virar esta carta, ela está congelada.');
+          } else {
+            alert(`Erro ao virar carta: ${erro}. Tente novamente.`);
+          }
+        } catch {
+          alert('Erro ao virar carta. Tente novamente.');
         }
         this.travado = false; 
         return;
-    }
-    
-    this.estado = await openResp.json();
-    this.desenhar(); 
-    this.atualizarPoderesUI(); 
+      }
+      
+      this.estado = await openResp.json();
+      this.desenhar(); 
+      this.atualizarPoderesUI(); 
 
-    const req = this.nivel === 'Facil' ? 2 : (this.nivel === 'Medio' ? 3 : 2); 
-    const currentlyVisibleOnBackend = this.estado.cartas.filter(c => c.visivel && !c.encontrada).length;
+      const req = this.nivel === 'Facil' ? 2 : (this.nivel === 'Medio' ? 3 : 2); 
+      const currentlyVisibleOnBackend = this.estado.cartas.filter(c => c.visivel && !c.encontrada).length;
 
-    if (currentlyVisibleOnBackend < req) {
+      if (currentlyVisibleOnBackend < req) {
         this.travado = false; 
         return; 
-    }
+      }
 
-    await new Promise(r => setTimeout(r, 2000)); 
+      await new Promise(r => setTimeout(r, 2000)); 
 
-    const verifyResp = await fetch(`${API_BASE}/jogada/verificar`, { method: 'POST' });
+      const verifyResp = await fetch(`${API_BASE}/jogada/verificar`, { method: 'POST' });
 
-    if (!verifyResp.ok) {
-        const errorText = await verifyResp.text();
+      if (!verifyResp.ok) {
         alert('Erro ao verificar jogada. Tente novamente.');
         return; 
-    }
+      }
 
-    this.estado = await verifyResp.json();
-    this.desenhar();
-    this.atualizarPoderesUI();
+      this.estado = await verifyResp.json();
+      this.desenhar();
+      this.atualizarPoderesUI();
 
-    if (this.estado.finalizado){
-      alert('Partida encerrada!');
-      return; 
-    }  
+      if (this.estado.finalizado){
+        if (this.estado.todasCartasEncontradas && !this.estado.tempoEsgotado){
+          alert('Parabéns, equipe! Vocês revelaram todas as cartas a tempo!');
+        } else if (this.estado.tempoEsgotado){
+          alert('O tempo esgotou! A equipe não conseguiu revelar todas as cartas. Tente novamente!');
+        } else {
+          alert('Partida encerrada!');
+        }
+        return; 
+      }  
 
-    this.turno = 'ia';
-    await this.jogadaIA();
-    
-  } catch (error) {
-    alert('Ocorreu um erro no jogo. Por favor, reinicie.');
-  } finally {
-    if (!this.estado.finalizado && this.turno === 'humano') {
+      this.turno = 'ia';
+      await this.jogadaIA();
+      
+    } catch {
+      alert('Ocorreu um erro no jogo. Por favor, reinicie.');
+    } finally {
+      if (!this.estado.finalizado && this.turno === 'humano') {
         this.travado = false;
+      }
     }
   }
-}
 
   async jogadaIA() {
     try { 
       await new Promise(r => setTimeout(r, 1000)); 
-
       this.travado = true; 
 
       const abrir = await fetch(`${API_BASE}/ia/abrir`, { method: 'POST' });
 
       if (!abrir.ok) {
-          const errorText = await abrir.text();
-          alert('Erro na jogada da IA (abrir).');
-          return;
+        alert('Erro na jogada da IA (abrir).');
+        return;
       }
 
       this.estado = await abrir.json();
@@ -210,9 +240,8 @@ async fazerJogada(evt) {
       const resolver = await fetch(`${API_BASE}/ia/resolver`, { method: 'POST' });
 
       if (!resolver.ok) {
-          const errorText = await resolver.text();
-          alert('Erro na jogada da IA (resolver).');
-          return; 
+        alert('Erro na jogada da IA (resolver).');
+        return; 
       }
 
       this.estado = await resolver.json();
@@ -220,12 +249,18 @@ async fazerJogada(evt) {
       this.atualizarPoderesUI();
 
       if (this.estado.finalizado) {
-        alert('Partida encerrada!');
+        if (this.estado.todasCartasEncontradas && !this.estado.tempoEsgotado){
+          alert('Parabéns, equipe! Vocês revelaram todas as cartas a tempo!');
+        } else if (this.estado.tempoEsgotado){
+          alert('O tempo esgotou! A equipe não conseguiu revelar todas as cartas. Tente novamente!');
+        } else {
+          alert('Partida encerrada!');
+        }
         return;
       }
       this.turno = 'humano';
 
-    } catch (error) {
+    } catch {
       alert('Ocorreu um erro no turno da IA.');
     } finally {
       if (!this.estado.finalizado) {
@@ -234,11 +269,8 @@ async fazerJogada(evt) {
     }
   }
 
-
   async usarPoder(poder, pos = -1) { 
-    if (!jogoUI || this.turno !== 'humano' || this.travado) {
-      return;
-    }
+    if (!jogoUI || this.turno !== 'humano' || this.travado) return;
 
     this.travado = true; 
 
@@ -247,9 +279,9 @@ async fazerJogada(evt) {
       if (poder === 'embaralhar') {
         resp = await fetch(`${API_BASE}/poder/embaralhar`, { method: 'POST' });
       } else if (poder === 'congelar') {
-        if (pos === -1) { //não deve acontecer se chamado corretamente
-            alert("Erro: Posição para congelar não fornecida.");
-            return;
+        if (pos === -1) {
+          alert("Erro: Posição para congelar não fornecida.");
+          return;
         }
         resp = await fetch(`${API_BASE}/poder/congelar`, {
           method: 'POST',
@@ -265,10 +297,10 @@ async fazerJogada(evt) {
       if (!resp.ok) {
         const errorText = await resp.text();
         try {
-            const { erro } = JSON.parse(errorText); 
-            alert(`Não foi possível usar ${poder}: ${erro}`);
-        } catch (parseError) {
-            alert(`Não foi possível usar ${poder}: Erro desconhecido ou resposta inválida do servidor.`);
+          const { erro } = JSON.parse(errorText); 
+          alert(`Não foi possível usar ${poder}: ${erro}`);
+        } catch {
+          alert(`Não foi possível usar ${poder}: Erro desconhecido ou resposta inválida do servidor.`);
         }
       } else {
         this.estado = await resp.json();
@@ -276,13 +308,12 @@ async fazerJogada(evt) {
         this.atualizarPoderesUI();
         if (poder === 'dica') {
           alert(`Dica usada! Restam ${this.estado.dicasRestantes} dicas.` +
-            (this.estado.cooldownDicaSec
-              ? ` Aguarde ${this.estado.cooldownDicaSec}s para a próxima.` : ''));
-        } else if (poder === 'congelar') { // NOVO: Confirmação para congelamento
+            (this.estado.cooldownDicaSec ? ` Aguarde ${this.estado.cooldownDicaSec}s para a próxima.` : ''));
+        } else if (poder === 'congelar') { 
           alert(`Carta na posição ${pos} congelada!`);
         }
       }
-    } catch (error) {
+    } catch {
       alert(`Ocorreu um erro ao usar ${poder}.`);
     } finally {
       this.travado = false; 
@@ -292,13 +323,22 @@ async fazerJogada(evt) {
   atualizarPoderesUI() {
     if (this.estado) {
       this.especiaisRestantesDisplay.innerText = this.estado.especiaisRestantes;
-      this.dicasRestantesDisplay.innerText     = this.estado.dicasRestantes;
+      this.dicasRestantesDisplay.innerText = this.estado.dicasRestantes;
 
       if (this.estado.cooldownDicaSec > 0) {
         this.dicaCooldownDisplay.style.display = 'block';
         this.cooldownSecDisplay.innerText = this.estado.cooldownDicaSec;
       } else {
         this.dicaCooldownDisplay.style.display = 'none';
+      }
+
+      if (this.pontuacaoDisplay && this.estado) {
+        const prefixo = this.modo === 'Coop' ? 'Pontuação da Equipe' : 'Pontuação';
+        this.pontuacaoDisplay.innerText = `${prefixo}: ${this.estado.pontuacao}`;
+      }
+
+      if (this.modo === 'Coop') {
+        this.atualizarTempoUI();
       }
     }
   }
@@ -315,8 +355,8 @@ async fazerJogada(evt) {
       ctx.strokeStyle = '#333';
       ctx.strokeRect(cx, cy, TAM, TAM);
       if (this.estado.cartasCongeladas[i]) {
-          ctx.fillStyle = 'rgba(0, 0, 255, 0.3)'; 
-          ctx.fillRect(cx, cy, TAM, TAM);
+        ctx.fillStyle = 'rgba(0, 0, 255, 0.3)'; 
+        ctx.fillRect(cx, cy, TAM, TAM);
       }
       if (!c.visivel) return; 
       const img = imagens[c.valor];
@@ -326,23 +366,19 @@ async fazerJogada(evt) {
         ctx.fillText(c.valor, cx + TAM/2, cy + TAM/2);
       }
     });
-
-    if (this.pontuacaoDisplay && this.estado) {
-      this.pontuacaoDisplay.innerText = `Pontuação: ${this.estado.pontuacao}`;
-    }
   }
 }
 
 window.onload = async () => {
   await preloadImagens(urls);
   document.getElementById('btnIniciar').addEventListener('click', () => {
-    const nome  = document.getElementById('inputNome').value.trim();
-    const modo  = document.getElementById('selModo').value;
+    const nome = document.getElementById('inputNome').value.trim();
+    const modo = document.getElementById('selModo').value;
     const nivel = document.getElementById('selNivel').value;
 
     if (!nome) {
-        alert("Digite o nome do jogador antes de iniciar.");
-        return;
+      alert("Digite o nome do jogador antes de iniciar.");
+      return;
     }
 
     jogoUI = new InterfaceJogo(modo, nivel, nome);
@@ -351,65 +387,65 @@ window.onload = async () => {
 };
 
 function carregarTop5() {
-    fetch('/api/ranking/top5')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Erro ao buscar ranking');
-            }
-            return response.json();
-        })
-        .then(ranking => {
-            const container = document.getElementById('top5-container');
-            if (!container) return;
+  fetch('/api/ranking/top5')
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Erro ao buscar ranking');
+      }
+      return response.json();
+    })
+    .then(ranking => {
+      const container = document.getElementById('top5-container');
+      if (!container) return;
 
-            container.innerHTML = `
-                <h2>Top 5 Jogadores</h2>
-                <table border="1" cellpadding="5">
-                    <thead>
-                        <tr>
-                            <th>Nome</th>
-                            <th>Modo</th>
-                            <th>Nível</th>
-                            <th>Pontuação</th>
-                            <th>Data/Hora</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${ranking.map(j => `
-                            <tr>
-                                <td>${j.nome}</td>
-                                <td>${j.modo}</td>
-                                <td>${j.nivel}</td>
-                                <td>${j.pontuacao}</td>
-                                <td>${j.dataHora}</td>
-                            </tr>
-                        `).join('')}
-                    </tbody>
-                </table>
-            `;
-        })
-        .catch(error => {
-            console.error('Erro ao carregar ranking:', error);
-        });
+      container.innerHTML = `
+        <h2>Top 5 Jogadores</h2>
+        <table border="1" cellpadding="5">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Modo</th>
+              <th>Nível</th>
+              <th>Pontuação</th>
+              <th>Data/Hora</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${ranking.map(j => `
+              <tr>
+                <td>${j.nome}</td>
+                <td>${j.modo}</td>
+                <td>${j.nivel}</td>
+                <td>${j.pontuacao}</td>
+                <td>${j.dataHora}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      `;
+    })
+    .catch(error => {
+      console.error('Erro ao carregar ranking:', error);
+    });
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    const btnTop5 = document.getElementById("btn-top5");
-    const modal = document.getElementById("modal-top5");
-    const fecharModal = document.getElementById("fechar-modal");
+  const btnTop5 = document.getElementById("btn-top5");
+  const modal = document.getElementById("modal-top5");
+  const fecharModal = document.getElementById("fechar-modal");
 
-    btnTop5.onclick = () => {
-        modal.style.display = "block";
-        carregarTop5();
-    };
+  btnTop5.onclick = () => {
+    modal.style.display = "block";
+    carregarTop5();
+  };
 
-    fecharModal.onclick = () => {
-        modal.style.display = "none";
-    };
+  fecharModal.onclick = () => {
+    modal.style.display = "none";
+  };
 
-    window.onclick = (event) => {
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
-    };
+  window.onclick = (event) => {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  };
 });

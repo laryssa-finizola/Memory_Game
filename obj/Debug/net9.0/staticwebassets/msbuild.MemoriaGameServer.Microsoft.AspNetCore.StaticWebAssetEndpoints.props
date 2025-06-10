@@ -291,26 +291,26 @@
     <StaticWebAssetEndpoint Include="_content/MemoriaGameServer/index.html">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\index.html'))</AssetFile>
       <Selectors><![CDATA[[]]]></Selectors>
-      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-6\u002Bj6DXhQZn6lHD\u002BJfhCv5J6bZQTTOiSi/RHUgDWsdhY="}]]]></EndpointProperties>
-      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"4441"},{"Name":"Content-Type","Value":"text/html"},{"Name":"ETag","Value":"\u00226\u002Bj6DXhQZn6lHD\u002BJfhCv5J6bZQTTOiSi/RHUgDWsdhY=\u0022"},{"Name":"Last-Modified","Value":"Tue, 10 Jun 2025 03:59:56 GMT"}]]]></ResponseHeaders>
+      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-hdM6fJSAYEu19/PQBOaUaq3HtXwz79O/GayaY5Y1zOQ="}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"3757"},{"Name":"Content-Type","Value":"text/html"},{"Name":"ETag","Value":"\u0022hdM6fJSAYEu19/PQBOaUaq3HtXwz79O/GayaY5Y1zOQ=\u0022"},{"Name":"Last-Modified","Value":"Tue, 10 Jun 2025 04:45:17 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
-    <StaticWebAssetEndpoint Include="_content/MemoriaGameServer/index.pbz9opad1b.html">
+    <StaticWebAssetEndpoint Include="_content/MemoriaGameServer/index.nx89rvccln.html">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\index.html'))</AssetFile>
       <Selectors><![CDATA[[]]]></Selectors>
-      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"pbz9opad1b"},{"Name":"integrity","Value":"sha256-6\u002Bj6DXhQZn6lHD\u002BJfhCv5J6bZQTTOiSi/RHUgDWsdhY="},{"Name":"label","Value":"_content/MemoriaGameServer/index.html"}]]]></EndpointProperties>
-      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"4441"},{"Name":"Content-Type","Value":"text/html"},{"Name":"ETag","Value":"\u00226\u002Bj6DXhQZn6lHD\u002BJfhCv5J6bZQTTOiSi/RHUgDWsdhY=\u0022"},{"Name":"Last-Modified","Value":"Tue, 10 Jun 2025 03:59:56 GMT"}]]]></ResponseHeaders>
+      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"nx89rvccln"},{"Name":"integrity","Value":"sha256-hdM6fJSAYEu19/PQBOaUaq3HtXwz79O/GayaY5Y1zOQ="},{"Name":"label","Value":"_content/MemoriaGameServer/index.html"}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"3757"},{"Name":"Content-Type","Value":"text/html"},{"Name":"ETag","Value":"\u0022hdM6fJSAYEu19/PQBOaUaq3HtXwz79O/GayaY5Y1zOQ=\u0022"},{"Name":"Last-Modified","Value":"Tue, 10 Jun 2025 04:45:17 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
     <StaticWebAssetEndpoint Include="_content/MemoriaGameServer/jogoFront.js">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\jogoFront.js'))</AssetFile>
       <Selectors><![CDATA[[]]]></Selectors>
-      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-eDmT/vpm6r0U70RlWtouomY4C7drzuAgsZBknA\u002B2U34="}]]]></EndpointProperties>
-      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"13127"},{"Name":"Content-Type","Value":"text/javascript"},{"Name":"ETag","Value":"\u0022eDmT/vpm6r0U70RlWtouomY4C7drzuAgsZBknA\u002B2U34=\u0022"},{"Name":"Last-Modified","Value":"Tue, 10 Jun 2025 04:20:54 GMT"}]]]></ResponseHeaders>
+      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-xu3\u002Bexeu8colHaunEap17Nxhi2UrohPbMZVZl\u002BYCaoA="}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"13936"},{"Name":"Content-Type","Value":"text/javascript"},{"Name":"ETag","Value":"\u0022xu3\u002Bexeu8colHaunEap17Nxhi2UrohPbMZVZl\u002BYCaoA=\u0022"},{"Name":"Last-Modified","Value":"Tue, 10 Jun 2025 04:48:40 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
-    <StaticWebAssetEndpoint Include="_content/MemoriaGameServer/jogoFront.kt1hmwwv7r.js">
+    <StaticWebAssetEndpoint Include="_content/MemoriaGameServer/jogoFront.mk2vrpd8h5.js">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\jogoFront.js'))</AssetFile>
       <Selectors><![CDATA[[]]]></Selectors>
-      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"kt1hmwwv7r"},{"Name":"integrity","Value":"sha256-eDmT/vpm6r0U70RlWtouomY4C7drzuAgsZBknA\u002B2U34="},{"Name":"label","Value":"_content/MemoriaGameServer/jogoFront.js"}]]]></EndpointProperties>
-      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"13127"},{"Name":"Content-Type","Value":"text/javascript"},{"Name":"ETag","Value":"\u0022eDmT/vpm6r0U70RlWtouomY4C7drzuAgsZBknA\u002B2U34=\u0022"},{"Name":"Last-Modified","Value":"Tue, 10 Jun 2025 04:20:54 GMT"}]]]></ResponseHeaders>
+      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"mk2vrpd8h5"},{"Name":"integrity","Value":"sha256-xu3\u002Bexeu8colHaunEap17Nxhi2UrohPbMZVZl\u002BYCaoA="},{"Name":"label","Value":"_content/MemoriaGameServer/jogoFront.js"}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"13936"},{"Name":"Content-Type","Value":"text/javascript"},{"Name":"ETag","Value":"\u0022xu3\u002Bexeu8colHaunEap17Nxhi2UrohPbMZVZl\u002BYCaoA=\u0022"},{"Name":"Last-Modified","Value":"Tue, 10 Jun 2025 04:48:40 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
   </ItemGroup>
 </Project>

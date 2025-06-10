@@ -19,12 +19,14 @@ public class Jogo {
     private int dicasUsadas = 0;
     private DateTime ultimaDica = DateTime.MinValue;
 
-    // Campo para rastrear a posição da carta congelada na rodada anterior
     private int? posicaoCongeladaNaRodadaAnterior = null;
 
     private const int MAX_ESPECIAIS = 3;
     private const int MAX_DICAS = 3;
     private const int DICA_COOLDOWN_SEC = 10;
+
+    private int TempoLimiteSegundos;
+    private Stopwatch tempoRestanteCronometro;
 
     private int jogadasIA = 0;
 
@@ -35,7 +37,6 @@ public class Jogo {
     private bool pontuacaoSalva = false;
 
     private List<int> _humanOpenedCards = new List<int>();
-
 
     public Jogo(string nome, string modo, string nivel, int tamanho)
     {
@@ -48,6 +49,11 @@ public class Jogo {
         congeladas = new bool[tamanho];
         cronometro = Stopwatch.StartNew();
         _tempoInicioJogada = DateTime.UtcNow;
+
+        if (Modo == "Coop") {
+            TempoLimiteSegundos = 180;
+            tempoRestanteCronometro = Stopwatch.StartNew();
+        }
     }
 
     private List<Carta> GerarDeck(int tam) {
@@ -93,27 +99,36 @@ public class Jogo {
         if (Deck[pos].Encontrada || Deck[pos].Visivel) {
             throw new InvalidOperationException("Não é possível congelar uma carta já encontrada ou visível.");
         }
-        if (congeladas[pos]) { // Previne congelar uma carta já congelada
+        if (congeladas[pos]) {
             throw new InvalidOperationException("Esta carta já está congelada.");
         }
 
         especiaisUsados++;
         congeladas[pos] = true;
-        // Registra a carta congelada para descongelamento na próxima rodada
         posicaoCongeladaNaRodadaAnterior = pos;
     }
 
-    // Método para descongelar cartas ao final de uma rodada
     private void DescongelarCartasAntigas() {
         if (posicaoCongeladaNaRodadaAnterior.HasValue) {
             congeladas[posicaoCongeladaNaRodadaAnterior.Value] = false;
-            posicaoCongeladaNaRodadaAnterior = null; // Reseta a referência
+            posicaoCongeladaNaRodadaAnterior = null;
         }
     }
 
-
     public Estado ObterEstado() {
-        bool finalizado = gruposFormados == Deck.Count / (Nivel == "Facil" ? 2 : (Nivel == "Medio" ? 3 : 2));
+        bool todasCartasEncontradas = gruposFormados == Deck.Count / (Nivel == "Facil" ? 2 : (Nivel == "Medio" ? 3 : 2));
+        bool tempoEsgotado = false;
+        int tempoRestanteCoop = 0;
+
+        if (Modo == "Coop") {
+            var tempoPassado = (int)tempoRestanteCronometro.Elapsed.TotalSeconds;
+            tempoRestanteCoop = Math.Max(0, TempoLimiteSegundos - tempoPassado);
+            if (tempoRestanteCoop <= 0 && !todasCartasEncontradas) {
+                tempoEsgotado = true;
+            }
+        }
+
+        bool finalizado = todasCartasEncontradas || tempoEsgotado;
 
         if (finalizado && !pontuacaoSalva) {
             var repo = new RankingRepository();
@@ -123,9 +138,11 @@ public class Jogo {
                 Nivel = Nivel,
                 Pontuacao = Humano.Pontos,
                 DataHora = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
-
             });
             pontuacaoSalva = true;
+            if (Modo == "Coop" && tempoRestanteCronometro != null) {
+                tempoRestanteCronometro.Stop();
+            }
         }
 
         var agora = DateTime.UtcNow;
@@ -133,7 +150,7 @@ public class Jogo {
 
         return new Estado {
             Cartas = Deck,
-            Finalizado = gruposFormados == Deck.Count / (Nivel == "Facil" ? 2 : 3),
+            Finalizado = finalizado,
             Modo = Modo,
             Nivel = Nivel,
             Pontuacao = Humano.Pontos,
@@ -142,7 +159,10 @@ public class Jogo {
             DicasRestantes = MAX_DICAS - dicasUsadas,
             CooldownDicaSec = dicasUsadas >= MAX_DICAS ? 0 :
                 Math.Max(0, DICA_COOLDOWN_SEC - (int)segundosDesdeUltima),
-            CartasCongeladas = congeladas
+            CartasCongeladas = congeladas,
+            TempoRestanteCoop = tempoRestanteCoop,
+            TempoEsgotado = tempoEsgotado,
+            TodasCartasEncontradas = todasCartasEncontradas
         };
     }
 
@@ -156,9 +176,6 @@ public class Jogo {
         }
 
         if (_humanOpenedCards.Count == 0) {
-            // REMOVIDO: Chamada DescongelarCartasAntigas() daqui.
-            // A carta congelada agora durará a jogada do humano e da IA.
-
             foreach(var carta in Deck) {
                 if (carta.Visivel && !carta.Encontrada) {
                     carta.Visivel = false; 
@@ -174,27 +191,22 @@ public class Jogo {
         return ObterEstado();
     }
 
-    public Estado ProcessarJogadaHumano()
-    {
+    public Estado ProcessarJogadaHumano() {
         int req = Nivel == "Facil" ? 2 : (Nivel == "Medio" ? 3 : 2);
 
-        if (_humanOpenedCards.Count != req)
-        {
+        if (_humanOpenedCards.Count != req) {
             return ObterEstado();
         }
 
         var openedCardsValues = new List<string>();
-        foreach (int pos in _humanOpenedCards)
-        {
+        foreach (int pos in _humanOpenedCards) {
             openedCardsValues.Add(Deck[pos].Valor);
         }
         
         bool allMatch = openedCardsValues.All(v => v == openedCardsValues[0]);
 
-        if (allMatch)
-        {
-            foreach (var pos in _humanOpenedCards)
-            {
+        if (allMatch) {
+            foreach (var pos in _humanOpenedCards) {
                 Deck[pos].Encontrada = true;
             }
 
@@ -203,25 +215,17 @@ public class Jogo {
             var tempoResposta = (DateTime.UtcNow - _tempoInicioJogada).TotalSeconds;
             int pontosGanhosPorAcerto = 500; 
 
-            if (tempoResposta <= 2)
-            {
+            if (tempoResposta <= 2) {
                 pontosGanhosPorAcerto += 1000; 
-            }
-            else if (tempoResposta <= 4)
-            {
+            } else if (tempoResposta <= 4) {
                 pontosGanhosPorAcerto += 500; 
-            }
-            else if (tempoResposta <= 6)
-            {
+            } else if (tempoResposta <= 6) {
                 pontosGanhosPorAcerto += 200; 
             }
 
             Humano.Pontos += pontosGanhosPorAcerto;
-        }
-        else
-        {
-            foreach (var pos in _humanOpenedCards)
-            {
+        } else {
+            foreach (var pos in _humanOpenedCards) {
                 Deck[pos].Visivel = false; 
             }
             Humano.Pontos = Math.Max(0, Humano.Pontos - 10); 
@@ -231,7 +235,6 @@ public class Jogo {
 
         return ObterEstado();
     }
-
 
     private void AbrirCarta(Jogador j, int pos) {
         var carta = Deck[pos];
@@ -250,9 +253,6 @@ public class Jogo {
     }
 
     public Estado JogadaIA_AbrirCartas() {
-        // REMOVIDO: Chamada DescongelarCartasAntigas() daqui.
-        // A carta congelada agora será descongelada ao final da jogada da IA.
-
         int req = Nivel == "Facil" ? 2 : (Nivel == "Medio" ? 3 : 2);
         PosicoesIASelecionadas.Clear(); 
 
@@ -265,7 +265,7 @@ public class Jogo {
             int pos = Maquina.EscolherPosicao(Deck);
             tentativas++;
 
-            if (!Deck[pos].Visivel && !Deck[pos].Encontrada && !PosicoesIASelecionadas.Contains(pos) && !congeladas[pos]) { // Adicionado check para carta congelada
+            if (!Deck[pos].Visivel && !Deck[pos].Encontrada && !PosicoesIASelecionadas.Contains(pos) && !congeladas[pos]) {
                 Deck[pos].Visivel = true;
                 Maquina.Lembrar(pos, Deck[pos].Valor);
                 PosicoesIASelecionadas.Add(pos);
@@ -283,16 +283,14 @@ public class Jogo {
             foreach (var i in PosicoesIASelecionadas)
                 Deck[i].Encontrada = true;
             RegistrarGrupoFormado();
-        }
-        else
-        {
+            Humano.Pontos += 300; 
+        } else {
             foreach (var i in PosicoesIASelecionadas)
                 Deck[i].Visivel = false;
+            Humano.Pontos = Math.Max(0, Humano.Pontos - 5);
         }
 
         PosicoesIASelecionadas.Clear();
-        
-        // NOVO LOCAL: Descongelar cartas ao final da jogada da IA
         DescongelarCartasAntigas();
 
         return ObterEstado();

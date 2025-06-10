@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "IlcE1rHrT8wuwULXCtQM6qRouPHmQxWLZJcGaP6A6Vk=",
+  "Hash": "oN6EVIEMtW4Vaalvg7CsJIAE+9IYK8WMJFxgDsGZYOE=",
   "Source": "MemoriaGameServer",
   "BasePath": "_content/MemoriaGameServer",
   "Mode": "Default",
@@ -17,12 +17,12 @@
   ],
   "Assets": [
     {
-      "Identity": "C:\\Users\\lary\\Desktop\\MemoriaGameServer\\obj\\Debug\\net9.0\\compressed\\0t9cbvrr08-kt1hmwwv7r.gz",
+      "Identity": "C:\\Users\\lary\\Desktop\\MemoriaGameServer\\obj\\Debug\\net9.0\\compressed\\0t9cbvrr08-mk2vrpd8h5.gz",
       "SourceId": "MemoriaGameServer",
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\lary\\Desktop\\MemoriaGameServer\\obj\\Debug\\net9.0\\compressed\\",
       "BasePath": "_content/MemoriaGameServer",
-      "RelativePath": "jogoFront#[.{fingerprint=kt1hmwwv7r}]?.js.gz",
+      "RelativePath": "jogoFront#[.{fingerprint=mk2vrpd8h5}]?.js.gz",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Alternative",
@@ -31,19 +31,19 @@
       "RelatedAsset": "C:\\Users\\lary\\Desktop\\MemoriaGameServer\\wwwroot\\jogoFront.js",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
-      "Fingerprint": "n8488qynx8",
-      "Integrity": "d1ewbSaqestkwVsmJMtTXRas1wmIb/B2HEIx9FA4qlY=",
+      "Fingerprint": "ap7qc7wjy9",
+      "Integrity": "fnHHu8CY1cow+GebzwJS+53fGY0vRDi4dKED+Oxke68=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "C:\\Users\\lary\\Desktop\\MemoriaGameServer\\wwwroot\\jogoFront.js"
     },
     {
-      "Identity": "C:\\Users\\lary\\Desktop\\MemoriaGameServer\\obj\\Debug\\net9.0\\compressed\\ackswxq8fd-pbz9opad1b.gz",
+      "Identity": "C:\\Users\\lary\\Desktop\\MemoriaGameServer\\obj\\Debug\\net9.0\\compressed\\ackswxq8fd-nx89rvccln.gz",
       "SourceId": "MemoriaGameServer",
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\lary\\Desktop\\MemoriaGameServer\\obj\\Debug\\net9.0\\compressed\\",
       "BasePath": "_content/MemoriaGameServer",
-      "RelativePath": "index#[.{fingerprint=pbz9opad1b}]?.html.gz",
+      "RelativePath": "index#[.{fingerprint=nx89rvccln}]?.html.gz",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Alternative",
@@ -52,8 +52,8 @@
       "RelatedAsset": "C:\\Users\\lary\\Desktop\\MemoriaGameServer\\wwwroot\\index.html",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
-      "Fingerprint": "3qnlkamv9x",
-      "Integrity": "W4d8U2KHyrp6J8ajgPUCJV6/CfdrhRzHrMOZtp1ktLw=",
+      "Fingerprint": "vywndb5afc",
+      "Integrity": "WfCDrTk33mmkRxH9N9/GfTUN6ssqzg/2dblydu69Q6U=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "C:\\Users\\lary\\Desktop\\MemoriaGameServer\\wwwroot\\index.html"
@@ -577,8 +577,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "pbz9opad1b",
-      "Integrity": "6+j6DXhQZn6lHD+JfhCv5J6bZQTTOiSi/RHUgDWsdhY=",
+      "Fingerprint": "nx89rvccln",
+      "Integrity": "hdM6fJSAYEu19/PQBOaUaq3HtXwz79O/GayaY5Y1zOQ=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\index.html"
@@ -598,8 +598,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "kt1hmwwv7r",
-      "Integrity": "eDmT/vpm6r0U70RlWtouomY4C7drzuAgsZBknA+2U34=",
+      "Fingerprint": "mk2vrpd8h5",
+      "Integrity": "xu3+exeu8colHaunEap17Nxhi2UrohPbMZVZl+YCaoA=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\jogoFront.js"
@@ -2576,12 +2576,12 @@
     },
     {
       "Route": "index.html",
-      "AssetFile": "C:\\Users\\lary\\Desktop\\MemoriaGameServer\\obj\\Debug\\net9.0\\compressed\\ackswxq8fd-pbz9opad1b.gz",
+      "AssetFile": "C:\\Users\\lary\\Desktop\\MemoriaGameServer\\obj\\Debug\\net9.0\\compressed\\ackswxq8fd-nx89rvccln.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
           "Value": "gzip",
-          "Quality": "0.000598802395"
+          "Quality": "0.000759878419"
         }
       ],
       "ResponseHeaders": [
@@ -2591,15 +2591,15 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "1669"
+          "Value": "1315"
         },
         {
           "Name": "ETag",
-          "Value": "\"W4d8U2KHyrp6J8ajgPUCJV6/CfdrhRzHrMOZtp1ktLw=\""
+          "Value": "\"WfCDrTk33mmkRxH9N9/GfTUN6ssqzg/2dblydu69Q6U=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 10 Jun 2025 03:59:56 GMT"
+          "Value": "Tue, 10 Jun 2025 04:45:17 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2619,13 +2619,13 @@
         },
         {
           "Name": "ETag",
-          "Value": "W/\"6+j6DXhQZn6lHD+JfhCv5J6bZQTTOiSi/RHUgDWsdhY=\""
+          "Value": "W/\"hdM6fJSAYEu19/PQBOaUaq3HtXwz79O/GayaY5Y1zOQ=\""
         }
       ],
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-6+j6DXhQZn6lHD+JfhCv5J6bZQTTOiSi/RHUgDWsdhY="
+          "Value": "sha256-hdM6fJSAYEu19/PQBOaUaq3HtXwz79O/GayaY5Y1zOQ="
         }
       ]
     },
@@ -2640,7 +2640,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "4441"
+          "Value": "3757"
         },
         {
           "Name": "Content-Type",
@@ -2648,11 +2648,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"6+j6DXhQZn6lHD+JfhCv5J6bZQTTOiSi/RHUgDWsdhY=\""
+          "Value": "\"hdM6fJSAYEu19/PQBOaUaq3HtXwz79O/GayaY5Y1zOQ=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 10 Jun 2025 03:59:56 GMT"
+          "Value": "Tue, 10 Jun 2025 04:45:17 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2662,13 +2662,13 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-6+j6DXhQZn6lHD+JfhCv5J6bZQTTOiSi/RHUgDWsdhY="
+          "Value": "sha256-hdM6fJSAYEu19/PQBOaUaq3HtXwz79O/GayaY5Y1zOQ="
         }
       ]
     },
     {
       "Route": "index.html.gz",
-      "AssetFile": "C:\\Users\\lary\\Desktop\\MemoriaGameServer\\obj\\Debug\\net9.0\\compressed\\ackswxq8fd-pbz9opad1b.gz",
+      "AssetFile": "C:\\Users\\lary\\Desktop\\MemoriaGameServer\\obj\\Debug\\net9.0\\compressed\\ackswxq8fd-nx89rvccln.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -2677,7 +2677,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "1669"
+          "Value": "1315"
         },
         {
           "Name": "Content-Type",
@@ -2685,11 +2685,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"W4d8U2KHyrp6J8ajgPUCJV6/CfdrhRzHrMOZtp1ktLw=\""
+          "Value": "\"WfCDrTk33mmkRxH9N9/GfTUN6ssqzg/2dblydu69Q6U=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 10 Jun 2025 03:59:56 GMT"
+          "Value": "Tue, 10 Jun 2025 04:45:17 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2707,18 +2707,18 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-W4d8U2KHyrp6J8ajgPUCJV6/CfdrhRzHrMOZtp1ktLw="
+          "Value": "sha256-WfCDrTk33mmkRxH9N9/GfTUN6ssqzg/2dblydu69Q6U="
         }
       ]
     },
     {
-      "Route": "index.pbz9opad1b.html",
-      "AssetFile": "C:\\Users\\lary\\Desktop\\MemoriaGameServer\\obj\\Debug\\net9.0\\compressed\\ackswxq8fd-pbz9opad1b.gz",
+      "Route": "index.nx89rvccln.html",
+      "AssetFile": "C:\\Users\\lary\\Desktop\\MemoriaGameServer\\obj\\Debug\\net9.0\\compressed\\ackswxq8fd-nx89rvccln.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
           "Value": "gzip",
-          "Quality": "0.000598802395"
+          "Quality": "0.000759878419"
         }
       ],
       "ResponseHeaders": [
@@ -2728,15 +2728,15 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "1669"
+          "Value": "1315"
         },
         {
           "Name": "ETag",
-          "Value": "\"W4d8U2KHyrp6J8ajgPUCJV6/CfdrhRzHrMOZtp1ktLw=\""
+          "Value": "\"WfCDrTk33mmkRxH9N9/GfTUN6ssqzg/2dblydu69Q6U=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 10 Jun 2025 03:59:56 GMT"
+          "Value": "Tue, 10 Jun 2025 04:45:17 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2756,13 +2756,13 @@
         },
         {
           "Name": "ETag",
-          "Value": "W/\"6+j6DXhQZn6lHD+JfhCv5J6bZQTTOiSi/RHUgDWsdhY=\""
+          "Value": "W/\"hdM6fJSAYEu19/PQBOaUaq3HtXwz79O/GayaY5Y1zOQ=\""
         }
       ],
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "pbz9opad1b"
+          "Value": "nx89rvccln"
         },
         {
           "Name": "label",
@@ -2770,12 +2770,12 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-6+j6DXhQZn6lHD+JfhCv5J6bZQTTOiSi/RHUgDWsdhY="
+          "Value": "sha256-hdM6fJSAYEu19/PQBOaUaq3HtXwz79O/GayaY5Y1zOQ="
         }
       ]
     },
     {
-      "Route": "index.pbz9opad1b.html",
+      "Route": "index.nx89rvccln.html",
       "AssetFile": "C:\\Users\\lary\\Desktop\\MemoriaGameServer\\wwwroot\\index.html",
       "Selectors": [],
       "ResponseHeaders": [
@@ -2785,7 +2785,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "4441"
+          "Value": "3757"
         },
         {
           "Name": "Content-Type",
@@ -2793,11 +2793,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"6+j6DXhQZn6lHD+JfhCv5J6bZQTTOiSi/RHUgDWsdhY=\""
+          "Value": "\"hdM6fJSAYEu19/PQBOaUaq3HtXwz79O/GayaY5Y1zOQ=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 10 Jun 2025 03:59:56 GMT"
+          "Value": "Tue, 10 Jun 2025 04:45:17 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2807,7 +2807,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "pbz9opad1b"
+          "Value": "nx89rvccln"
         },
         {
           "Name": "label",
@@ -2815,13 +2815,13 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-6+j6DXhQZn6lHD+JfhCv5J6bZQTTOiSi/RHUgDWsdhY="
+          "Value": "sha256-hdM6fJSAYEu19/PQBOaUaq3HtXwz79O/GayaY5Y1zOQ="
         }
       ]
     },
     {
-      "Route": "index.pbz9opad1b.html.gz",
-      "AssetFile": "C:\\Users\\lary\\Desktop\\MemoriaGameServer\\obj\\Debug\\net9.0\\compressed\\ackswxq8fd-pbz9opad1b.gz",
+      "Route": "index.nx89rvccln.html.gz",
+      "AssetFile": "C:\\Users\\lary\\Desktop\\MemoriaGameServer\\obj\\Debug\\net9.0\\compressed\\ackswxq8fd-nx89rvccln.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -2830,7 +2830,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "1669"
+          "Value": "1315"
         },
         {
           "Name": "Content-Type",
@@ -2838,11 +2838,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"W4d8U2KHyrp6J8ajgPUCJV6/CfdrhRzHrMOZtp1ktLw=\""
+          "Value": "\"WfCDrTk33mmkRxH9N9/GfTUN6ssqzg/2dblydu69Q6U=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 10 Jun 2025 03:59:56 GMT"
+          "Value": "Tue, 10 Jun 2025 04:45:17 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2860,7 +2860,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "pbz9opad1b"
+          "Value": "nx89rvccln"
         },
         {
           "Name": "label",
@@ -2868,18 +2868,18 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-W4d8U2KHyrp6J8ajgPUCJV6/CfdrhRzHrMOZtp1ktLw="
+          "Value": "sha256-WfCDrTk33mmkRxH9N9/GfTUN6ssqzg/2dblydu69Q6U="
         }
       ]
     },
     {
       "Route": "jogoFront.js",
-      "AssetFile": "C:\\Users\\lary\\Desktop\\MemoriaGameServer\\obj\\Debug\\net9.0\\compressed\\0t9cbvrr08-kt1hmwwv7r.gz",
+      "AssetFile": "C:\\Users\\lary\\Desktop\\MemoriaGameServer\\obj\\Debug\\net9.0\\compressed\\0t9cbvrr08-mk2vrpd8h5.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
           "Value": "gzip",
-          "Quality": "0.000275406224"
+          "Quality": "0.000275785990"
         }
       ],
       "ResponseHeaders": [
@@ -2889,15 +2889,15 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "3630"
+          "Value": "3625"
         },
         {
           "Name": "ETag",
-          "Value": "\"d1ewbSaqestkwVsmJMtTXRas1wmIb/B2HEIx9FA4qlY=\""
+          "Value": "\"fnHHu8CY1cow+GebzwJS+53fGY0vRDi4dKED+Oxke68=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 10 Jun 2025 04:20:54 GMT"
+          "Value": "Tue, 10 Jun 2025 04:48:40 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2917,13 +2917,13 @@
         },
         {
           "Name": "ETag",
-          "Value": "W/\"eDmT/vpm6r0U70RlWtouomY4C7drzuAgsZBknA+2U34=\""
+          "Value": "W/\"xu3+exeu8colHaunEap17Nxhi2UrohPbMZVZl+YCaoA=\""
         }
       ],
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-eDmT/vpm6r0U70RlWtouomY4C7drzuAgsZBknA+2U34="
+          "Value": "sha256-xu3+exeu8colHaunEap17Nxhi2UrohPbMZVZl+YCaoA="
         }
       ]
     },
@@ -2938,7 +2938,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "13127"
+          "Value": "13936"
         },
         {
           "Name": "Content-Type",
@@ -2946,11 +2946,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"eDmT/vpm6r0U70RlWtouomY4C7drzuAgsZBknA+2U34=\""
+          "Value": "\"xu3+exeu8colHaunEap17Nxhi2UrohPbMZVZl+YCaoA=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 10 Jun 2025 04:20:54 GMT"
+          "Value": "Tue, 10 Jun 2025 04:48:40 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2960,13 +2960,13 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-eDmT/vpm6r0U70RlWtouomY4C7drzuAgsZBknA+2U34="
+          "Value": "sha256-xu3+exeu8colHaunEap17Nxhi2UrohPbMZVZl+YCaoA="
         }
       ]
     },
     {
       "Route": "jogoFront.js.gz",
-      "AssetFile": "C:\\Users\\lary\\Desktop\\MemoriaGameServer\\obj\\Debug\\net9.0\\compressed\\0t9cbvrr08-kt1hmwwv7r.gz",
+      "AssetFile": "C:\\Users\\lary\\Desktop\\MemoriaGameServer\\obj\\Debug\\net9.0\\compressed\\0t9cbvrr08-mk2vrpd8h5.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -2975,7 +2975,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "3630"
+          "Value": "3625"
         },
         {
           "Name": "Content-Type",
@@ -2983,11 +2983,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"d1ewbSaqestkwVsmJMtTXRas1wmIb/B2HEIx9FA4qlY=\""
+          "Value": "\"fnHHu8CY1cow+GebzwJS+53fGY0vRDi4dKED+Oxke68=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 10 Jun 2025 04:20:54 GMT"
+          "Value": "Tue, 10 Jun 2025 04:48:40 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3005,18 +3005,18 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-d1ewbSaqestkwVsmJMtTXRas1wmIb/B2HEIx9FA4qlY="
+          "Value": "sha256-fnHHu8CY1cow+GebzwJS+53fGY0vRDi4dKED+Oxke68="
         }
       ]
     },
     {
-      "Route": "jogoFront.kt1hmwwv7r.js",
-      "AssetFile": "C:\\Users\\lary\\Desktop\\MemoriaGameServer\\obj\\Debug\\net9.0\\compressed\\0t9cbvrr08-kt1hmwwv7r.gz",
+      "Route": "jogoFront.mk2vrpd8h5.js",
+      "AssetFile": "C:\\Users\\lary\\Desktop\\MemoriaGameServer\\obj\\Debug\\net9.0\\compressed\\0t9cbvrr08-mk2vrpd8h5.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
           "Value": "gzip",
-          "Quality": "0.000275406224"
+          "Quality": "0.000275785990"
         }
       ],
       "ResponseHeaders": [
@@ -3026,15 +3026,15 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "3630"
+          "Value": "3625"
         },
         {
           "Name": "ETag",
-          "Value": "\"d1ewbSaqestkwVsmJMtTXRas1wmIb/B2HEIx9FA4qlY=\""
+          "Value": "\"fnHHu8CY1cow+GebzwJS+53fGY0vRDi4dKED+Oxke68=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 10 Jun 2025 04:20:54 GMT"
+          "Value": "Tue, 10 Jun 2025 04:48:40 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3054,13 +3054,13 @@
         },
         {
           "Name": "ETag",
-          "Value": "W/\"eDmT/vpm6r0U70RlWtouomY4C7drzuAgsZBknA+2U34=\""
+          "Value": "W/\"xu3+exeu8colHaunEap17Nxhi2UrohPbMZVZl+YCaoA=\""
         }
       ],
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "kt1hmwwv7r"
+          "Value": "mk2vrpd8h5"
         },
         {
           "Name": "label",
@@ -3068,12 +3068,12 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-eDmT/vpm6r0U70RlWtouomY4C7drzuAgsZBknA+2U34="
+          "Value": "sha256-xu3+exeu8colHaunEap17Nxhi2UrohPbMZVZl+YCaoA="
         }
       ]
     },
     {
-      "Route": "jogoFront.kt1hmwwv7r.js",
+      "Route": "jogoFront.mk2vrpd8h5.js",
       "AssetFile": "C:\\Users\\lary\\Desktop\\MemoriaGameServer\\wwwroot\\jogoFront.js",
       "Selectors": [],
       "ResponseHeaders": [
@@ -3083,7 +3083,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "13127"
+          "Value": "13936"
         },
         {
           "Name": "Content-Type",
@@ -3091,11 +3091,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"eDmT/vpm6r0U70RlWtouomY4C7drzuAgsZBknA+2U34=\""
+          "Value": "\"xu3+exeu8colHaunEap17Nxhi2UrohPbMZVZl+YCaoA=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 10 Jun 2025 04:20:54 GMT"
+          "Value": "Tue, 10 Jun 2025 04:48:40 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3105,7 +3105,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "kt1hmwwv7r"
+          "Value": "mk2vrpd8h5"
         },
         {
           "Name": "label",
@@ -3113,13 +3113,13 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-eDmT/vpm6r0U70RlWtouomY4C7drzuAgsZBknA+2U34="
+          "Value": "sha256-xu3+exeu8colHaunEap17Nxhi2UrohPbMZVZl+YCaoA="
         }
       ]
     },
     {
-      "Route": "jogoFront.kt1hmwwv7r.js.gz",
-      "AssetFile": "C:\\Users\\lary\\Desktop\\MemoriaGameServer\\obj\\Debug\\net9.0\\compressed\\0t9cbvrr08-kt1hmwwv7r.gz",
+      "Route": "jogoFront.mk2vrpd8h5.js.gz",
+      "AssetFile": "C:\\Users\\lary\\Desktop\\MemoriaGameServer\\obj\\Debug\\net9.0\\compressed\\0t9cbvrr08-mk2vrpd8h5.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -3128,7 +3128,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "3630"
+          "Value": "3625"
         },
         {
           "Name": "Content-Type",
@@ -3136,11 +3136,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"d1ewbSaqestkwVsmJMtTXRas1wmIb/B2HEIx9FA4qlY=\""
+          "Value": "\"fnHHu8CY1cow+GebzwJS+53fGY0vRDi4dKED+Oxke68=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 10 Jun 2025 04:20:54 GMT"
+          "Value": "Tue, 10 Jun 2025 04:48:40 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3158,7 +3158,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "kt1hmwwv7r"
+          "Value": "mk2vrpd8h5"
         },
         {
           "Name": "label",
@@ -3166,7 +3166,7 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-d1ewbSaqestkwVsmJMtTXRas1wmIb/B2HEIx9FA4qlY="
+          "Value": "sha256-fnHHu8CY1cow+GebzwJS+53fGY0vRDi4dKED+Oxke68="
         }
       ]
     }
