@@ -175,7 +175,8 @@ class InterfaceJogo {
       this.desenhar(); 
       this.atualizarPoderesUI(); 
 
-      const req = this.nivel === 'Facil' ? 2 : (this.nivel === 'Medio' ? 3 : 2); 
+      // Modificação aqui: 'req' para o nível "Dificil" será 4
+      const req = this.nivel === 'Facil' ? 2 : (this.nivel === 'Medio' ? 3 : (this.nivel === 'Dificil' ? 4 : 2)); 
       const currentlyVisibleOnBackend = this.estado.cartas.filter(c => c.visivel && !c.encontrada).length;
 
       if (currentlyVisibleOnBackend < req) {

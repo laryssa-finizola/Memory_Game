@@ -43,7 +43,8 @@ public class Jogo {
         Modo = modo;
         Nivel = nivel;
         Humano = new Jogador { Nome = nome };
-        int mem = Nivel == "Facil" ? 1 : (Nivel == "Medio" ? 3 : 1);
+        // Modificação aqui: A memória da IA deve ser 4 para o nível "Dificil".
+        int mem = Nivel == "Facil" ? 1 : (Nivel == "Medio" ? 3 : (Nivel == "Dificil" ? 4 : 1));
         Maquina = new AIPlayer(mem);
         Deck = GerarDeck(tamanho);
         congeladas = new bool[tamanho];
@@ -58,7 +59,8 @@ public class Jogo {
 
     private List<Carta> GerarDeck(int tam) {
         var lista = new List<Carta>();
-        int grupo = Nivel == "Facil" ? 2 : (Nivel == "Medio" ? 3 : 2);
+        // Modificação aqui: 'grupo' será 4 para o nível "Dificil".
+        int grupo = Nivel == "Facil" ? 2 : (Nivel == "Medio" ? 3 : (Nivel == "Dificil" ? 4 : 2));
         int pares = tam / grupo;
 
         for (int i = 0; i < pares; i++) {
@@ -116,7 +118,9 @@ public class Jogo {
     }
 
     public Estado ObterEstado() {
-        bool todasCartasEncontradas = gruposFormados == Deck.Count / (Nivel == "Facil" ? 2 : (Nivel == "Medio" ? 3 : 2));
+        // Modificação aqui: 'todasCartasEncontradas' deve usar o grupo correto.
+        int grupoNecessario = Nivel == "Facil" ? 2 : (Nivel == "Medio" ? 3 : (Nivel == "Dificil" ? 4 : 2));
+        bool todasCartasEncontradas = gruposFormados == Deck.Count / grupoNecessario;
         bool tempoEsgotado = false;
         int tempoRestanteCoop = 0;
 
@@ -192,7 +196,8 @@ public class Jogo {
     }
 
     public Estado ProcessarJogadaHumano() {
-        int req = Nivel == "Facil" ? 2 : (Nivel == "Medio" ? 3 : 2);
+        // Modificação aqui: 'req' para o nível "Dificil" será 4.
+        int req = Nivel == "Facil" ? 2 : (Nivel == "Medio" ? 3 : (Nivel == "Dificil" ? 4 : 2));
 
         if (_humanOpenedCards.Count != req) {
             return ObterEstado();
@@ -253,7 +258,8 @@ public class Jogo {
     }
 
     public Estado JogadaIA_AbrirCartas() {
-        int req = Nivel == "Facil" ? 2 : (Nivel == "Medio" ? 3 : 2);
+        // Modificação aqui: 'req' para o nível "Dificil" será 4.
+        int req = Nivel == "Facil" ? 2 : (Nivel == "Medio" ? 3 : (Nivel == "Dificil" ? 4 : 2));
         PosicoesIASelecionadas.Clear(); 
 
         foreach (var carta in Deck)
@@ -275,7 +281,8 @@ public class Jogo {
     }
 
     public Estado JogadaIA_Resolver() {
-        int req = Nivel == "Facil" ? 2 : (Nivel == "Medio" ? 3 : 2);
+        // Modificação aqui: 'req' para o nível "Dificil" será 4.
+        int req = Nivel == "Facil" ? 2 : (Nivel == "Medio" ? 3 : (Nivel == "Dificil" ? 4 : 2));
         var valores = PosicoesIASelecionadas.Select(i => Deck[i].Valor).ToList();
         bool todasIguais = valores.Count == req && valores.All(v => v == valores[0]);
 

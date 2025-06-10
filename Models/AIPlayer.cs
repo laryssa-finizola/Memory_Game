@@ -14,7 +14,7 @@ public class AIPlayer : Jogador {
     }
 
     public int EscolherPosicao(List<Carta> deck) {
-        // Passo 1: Tentar encontrar um par/trio completo na memória que ainda não está visível/encontrado
+        // Passo 1: Tentar encontrar um par/trio/quadra completo na memória que ainda não está visível/encontrado
         var knownCards = new Dictionary<string, List<int>>();
         foreach (var (pos, val) in memoria) {
             // Apenas considera cartas que NÃO ESTÃO VISÍVEIS e NÃO FORAM ENCONTRADAS
@@ -26,11 +26,12 @@ public class AIPlayer : Jogador {
             }
         }
 
-        // Tenta formar um par/trio com base nas cartas já "conhecidas" na memória
+        // Tenta formar um par/trio/quadra com base nas cartas já "conhecidas" na memória
         foreach (var entry in knownCards) {
-            int requiredCount = (MemorySize == 1) ? 2 : 3; // Adapta para Fácil (2) ou Difícil (3)
+            // Modificação aqui: Adapta para Fácil (2), Médio (3) ou Difícil (4)
+            int requiredCount = (MemorySize == 1) ? 2 : (MemorySize == 3 ? 3 : 4);
             if (entry.Value.Count >= requiredCount) {
-                // Se a IA tem posições suficientes na memória para um par/trio, ela vira a primeira delas.
+                // Se a IA tem posições suficientes na memória para um par/trio/quadra, ela vira a primeira delas.
                 return entry.Value.First();
             }
         }
@@ -45,7 +46,7 @@ public class AIPlayer : Jogador {
         // Percorre aleatoriamente até encontrar uma posição que não está visível e não foi encontrada
         do {
             pos = rnd.Next(deck.Count);
-        } while (deck[pos].Visivel || deck[pos].Encontrada); //
+        } while (deck[pos].Visivel || deck[pos].Encontrada); 
         return pos;
     }
 

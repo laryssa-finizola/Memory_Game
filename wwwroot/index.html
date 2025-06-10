@@ -3,97 +3,233 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Jogo da Memória</title>
+  <title>Jogo da Memória Espacial</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Fonte mais moderna */
       margin: 0;
       padding: 0;
+      background-color: #1a1a2e; /* Fundo escuro para tema espacial */
+      color: #e0e0e0; /* Cor do texto clara */
+      display: flex; /* Adicionado para centralização */
+      justify-content: center; /* Centraliza horizontalmente */
+      align-items: center; /* Centraliza verticalmente */
+      min-height: 100vh; /* Garante que o body ocupe toda a altura da viewport */
+      flex-direction: column; /* Permite que os elementos se empilhem verticalmente se necessário */
     }
 
     #layout-jogo {
       display: flex;
       flex-direction: row;
-      align-items: flex-start;
+      align-items: flex-start; /* Alinha o início dos itens (topo) */
       gap: 40px;
       padding: 20px;
+      background-color: #2a2a4a; /* Fundo um pouco mais claro para o container principal */
+      border-radius: 10px; /* Bordas arredondadas */
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); /* Sombra mais intensa */
+      flex-wrap: wrap; /* Permite que os itens quebrem para a próxima linha em telas pequenas */
+      justify-content: center; /* Centraliza os itens dentro do layout-jogo */
     }
 
     #form-config {
       display: flex;
       flex-direction: column;
-      gap: 10px;
-      width: 220px;
+      gap: 12px; /* Aumento do espaçamento */
+      width: 250px; /* Aumento da largura para melhor visualização */
+      padding: 15px; /* Padding interno */
+      background-color: #3a3a5a; /* Fundo para o formulário */
+      border-radius: 8px;
     }
 
     #form-config label {
       font-weight: bold;
+      color: #a0a0ff; /* Cor azulada para labels */
     }
 
     #form-config input,
     #form-config select,
     #form-config button {
-      padding: 6px;
-      font-size: 14px;
+      padding: 10px; /* Aumento do padding */
+      font-size: 16px; /* Aumento da fonte */
+      border: 1px solid #5a5a8a; /* Borda mais suave */
+      border-radius: 5px;
+      background-color: #4a4a7a; /* Fundo dos inputs/selects */
+      color: #e0e0e0;
+    }
+
+    #form-config button {
+      background-color: #6a6a9a; /* Cor de botão mais escura */
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s ease; /* Transição suave ao hover */
+    }
+
+    #form-config button:hover {
+      background-color: #8a8ac0; /* Cor de hover mais clara */
+    }
+
+    /* Estilos específicos para o canvas e seus arredores */
+    #game-area { /* Novo contêiner para o canvas e displays */
+      display: flex;
+      flex-direction: column;
+      align-items: center; /* Centraliza itens dentro desta área */
+      gap: 10px; /* Espaçamento entre pontuação, tempo e canvas */
     }
 
     #gameCanvas {
-      border: 2px solid #333;
-      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      border: 3px solid #8a8ac0; /* Borda com cor de tema espacial */
+      box-shadow: 0 0 15px rgba(138, 138, 192, 0.7); /* Sombra azulada para tema espacial */
+      margin: auto; /* Centraliza o canvas horizontalmente */
+      display: block; /* Necessário para margin: auto funcionar horizontalmente */
+      max-width: 100%; /* Torna o canvas responsivo */
+      height: auto; /* Mantém a proporção do canvas */
     }
 
     #top5-container table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 10px;
+      margin-top: 15px; /* Aumento do espaçamento */
     }
 
     #top5-container th,
     #top5-container td {
-      border: 1px solid #ccc;
-      padding: 8px;
+      border: 1px solid #7a7a9a; /* Borda para a tabela */
+      padding: 10px; /* Aumento do padding */
       text-align: center;
-      font-size: 14px;
+      font-size: 15px; /* Aumento da fonte */
     }
 
     #top5-container th {
-      background-color: #f0f0f0;
+      background-color: #5a5a8a; /* Cor de fundo para o cabeçalho da tabela */
       font-weight: bold;
+      color: #e0e0e0;
     }
 
     #pontuacaoAtual {
-      font-size: 24px;
+      font-size: 28px; /* Aumento da fonte */
       font-weight: bold;
-      color: #4CAF50;
-      margin-bottom: 10px;
+      color: #76ff03; /* Verde neon para pontuação */
+      margin-bottom: 5px; /* Redução do espaçamento */
+      text-shadow: 0 0 5px #76ff03; /* Efeito de brilho */
     }
 
     #tempoRestante {
-      font-size: 20px;
+      font-size: 24px; /* Aumento da fonte */
       font-weight: bold;
-      color: #e44d26;
-      margin-bottom: 10px;
+      color: #ff9800; /* Laranja para o tempo */
+      margin-bottom: 15px; /* Aumento do espaçamento */
+      text-shadow: 0 0 5px #ff9800; /* Efeito de brilho */
     }
 
     #power-buttons {
-      margin-top: 10px;
-      padding-top: 10px;
-      border-top: 1px solid #eee;
+      margin-top: 20px; /* Aumento do espaçamento */
+      padding-top: 15px; /* Aumento do padding */
+      border-top: 1px solid #5a5a8a; /* Borda superior */
     }
 
     #power-buttons h3 {
       margin-top: 0;
-      margin-bottom: 5px;
+      margin-bottom: 10px; /* Aumento do espaçamento */
+      color: #a0a0ff;
     }
 
     #power-buttons button {
       width: 100%;
-      margin-bottom: 5px;
+      margin-bottom: 8px; /* Aumento do espaçamento */
+      background-color: #5a5a8a;
+    }
+    
+    #power-buttons button:hover {
+        background-color: #7a7aa0;
     }
 
     #power-buttons p {
-      font-size: 12px;
-      margin-bottom: 3px;
+      font-size: 14px; /* Aumento da fonte */
+      margin-bottom: 5px;
+      color: #b0b0e0;
+    }
+
+    #dicaCooldown {
+      color: #ff0000; /* Vermelho para cooldown */
+      font-weight: bold;
+    }
+
+    .modal {
+      display: none; 
+      position: fixed; 
+      z-index: 1000; /* Z-index maior para sobrepor o resto */
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.7); /* Fundo semi-transparente escuro */
+      justify-content: center; /* Centraliza conteúdo do modal */
+      align-items: center; /* Centraliza conteúdo do modal */
+    }
+
+    .modal-content {
+      background: #3a3a5a; /* Fundo do modal */
+      padding: 30px; /* Aumento do padding */
+      border: 2px solid #a0a0ff; /* Borda azulada */
+      border-radius: 10px;
+      width: 90%;
+      max-width: 700px; /* Aumento da largura máxima */
+      box-shadow: 0 5px 15px rgba(0,0,0,0.6);
+      animation: fadeIn 0.5s; /* Animação ao abrir */
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    #fechar-modal {
+      color: #a0a0ff;
+      float: right;
+      font-size: 30px; /* Aumento da fonte */
+      font-weight: bold;
+      transition: color 0.3s ease;
+    }
+
+    #fechar-modal:hover,
+    #fechar-modal:focus {
+      color: #ff0000; /* Vermelho ao hover */
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    h2 {
+        color: #76ff03; /* Verde neon para títulos */
+        text-shadow: 0 0 5px #76ff03;
+        margin-bottom: 20px;
+    }
+
+    /* Responsividade adicional para telas menores */
+    @media (max-width: 768px) {
+      #layout-jogo {
+        flex-direction: column; /* Empilha os elementos em telas menores */
+        align-items: center; /* Centraliza os itens empilhados */
+        gap: 20px; /* Reduz o espaçamento */
+        padding: 10px;
+      }
+
+      #form-config {
+        width: 90%; /* Ocupa mais largura em telas menores */
+        max-width: 300px; /* Limita a largura */
+      }
+
+      #gameCanvas {
+        width: 100%; /* Canvas ocupa a largura total disponível */
+        max-width: calc(8 * 80px); /* Garante que não ultrapasse o tamanho original */
+      }
+
+      #pontuacaoAtual, #tempoRestante {
+        font-size: 20px;
+      }
+      #power-buttons p {
+        font-size: 12px;
+      }
     }
   </style>
 </head>
@@ -113,6 +249,7 @@
       <select id="selNivel">
         <option value="Facil">Fácil</option>
         <option value="Medio">Médio</option>
+        <option value="Dificil">Difícil</option>
       </select>
 
       <button id="btnIniciar">Iniciar Jogo</button>
@@ -129,16 +266,14 @@
       </div>
     </div>
 
-    <div style="display: flex; flex-direction: column; align-items: flex-start;">
-        <p id="pontuacaoAtual">Pontuação: 0</p>
+    <div id="game-area"> <p id="pontuacaoAtual">Pontuação: 0</p>
         <p id="tempoRestante">Tempo: --:--</p>
         <canvas id="gameCanvas"></canvas>
     </div>
   </div>
 
-  <div id="modal-top5" class="modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 999;">
-    <div class="modal-content" style="background: #fff; padding: 20px; margin: 10% auto; width: 90%; max-width: 600px; position: relative; border-radius: 8px;">
-      <span id="fechar-modal" style="position: absolute; top: 10px; right: 15px; font-size: 20px; cursor: pointer;">&times;</span>
+  <div id="modal-top5" class="modal"> <div class="modal-content">
+      <span id="fechar-modal">&times;</span>
       <div id="top5-container"></div>
     </div>
   </div>
