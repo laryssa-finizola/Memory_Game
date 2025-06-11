@@ -136,7 +136,7 @@ class InterfaceJogo {
     this.modoCongelamentoAtivo = false; 
   }
 
-  async fazerJogada(evt) { 
+  async fazerJogada(evt) {
     try {
       if (this.turno !== 'humano' || this.estado.finalizado || this.travado) return;
 
@@ -144,7 +144,6 @@ class InterfaceJogo {
       const y = Math.floor(evt.offsetY / TAM);
       const pos = y * COLUNAS + x;
 
-      // Impede virar cartas já visíveis, encontradas ou congeladas
       if (x < 0 || x >= COLUNAS || y < 0 || y >= LINHAS || this.estado.cartas[pos].visivel || this.estado.cartas[pos].encontrada || this.estado.cartasCongeladas[pos]) {
         if (this.estado.cartasCongeladas[pos]) {
           alert('Esta carta está congelada e não pode ser virada nesta rodada.');
@@ -152,9 +151,8 @@ class InterfaceJogo {
         return;
       }
 
-      this.travado = true; // Trava a interface enquanto a requisição é processada
+      this.travado = true;
 
-      // Envia a requisição para abrir a carta
       const openResp = await fetch(`${API_BASE}/jogada/abrir`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -165,7 +163,7 @@ class InterfaceJogo {
         const errorText = await openResp.text();
         try {
           const { erro } = JSON.parse(errorText);
-          if (erro.includes("carta congelada")) { 
+          if (erro.includes("carta congelada")) {
             alert('Não é possível virar esta carta, ela está congelada.');
           } else {
             alert(`Erro ao virar carta: ${erro}. Tente novamente.`);
@@ -173,46 +171,41 @@ class InterfaceJogo {
         } catch {
           alert('Erro ao virar carta. Tente novamente.');
         }
-        this.travado = false; // Desbloqueia se houve erro na abertura
+        this.travado = false;
         return;
       }
-      
-      this.estado = await openResp.json(); // Atualiza o estado do jogo com a carta virada
-      this.desenhar(); // Redesenha o tabuleiro
-      this.atualizarPoderesUI(); // Atualiza a UI dos poderes
 
-      // Incrementa o contador de cartas viradas no turno
-      this.cartasViradasNoTurno++; 
-      
-      // Define a quantidade de cartas que devem ser viradas no turno
+      this.estado = await openResp.json();
+      this.desenhar();
+      this.atualizarPoderesUI();
+
+      this.cartasViradasNoTurno++;
+
       let cartasNecessariasPorTurno = 0;
       if (this.nivel === 'Extremo') {
-          cartasNecessariasPorTurno = 4; // No nível Extremo, sempre 4 cartas por turno
+          cartasNecessariasPorTurno = 4;
       } else {
           cartasNecessariasPorTurno = this.nivel === 'Facil' ? 2 : (this.nivel === 'Medio' ? 3 : 4);
       }
 
-      // Se o jogador ainda não virou todas as cartas necessárias para o turno, desbloqueia e espera mais cliques
       if (this.cartasViradasNoTurno < cartasNecessariasPorTurno) {
-        this.travado = false; 
-        return; // Permite cliques adicionais para virar as 4 cartas
+        this.travado = false;
+        return;
       }
 
-      // Se todas as cartas foram viradas para o turno, aguarda e processa a jogada
-      await new Promise(r => setTimeout(r, 2000)); // Espera 2 segundos para o jogador ver as cartas
+      await new Promise(r => setTimeout(r, 2000));
 
       const verifyResp = await fetch(`${API_BASE}/jogada/verificar`, { method: 'POST' });
 
       if (!verifyResp.ok) {
         alert('Erro ao verificar jogada. Tente novamente.');
-        return; // Sai da função se houver erro
+        return;
       }
 
-      this.estado = await verifyResp.json(); // Atualiza o estado com o resultado da verificação
-      this.desenhar(); // Redesenha o tabuleiro (cartas acertadas permanecem viradas, erradas viram para baixo)
-      this.atualizarPoderesUI(); // Atualiza a UI dos poderes
+      this.estado = await verifyResp.json();
+      this.desenhar();
+      this.atualizarPoderesUI();
 
-      // Verifica se o jogo terminou
       if (this.estado.finalizado){
         if (this.estado.todasCartasEncontradas && !this.estado.tempoEsgotado){
           alert('Parabéns, equipe! Vocês revelaram todas as cartas a tempo!');
@@ -221,24 +214,29 @@ class InterfaceJogo {
         } else {
           alert('Partida encerrada!');
         }
-        return; // Sai da função se o jogo terminou
-      }  
+        return;
+      }
 
-      this.turno = 'ia'; // Passa o turno para a IA
-      this.cartasViradasNoTurno = 0; // Reinicia o contador para o próximo turno do humano
-      await this.jogadaIA(); // Inicia o turno da IA
-      
-    } catch (error) { // Captura erros inesperados
+      // Adição da verificação do modo de jogo antes de passar para a IA
+      if (this.modo === 'PvAI') {
+          this.turno = 'ia';
+          this.cartasViradasNoTurno = 0;
+          await this.jogadaIA();
+      } else {
+          this.cartasViradasNoTurno = 0;
+          this.travado = false;
+          this.turno = 'humano';
+      }
+
+    } catch (error) {
       console.error("Erro na jogada humana:", error);
       alert('Ocorreu um erro no jogo. Por favor, reinicie.');
     } finally {
-      // Garante que a interface seja desbloqueada se o jogo não terminou e o turno é do humano
       if (!this.estado.finalizado && this.turno === 'humano') {
         this.travado = false;
       }
     }
-  }
-
+}
   async jogadaIA() {
     try { 
       await new Promise(r => setTimeout(r, 1000)); // Pequena pausa antes da IA jogar

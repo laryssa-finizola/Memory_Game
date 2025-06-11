@@ -462,8 +462,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>1jhm0k3lfq</Fingerprint>
-      <Integrity>w70rkXIRWtzBr0j3N4uBAo1Dy5m07nx4mVwRvVDACLA=</Integrity>
+      <Fingerprint>a2tq7md2k1</Fingerprint>
+      <Integrity>ouT4N81sd0RHN76s4OposRwE7KsYTClegFmsxPm5dkM=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\jogoFront.js'))</OriginalItemSpec>

@@ -300,17 +300,17 @@
       <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"p63wuikvdi"},{"Name":"integrity","Value":"sha256-IT5zgYGra5gbv01aR2gT4iMot1gDOQil8BDttWA\u002BeGU="},{"Name":"label","Value":"_content/MemoriaGameServer/index.html"}]]]></EndpointProperties>
       <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"6609"},{"Name":"Content-Type","Value":"text/html"},{"Name":"ETag","Value":"\u0022IT5zgYGra5gbv01aR2gT4iMot1gDOQil8BDttWA\u002BeGU=\u0022"},{"Name":"Last-Modified","Value":"Wed, 11 Jun 2025 00:59:09 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
-    <StaticWebAssetEndpoint Include="_content/MemoriaGameServer/jogoFront.1jhm0k3lfq.js">
+    <StaticWebAssetEndpoint Include="_content/MemoriaGameServer/jogoFront.a2tq7md2k1.js">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\jogoFront.js'))</AssetFile>
       <Selectors><![CDATA[[]]]></Selectors>
-      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"1jhm0k3lfq"},{"Name":"integrity","Value":"sha256-w70rkXIRWtzBr0j3N4uBAo1Dy5m07nx4mVwRvVDACLA="},{"Name":"label","Value":"_content/MemoriaGameServer/jogoFront.js"}]]]></EndpointProperties>
-      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"17542"},{"Name":"Content-Type","Value":"text/javascript"},{"Name":"ETag","Value":"\u0022w70rkXIRWtzBr0j3N4uBAo1Dy5m07nx4mVwRvVDACLA=\u0022"},{"Name":"Last-Modified","Value":"Wed, 11 Jun 2025 01:05:09 GMT"}]]]></ResponseHeaders>
+      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"a2tq7md2k1"},{"Name":"integrity","Value":"sha256-ouT4N81sd0RHN76s4OposRwE7KsYTClegFmsxPm5dkM="},{"Name":"label","Value":"_content/MemoriaGameServer/jogoFront.js"}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"16453"},{"Name":"Content-Type","Value":"text/javascript"},{"Name":"ETag","Value":"\u0022ouT4N81sd0RHN76s4OposRwE7KsYTClegFmsxPm5dkM=\u0022"},{"Name":"Last-Modified","Value":"Wed, 11 Jun 2025 01:21:57 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
     <StaticWebAssetEndpoint Include="_content/MemoriaGameServer/jogoFront.js">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\jogoFront.js'))</AssetFile>
       <Selectors><![CDATA[[]]]></Selectors>
-      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-w70rkXIRWtzBr0j3N4uBAo1Dy5m07nx4mVwRvVDACLA="}]]]></EndpointProperties>
-      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"17542"},{"Name":"Content-Type","Value":"text/javascript"},{"Name":"ETag","Value":"\u0022w70rkXIRWtzBr0j3N4uBAo1Dy5m07nx4mVwRvVDACLA=\u0022"},{"Name":"Last-Modified","Value":"Wed, 11 Jun 2025 01:05:09 GMT"}]]]></ResponseHeaders>
+      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-ouT4N81sd0RHN76s4OposRwE7KsYTClegFmsxPm5dkM="}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"16453"},{"Name":"Content-Type","Value":"text/javascript"},{"Name":"ETag","Value":"\u0022ouT4N81sd0RHN76s4OposRwE7KsYTClegFmsxPm5dkM=\u0022"},{"Name":"Last-Modified","Value":"Wed, 11 Jun 2025 01:21:57 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
   </ItemGroup>
 </Project>
