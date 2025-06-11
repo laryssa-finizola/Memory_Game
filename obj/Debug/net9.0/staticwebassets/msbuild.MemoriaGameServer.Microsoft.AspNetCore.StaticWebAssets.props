@@ -444,8 +444,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>p63wuikvdi</Fingerprint>
-      <Integrity>IT5zgYGra5gbv01aR2gT4iMot1gDOQil8BDttWA+eGU=</Integrity>
+      <Fingerprint>k1mgqfyzdu</Fingerprint>
+      <Integrity>mKnd7KYZWpYRY8x07Nz6mk95WPpNrap2mtCWE50XNGg=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\index.html'))</OriginalItemSpec>
@@ -462,8 +462,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>a2tq7md2k1</Fingerprint>
-      <Integrity>ouT4N81sd0RHN76s4OposRwE7KsYTClegFmsxPm5dkM=</Integrity>
+      <Fingerprint>ehktunsm66</Fingerprint>
+      <Integrity>8uZHPfM4/aZIMZl0wkUCpri80dOe9jU6UrWqjOtlTyA=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\jogoFront.js'))</OriginalItemSpec>
