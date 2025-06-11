@@ -215,24 +215,26 @@ class InterfaceJogo {
         return;
       }
 
+      if (this.turno === 'humano') {
+            this.cartasViradasNoTurno = 0; 
+            this.travado = true;
+
       if (this.modo === 'PvAI') {
           this.turno = 'ia';
-          this.cartasViradasNoTurno = 0;
           await this.jogadaIA();
-      } else {
-          this.cartasViradasNoTurno = 0;
+      } else if (this.modo === 'Coop') { 
+                this.turno = 'ia'; 
+                await this.jogadaIA(); 
+        } else {
           this.travado = false;
           this.turno = 'humano';
       }
 
-    } catch (error) {
+    }
+ } catch (error) {
       console.error("Erro na jogada humana:", error);
       alert('Ocorreu um erro no jogo. Por favor, reinicie.');
-    } finally {
-      if (!this.estado.finalizado && this.turno === 'humano') {
-        this.travado = false;
-      }
-    }
+    } 
 }
   async jogadaIA() {
     try {
@@ -243,6 +245,7 @@ class InterfaceJogo {
 
       if (!abrir.ok) {
         alert('Erro na jogada da IA (abrir).');
+        this.travado = false;
         return;
       }
 
@@ -256,6 +259,7 @@ class InterfaceJogo {
 
       if (!resolver.ok) {
         alert('Erro na jogada da IA (resolver).');
+        this.travado = false;
         return;
       }
 
@@ -271,17 +275,16 @@ class InterfaceJogo {
         } else {
           alert('Partida encerrada!');
         }
+        this.travado = false;
         return;
       }
       this.turno = 'humano';
+      this.travado = false;
 
     } catch (error) {
       console.error("Erro no turno da IA:", error);
       alert('Ocorreu um erro no turno da IA.');
-    } finally {
-      if (!this.estado.finalizado) {
-        this.travado = false;
-      }
+      this.travado = false;
     }
   }
 
