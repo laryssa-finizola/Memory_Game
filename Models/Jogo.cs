@@ -359,7 +359,6 @@ public class Jogo
         }
 
         _humanOpenedCards.Clear();
-        DescongelarCartasAntigas();
 
         return ObterEstado();
     }

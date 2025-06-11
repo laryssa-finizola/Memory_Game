@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MemoriaGameServer")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ded320ccf762d026ad40ba797438e3cb1edabdd9")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ef43e31c01f0f876beb173b2abf8125b3caa9af9")]
 [assembly: System.Reflection.AssemblyProductAttribute("MemoriaGameServer")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MemoriaGameServer")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
