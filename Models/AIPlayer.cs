@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace server.Models;
-
 public class AIPlayer : Jogador {
     private readonly int MemorySize;
     private readonly Queue<(int pos, string val)> memoria;
-    private Jogo _jogoRef; 
-    private List<Carta> _deckRef; // Adiciona uma referência ao deck completo
+    private Jogo _jogoRef; // Referência ao objeto Jogo para acessar RequisitoGrupoPorValor
 
     public AIPlayer(int memorySize) {
         Nome = "Máquina";
@@ -16,35 +14,18 @@ public class AIPlayer : Jogador {
         memoria = new Queue<(int,string)>();
     }
 
+    // Método para definir a referência ao objeto Jogo após a instanciação
     public void SetJogoReference(Jogo jogo)
     {
         _jogoRef = jogo;
-        // Quando a referência do jogo é definida, também define a referência para o deck
-        _deckRef = jogo.Deck; 
     }
 
-    /// <summary>
-    /// A IA escolhe uma posição para virar.
-    /// Prioriza correspondências conhecidas, depois posições aleatórias não abertas.
-    /// </summary>
-    /// <param name="availablePositions">Lista de índices de posições disponíveis para escolha.</param>
-    /// <returns>O índice da posição escolhida.</returns>
-    public int EscolherPosicao(List<int> availablePositions) { // CORRIGIDO: Agora aceita List<int>
-        // Se o deck não foi referenciado corretamente ou não há posições disponíveis,
-        // retorna um erro ou uma posição padrão (isso não deveria acontecer com a lógica atual).
-        if (_deckRef == null || availablePositions == null || !availablePositions.Any()) {
-            // Em um ambiente real, você poderia lançar uma exceção ou logar um erro.
-            // Para evitar travamento, retornaremos uma posição padrão ou aleatória se possível.
-            // No entanto, a lógica de Jogo.cs já verifica availablePositions.Count.
-            return -1; // Indica erro ou nenhuma posição válida
-        }
-
+    public int EscolherPosicao(List<Carta> deck) {
+        // Passo 1: Tentar encontrar cartas que, combinadas com as da memória, formam um grupo completo
         var knownCards = new Dictionary<string, List<int>>();
-        // Popula knownCards apenas com cartas que estão nas availablePositions
         foreach (var (pos, val) in memoria) {
-            // Verifica se a carta ainda está fechada e disponível (não encontrada, não visível, não congelada)
-            // e se está entre as posições disponíveis para este turno.
-            if (availablePositions.Contains(pos) && !_deckRef[pos].Encontrada && !_deckRef[pos].Visivel) {
+            // Apenas considera cartas que NÃO ESTÃO VISÍVEIS e NÃO FORAM ENCONTRADAS
+            if (!deck[pos].Visivel && !deck[pos].Encontrada) {
                 if (!knownCards.ContainsKey(val)) {
                     knownCards[val] = new List<int>();
                 }
@@ -52,49 +33,36 @@ public class AIPlayer : Jogador {
             }
         }
 
-        // Tenta encontrar uma correspondência para o número de cartas necessárias
-        // no nível atual do jogo.
+        // Tenta formar um grupo com base nas cartas já "conhecidas" na memória
         foreach (var entry in knownCards) {
-            // Verifica se _jogoRef é null antes de tentar acessá-lo
+            // Verifica se a referência ao jogo existe e se o requisito de grupo para o valor da carta é conhecido
             if (_jogoRef != null && _jogoRef.RequisitoGrupoPorValor.TryGetValue(entry.Key, out int requiredCount))
             {
-                // Se a IA conhece cartas suficientes de um valor para formar um grupo,
-                // ela escolhe uma dessas posições.
+                // Se a IA tem posições suficientes na memória para um par/trio/quadra completo
                 if (entry.Value.Count >= requiredCount) {
-                    // Retorna a primeira posição conhecida que pode formar um grupo
-                    return entry.Value.First(); 
+                    // Retorna a primeira posição para virar
+                    return entry.Value.First();
                 }
             }
         }
 
-        // Se nenhuma correspondência perfeita for encontrada na memória,
-        // escolhe uma posição aleatória entre as disponíveis.
-        return EscolherPosicaoAleatoriaNaoAberta(availablePositions);
+        // Passo 2: Se não encontrou um grupo completo na memória, virar uma carta aleatória que ainda não está visível/encontrada.
+        return EscolherPosicaoAleatoriaNaoAberta(deck);
     }
 
-    /// <summary>
-    /// Escolhe uma posição aleatória de uma lista de posições disponíveis.
-    /// </summary>
-    /// <param name="availablePositions">Lista de índices de posições disponíveis.</param>
-    /// <returns>Um índice de posição aleatório.</returns>
-    private int EscolherPosicaoAleatoriaNaoAberta(List<int> availablePositions) {
+    private int EscolherPosicaoAleatoriaNaoAberta(List<Carta> deck) {
         var rnd = new Random();
-        if (availablePositions.Any()) {
-            return availablePositions[rnd.Next(availablePositions.Count)];
-        }
-        // Isso não deveria ser alcançado se availablePositions.Any() foi verificado.
-        // Se por algum motivo for, retorna -1 para indicar que nenhuma posição foi encontrada.
-        return -1; 
+        int pos;
+        // Percorre aleatoriamente até encontrar uma posição que não está visível e não foi encontrada
+        do {
+            pos = rnd.Next(deck.Count);
+        } while (deck[pos].Visivel || deck[pos].Encontrada); 
+        return pos;
     }
 
-    /// <summary>
-    /// Adiciona uma carta à memória da IA.
-    /// </summary>
-    /// <param name="pos">Posição da carta.</param>
-    /// <param name="val">Valor da carta.</param>
     public void Lembrar(int pos, string val) {
-        // Remove entradas antigas se a memória estiver cheia
-        if (memoria.Count >= MemorySize) memoria.Dequeue();
+        // Remove entradas antigas da memória se o tamanho for excedido
+        if (memoria.Count >= MemorySize) memoria.Dequeue(); 
         // Adiciona a nova carta à memória
         memoria.Enqueue((pos,val));
     }

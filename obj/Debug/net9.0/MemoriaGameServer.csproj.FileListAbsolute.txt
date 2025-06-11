@@ -169,5 +169,5 @@ C:\Users\lary\Desktop\MemoriaGameServer\obj\Debug\net9.0\MemoriaGameServer.pdb
 C:\Users\lary\Desktop\MemoriaGameServer\obj\Debug\net9.0\MemoriaGameServer.genruntimeconfig.cache
 C:\Users\lary\Desktop\MemoriaGameServer\obj\Debug\net9.0\ref\MemoriaGameServer.dll
 C:\Users\lary\Desktop\MemoriaGameServer\obj\Debug\net9.0\MemoriaGameServer.sourcelink.json
-C:\Users\lary\Desktop\MemoriaGameServer\obj\Debug\net9.0\compressed\ackswxq8fd-fydse0u5to.gz
-C:\Users\lary\Desktop\MemoriaGameServer\obj\Debug\net9.0\compressed\0t9cbvrr08-9ita2wm56j.gz
+C:\Users\lary\Desktop\MemoriaGameServer\obj\Debug\net9.0\compressed\ackswxq8fd-p63wuikvdi.gz
+C:\Users\lary\Desktop\MemoriaGameServer\obj\Debug\net9.0\compressed\0t9cbvrr08-1jhm0k3lfq.gz
