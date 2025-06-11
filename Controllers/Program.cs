@@ -3,10 +3,10 @@ using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers(); // necessário para APIs
+builder.Services.AddControllers(); 
 
 
-// Evita erros de CORS no navegador
+
 builder.Services.AddCors(opt =>
     opt.AddDefaultPolicy(policy =>
         policy.AllowAnyOrigin()
@@ -19,17 +19,17 @@ builder.Services.AddSingleton<Repositorio>();
 var app = builder.Build();
 app.UseRouting();
 app.UseAuthorization();
-app.MapControllers(); // ativa os endpoints dos controllers
+app.MapControllers(); 
 app.UseCors();
-app.UseDefaultFiles();    // permite index.html como padrão
-app.UseStaticFiles();     // serve arquivos de wwwroot/
+app.UseDefaultFiles();    
+app.UseStaticFiles();     
 
 // ================== ROTAS PRINCIPAIS ==================
 
 
 app.MapGet("/api/jogo/iniciar", (string nome, string modo, string nivel, int tamanho, Repositorio repo) => {
     var jogo = repo.CriarJogo(nome, modo, nivel, tamanho);
-    jogo.Maquina.SetJogoReference(jogo); // Essencial para a IA no nível Extremo
+    jogo.Maquina.SetJogoReference(jogo); 
     return Results.Json(jogo.ObterEstado());
 });
 
@@ -38,12 +38,10 @@ app.MapGet("/api/jogo/estado", (Repositorio repo) => {
     return Results.Json(repo.JogoAtual.ObterEstado());
 });
 
-// Endpoint MODIFICADO: Agora para APENAS virar a carta
 app.MapPost("/api/jogo/jogada/abrir", (Jogada jogada, Repositorio repo) =>
     Results.Json(repo.ProcessarHumano(jogada.Posicao))
 );
 
-// NOVO Endpoint: Para verificar a jogada humana após as cartas serem viradas
 app.MapPost("/api/jogo/jogada/verificar", (Repositorio repo) =>
     Results.Json(repo.VerificarJogadaHumano())
 );
@@ -59,7 +57,7 @@ app.MapPost("/api/jogo/ia/resolver", (Repositorio repo) => {
     return Results.Json(estado);
 });
 
-// ================== PODERES ==================
+// ================== PODERES ===================
 
 app.MapPost("/api/jogo/poder/embaralhar", (Repositorio repo) => {
     repo.JogoAtual.EmbaralharBaixo();
