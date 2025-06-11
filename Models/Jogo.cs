@@ -321,7 +321,7 @@ public class Jogo
             {
                 if (group.Count() >= requiredCount)
                 {
-                    pontosGanhosPorAcerto += 500;
+                    pontosGanhosPorAcerto += 200;
                     algumaCorrespondencia = true;
                     foreach (var item in group.Take(requiredCount))
                     {
@@ -335,17 +335,17 @@ public class Jogo
         if (algumaCorrespondencia)
         {
             var tempoResposta = (DateTime.UtcNow - _tempoInicioJogada).TotalSeconds;
-            if (tempoResposta <= 2)
+            if (tempoResposta <= 1)
             {
-                pontosGanhosPorAcerto += 1000;
+                pontosGanhosPorAcerto += 100;
+            }
+            else if (tempoResposta <= 2)
+            {
+                pontosGanhosPorAcerto += 50;
             }
             else if (tempoResposta <= 4)
             {
-                pontosGanhosPorAcerto += 500;
-            }
-            else if (tempoResposta <= 6)
-            {
-                pontosGanhosPorAcerto += 200;
+                pontosGanhosPorAcerto += 10;
             }
             Humano.Pontos += pontosGanhosPorAcerto;
         }
@@ -355,7 +355,7 @@ public class Jogo
             {
                 Deck[pos].Visivel = false;
             }
-            Humano.Pontos = Math.Max(0, Humano.Pontos - 10);
+            Humano.Pontos = Math.Max(0, Humano.Pontos - 20);
         }
 
         _humanOpenedCards.Clear();
