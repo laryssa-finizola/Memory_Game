@@ -66,16 +66,7 @@ class InterfaceJogo {
 
     if (this.modo === 'Coop') {
       this.intervaloTempo = setInterval(() => this.sicronizarEstadoLoop(), 1000);
-      if (this.intervaloTempo) {
-        clearInterval(this.intervaloTempo);
-      }
-      this.atualizarTempoUI();
-      this.intervaloTempo = setInterval(() => this.atualizarTempoUI(), 1000);
     } else {
-      if (this.intervaloTempo) {
-        clearInterval(this.intervaloTempo);
-        this.intervaloTempo = null;
-      }
       this.tempoRestanteDisplay.innerText = '';
     }
   }

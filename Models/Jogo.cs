@@ -23,7 +23,7 @@ public class Jogo
     private int? posicaoCongeladaNaRodadaAnterior = null;
 
     private const int MAX_ESPECIAIS = 3;
-    private const int MAX_DICAS = 3;
+    private const int MAX_DICAS = 1;
     private const int DICA_COOLDOWN_SEC = 10;
 
     private int TempoLimiteSegundos;
