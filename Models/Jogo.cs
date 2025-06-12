@@ -53,9 +53,26 @@ public class Jogo
         _tempoInicioJogada = DateTime.UtcNow;
         tempoRestanteCronometro = Stopwatch.StartNew();
 
-        if (Modo == "Coop")
+        if (Modo == "Coop") //TEMPO PARA CADA NÍVEL DENTRO DO MODO COOPERATIVO:
         {
-            TempoLimiteSegundos = 180;
+             switch (Nivel)
+            {
+                case "Facil":
+                    TempoLimiteSegundos = 900; // 15 minutos
+                    break;
+                case "Medio":
+                    TempoLimiteSegundos = 600; // 10 minutos
+                    break;
+                case "Dificil":
+                    TempoLimiteSegundos = 300; // 5 minutos
+                    break;
+                case "Extremo":
+                    TempoLimiteSegundos = 180; // 3 minutos
+                    break;
+                default:
+                    TempoLimiteSegundos = 180; // Padrão de 3 minutos caso algo dê errado
+                    break;
+            }
         }
         else
         {
@@ -69,10 +86,10 @@ public class Jogo
         var rnd = new Random();
         RequisitoGrupoPorValor = new Dictionary<string, int>();
 
-        if (Nivel == "Extremo")
+        if (Nivel == "Extremo") //COMBINAÇÕES DE PARES, TRIOS E QUADRAS
         {
             int numPares = 4;
-            int numTrios = 4;
+            int numTrios = 4; 
             int numQuadras = 7;
 
             if (tam < (numPares * 2 + numTrios * 3 + numQuadras * 4))
@@ -321,7 +338,7 @@ public class Jogo
             {
                 if (group.Count() >= requiredCount)
                 {
-                    pontosGanhosPorAcerto += 200;
+                    pontosGanhosPorAcerto += 100;
                     algumaCorrespondencia = true;
                     foreach (var item in group.Take(requiredCount))
                     {
@@ -345,7 +362,7 @@ public class Jogo
             }
             else if (tempoResposta <= 4)
             {
-                pontosGanhosPorAcerto += 10;
+                pontosGanhosPorAcerto += 20;
             }
             Humano.Pontos += pontosGanhosPorAcerto;
         }
@@ -355,7 +372,7 @@ public class Jogo
             {
                 Deck[pos].Visivel = false;
             }
-            Humano.Pontos = Math.Max(0, Humano.Pontos - 20);
+            Humano.Pontos = Math.Max(0, Humano.Pontos - 30);
         }
 
         _humanOpenedCards.Clear();
@@ -393,6 +410,18 @@ public class Jogo
                 Deck[pos].Visivel = true;
                 Maquina.Lembrar(pos, Deck[pos].Valor);
                 PosicoesIASelecionadas.Add(pos);
+
+                //logica de pontuação IA
+                if (Modo == "PvAI")
+                {
+                    // MODO COMPETITIVO: IA ganha +20 pontos por virar a carta.
+                    Maquina.Pontos += 20;
+                }
+                else if (Modo == "Coop")
+                {
+                    // MODO COOPERATIVO: Pontos vão para a equipe (+30, assim como o humano).
+                    Humano.Pontos += 30;
+                }
             }
             else if (pos == -1)
             {
@@ -416,7 +445,7 @@ public class Jogo
             .ToList();
 
         bool algumaCorrespondenciaIA = false;
-        int pontosGanhosIA = 0;
+        int pontosGanhosIA_PvAI = 0;
 
         foreach (var group in groupedCardsIA)
         {
@@ -425,7 +454,7 @@ public class Jogo
                 if (group.Count() >= requiredCount)
                 {
                     algumaCorrespondenciaIA = true;
-                    pontosGanhosIA += 300;
+                    pontosGanhosIA_PvAI += 300;
                     foreach (var item in group.Take(requiredCount))
                     {
                         Deck[item.Pos].Encontrada = true;
@@ -437,13 +466,32 @@ public class Jogo
 
         if (algumaCorrespondenciaIA)
         {
-            Humano.Pontos += pontosGanhosIA;
+            if (Modo == "PvAI")
+            {
+                // MODO COMPETITIVO: IA ganha seus próprios pontos.
+                Maquina.Pontos += pontosGanhosIA_PvAI;
+            }
+            else if (Modo == "Coop")
+            {
+                // MODO COOPERATIVO: Acerto da IA soma pontos para a equipe -- aq é utilizada a mesma pontuação do humano
+                Humano.Pontos += 100;
+            }
         }
         else
         {
             foreach (var i in PosicoesIASelecionadas)
                 Deck[i].Visivel = false;
-            Humano.Pontos = Math.Max(0, Humano.Pontos - 5);
+            
+            if (Modo == "PvAI")
+            {
+                // MODO COMPETITIVO: IA perde 5 pontos por erro
+                Maquina.Pontos = Math.Max(0, Maquina.Pontos - 5);
+            }
+            else if (Modo == "Coop")
+            {
+                // MODO COOPERATIVO: Erro da IA tem a penalidade igual a do humano
+                Humano.Pontos = Math.Max(0, Humano.Pontos - 30);
+            }
         }
 
         PosicoesIASelecionadas.Clear();

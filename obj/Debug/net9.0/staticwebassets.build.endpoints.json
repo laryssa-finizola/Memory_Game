@@ -2011,7 +2011,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 11 Jun 2025 01:40:11 GMT"
+          "Value": "Wed, 11 Jun 2025 02:57:00 GMT"
         },
         {
           "Name": "Vary",
@@ -2052,7 +2052,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 11 Jun 2025 01:40:11 GMT"
+          "Value": "Wed, 11 Jun 2025 02:57:00 GMT"
         }
       ],
       "EndpointProperties": [
@@ -2093,7 +2093,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 11 Jun 2025 01:40:11 GMT"
+          "Value": "Wed, 11 Jun 2025 02:57:00 GMT"
         },
         {
           "Name": "Vary",
@@ -2148,7 +2148,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 11 Jun 2025 01:40:11 GMT"
+          "Value": "Wed, 11 Jun 2025 02:57:00 GMT"
         },
         {
           "Name": "Vary",
@@ -2197,7 +2197,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 11 Jun 2025 01:40:11 GMT"
+          "Value": "Wed, 11 Jun 2025 02:57:00 GMT"
         }
       ],
       "EndpointProperties": [
@@ -2246,7 +2246,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 11 Jun 2025 01:40:11 GMT"
+          "Value": "Wed, 11 Jun 2025 02:57:00 GMT"
         },
         {
           "Name": "Vary",
@@ -2269,13 +2269,13 @@
       ]
     },
     {
-      "Route": "jogoFront.an22sv5dy2.js",
+      "Route": "jogoFront.hd9y901oyx.js",
       "AssetFile": "jogoFront.js.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
           "Value": "gzip",
-          "Quality": "0.000273672687"
+          "Quality": "0.000259672812"
         }
       ],
       "ResponseHeaders": [
@@ -2293,7 +2293,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "3653"
+          "Value": "3850"
         },
         {
           "Name": "Content-Type",
@@ -2301,15 +2301,15 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"EHSHeqc33Vdq1QpqlfnHXiVLm1y5ENCEshTvLxnkK1I=\""
+          "Value": "\"17p53rF64+9b/LNhtug6veyzR8ktzpL9w/J6Dn7pEnc=\""
         },
         {
           "Name": "ETag",
-          "Value": "W/\"Gn74USKCFdvk7h54TviW0Tj4aADRKPA7M2EXyNZnU8I=\""
+          "Value": "W/\"9RwqCo0uTBNM278W5NdqhHFPAnaxQdvEKN4Xrfe0c04=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 11 Jun 2025 02:24:44 GMT"
+          "Value": "Thu, 12 Jun 2025 17:08:43 GMT"
         },
         {
           "Name": "Vary",
@@ -2319,11 +2319,11 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "an22sv5dy2"
+          "Value": "hd9y901oyx"
         },
         {
           "Name": "integrity",
-          "Value": "sha256-Gn74USKCFdvk7h54TviW0Tj4aADRKPA7M2EXyNZnU8I="
+          "Value": "sha256-9RwqCo0uTBNM278W5NdqhHFPAnaxQdvEKN4Xrfe0c04="
         },
         {
           "Name": "label",
@@ -2332,7 +2332,7 @@
       ]
     },
     {
-      "Route": "jogoFront.an22sv5dy2.js",
+      "Route": "jogoFront.hd9y901oyx.js",
       "AssetFile": "jogoFront.js",
       "Selectors": [],
       "ResponseHeaders": [
@@ -2346,7 +2346,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "14410"
+          "Value": "15521"
         },
         {
           "Name": "Content-Type",
@@ -2354,21 +2354,21 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"Gn74USKCFdvk7h54TviW0Tj4aADRKPA7M2EXyNZnU8I=\""
+          "Value": "\"9RwqCo0uTBNM278W5NdqhHFPAnaxQdvEKN4Xrfe0c04=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 11 Jun 2025 02:24:44 GMT"
+          "Value": "Thu, 12 Jun 2025 17:08:43 GMT"
         }
       ],
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "an22sv5dy2"
+          "Value": "hd9y901oyx"
         },
         {
           "Name": "integrity",
-          "Value": "sha256-Gn74USKCFdvk7h54TviW0Tj4aADRKPA7M2EXyNZnU8I="
+          "Value": "sha256-9RwqCo0uTBNM278W5NdqhHFPAnaxQdvEKN4Xrfe0c04="
         },
         {
           "Name": "label",
@@ -2377,7 +2377,7 @@
       ]
     },
     {
-      "Route": "jogoFront.an22sv5dy2.js.gz",
+      "Route": "jogoFront.hd9y901oyx.js.gz",
       "AssetFile": "jogoFront.js.gz",
       "Selectors": [],
       "ResponseHeaders": [
@@ -2395,7 +2395,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "3653"
+          "Value": "3850"
         },
         {
           "Name": "Content-Type",
@@ -2403,11 +2403,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"EHSHeqc33Vdq1QpqlfnHXiVLm1y5ENCEshTvLxnkK1I=\""
+          "Value": "\"17p53rF64+9b/LNhtug6veyzR8ktzpL9w/J6Dn7pEnc=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 11 Jun 2025 02:24:44 GMT"
+          "Value": "Thu, 12 Jun 2025 17:08:43 GMT"
         },
         {
           "Name": "Vary",
@@ -2417,11 +2417,11 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "an22sv5dy2"
+          "Value": "hd9y901oyx"
         },
         {
           "Name": "integrity",
-          "Value": "sha256-EHSHeqc33Vdq1QpqlfnHXiVLm1y5ENCEshTvLxnkK1I="
+          "Value": "sha256-17p53rF64+9b/LNhtug6veyzR8ktzpL9w/J6Dn7pEnc="
         },
         {
           "Name": "label",
@@ -2436,7 +2436,7 @@
         {
           "Name": "Content-Encoding",
           "Value": "gzip",
-          "Quality": "0.000273672687"
+          "Quality": "0.000259672812"
         }
       ],
       "ResponseHeaders": [
@@ -2454,7 +2454,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "3653"
+          "Value": "3850"
         },
         {
           "Name": "Content-Type",
@@ -2462,15 +2462,15 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"EHSHeqc33Vdq1QpqlfnHXiVLm1y5ENCEshTvLxnkK1I=\""
+          "Value": "\"17p53rF64+9b/LNhtug6veyzR8ktzpL9w/J6Dn7pEnc=\""
         },
         {
           "Name": "ETag",
-          "Value": "W/\"Gn74USKCFdvk7h54TviW0Tj4aADRKPA7M2EXyNZnU8I=\""
+          "Value": "W/\"9RwqCo0uTBNM278W5NdqhHFPAnaxQdvEKN4Xrfe0c04=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 11 Jun 2025 02:24:44 GMT"
+          "Value": "Thu, 12 Jun 2025 17:08:43 GMT"
         },
         {
           "Name": "Vary",
@@ -2480,7 +2480,7 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-Gn74USKCFdvk7h54TviW0Tj4aADRKPA7M2EXyNZnU8I="
+          "Value": "sha256-9RwqCo0uTBNM278W5NdqhHFPAnaxQdvEKN4Xrfe0c04="
         }
       ]
     },
@@ -2499,7 +2499,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "14410"
+          "Value": "15521"
         },
         {
           "Name": "Content-Type",
@@ -2507,17 +2507,17 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"Gn74USKCFdvk7h54TviW0Tj4aADRKPA7M2EXyNZnU8I=\""
+          "Value": "\"9RwqCo0uTBNM278W5NdqhHFPAnaxQdvEKN4Xrfe0c04=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 11 Jun 2025 02:24:44 GMT"
+          "Value": "Thu, 12 Jun 2025 17:08:43 GMT"
         }
       ],
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-Gn74USKCFdvk7h54TviW0Tj4aADRKPA7M2EXyNZnU8I="
+          "Value": "sha256-9RwqCo0uTBNM278W5NdqhHFPAnaxQdvEKN4Xrfe0c04="
         }
       ]
     },
@@ -2540,7 +2540,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "3653"
+          "Value": "3850"
         },
         {
           "Name": "Content-Type",
@@ -2548,11 +2548,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"EHSHeqc33Vdq1QpqlfnHXiVLm1y5ENCEshTvLxnkK1I=\""
+          "Value": "\"17p53rF64+9b/LNhtug6veyzR8ktzpL9w/J6Dn7pEnc=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 11 Jun 2025 02:24:44 GMT"
+          "Value": "Thu, 12 Jun 2025 17:08:43 GMT"
         },
         {
           "Name": "Vary",
@@ -2562,7 +2562,7 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-EHSHeqc33Vdq1QpqlfnHXiVLm1y5ENCEshTvLxnkK1I="
+          "Value": "sha256-17p53rF64+9b/LNhtug6veyzR8ktzpL9w/J6Dn7pEnc="
         }
       ]
     }

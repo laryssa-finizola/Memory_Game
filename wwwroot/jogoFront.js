@@ -65,6 +65,7 @@ class InterfaceJogo {
     this.atualizarPoderesUI();
 
     if (this.modo === 'Coop') {
+      this.intervaloTempo = setInterval(() => this.sicronizarEstadoLoop(), 1000);
       if (this.intervaloTempo) {
         clearInterval(this.intervaloTempo);
       }
@@ -340,6 +341,36 @@ class InterfaceJogo {
     }
   }
 
+  
+async sicronizarEstadoLoop() {
+    // Se o jogo acabou, para de sincronizar
+    if (!this.estado || this.estado.finalizado) {
+        if(this.intervaloTempo) {
+            clearInterval(this.intervaloTempo);
+            this.intervaloTempo = null;
+        }
+        return;
+    }
+
+    try {
+        // Busca o estado mais recente do jogo no servidor
+        const resp = await fetch(`${API_BASE}/estado`);
+        if(resp.ok) {
+            this.estado = await resp.json();
+            // Atualiza a interface com os novos dados
+            this.atualizarTempoUI();
+            this.atualizarPoderesUI();
+            this.desenhar();
+        }
+    } catch (error) {
+        console.error("Erro ao sincronizar estado:", error);
+        if(this.intervaloTempo) {
+            clearInterval(this.intervaloTempo);
+            this.intervaloTempo = null;
+        }
+    }
+  }
+
   atualizarPoderesUI() {
     if (this.estado) {
       this.especiaisRestantesDisplay.innerText = this.estado.especiaisRestantes;
@@ -470,3 +501,4 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 });
+
