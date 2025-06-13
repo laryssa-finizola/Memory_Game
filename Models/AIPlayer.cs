@@ -6,14 +6,13 @@ namespace server.Models;
 
 public class AIPlayer : Jogador
 {
-    private readonly int MemorySize;
+    private readonly int MemorySize = 4;
     private readonly Queue<(int pos, string val)> memoria;
-    private Jogo _jogoRef;
+    private Jogo? _jogoRef;
 
-    public AIPlayer(int memorySize)
+    public AIPlayer()
     {
         Nome = "Máquina";
-        MemorySize = memorySize;
         memoria = new Queue<(int, string)>();
     }
 
@@ -49,7 +48,7 @@ public class AIPlayer : Jogador
                 }
             }
         }
-
+        if (_jogoRef == null) return -1;
         return EscolherPosicaoAleatoriaNaoAberta(deck, _jogoRef.congeladas);
     }
 

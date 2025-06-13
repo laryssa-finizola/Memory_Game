@@ -23,7 +23,7 @@ public class Jogo
     private int? posicaoCongeladaNaRodadaAnterior = null;
 
     private const int MAX_ESPECIAIS = 3;
-    private const int MAX_DICAS = 1;
+    private const int MAX_DICAS = 1; // atualizado!
     private const int DICA_COOLDOWN_SEC = 10;
 
     private int TempoLimiteSegundos;
@@ -37,7 +37,7 @@ public class Jogo
 
     private List<int> _humanOpenedCards = new List<int>();
 
-    public Dictionary<string, int> RequisitoGrupoPorValor { get; private set; }
+    public Dictionary<string, int> RequisitoGrupoPorValor { get; private set; } = new();
 
 
     public Jogo(string nome, string modo, string nivel, int tamanho)
@@ -46,7 +46,7 @@ public class Jogo
         Nivel = nivel;
         Humano = new Jogador { Nome = nome };
         int mem = Nivel == "Facil" ? 1 : (Nivel == "Medio" ? 3 : (Nivel == "Dificil" ? 4 : (Nivel == "Extremo" ? 4 : 1)));
-        Maquina = new AIPlayer(mem);
+        Maquina = new AIPlayer();
         Deck = GerarDeck(tamanho);
         congeladas = new bool[tamanho];
         cronometro = Stopwatch.StartNew();
