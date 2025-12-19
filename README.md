@@ -76,3 +76,63 @@ The core API is defined in `RankingController.cs`:
 
 4.  **Open the game:**
     The console will display the URL where the application is running (e.g., `http://localhost:5123`). Open this URL in your web browser to play the game.
+
+## Deploy grátis no Render (passo a passo)
+
+Você vai criar um **Web Service** no Render apontando para este repositório. O Render vai fazer o build e iniciar o servidor ASP.NET que já entrega o front (`wwwroot`) e a API.
+
+### 1) Pré-requisitos
+
+* Repositório no GitHub com este código (branch `main`)
+* Conta no Render (plano Free)
+
+### 2) Criar o serviço
+
+1. No Render, clique em **New +** → **Web Service**.
+2. Conecte o GitHub e selecione o seu repositório.
+3. Em **Name**, escolha um nome (vai virar parte da URL).
+4. Em **Region**, pode deixar a padrão.
+5. Em **Branch**, selecione `main`.
+6. Em **Runtime**, selecione **Native** (não precisa Docker).
+
+### 3) Configurar build e start
+
+Como este projeto tem uma solution (`MemoriaGameServer.sln`) e um `.csproj`, o mais seguro é publicar o **.csproj**.
+
+* **Build Command**
+    * `dotnet publish MemoriaGameServer.csproj -c Release -o out`
+* **Start Command**
+    * `dotnet out/MemoriaGameServer.dll`
+
+### 4) Variáveis de ambiente
+
+Em **Environment → Add Environment Variable**:
+
+* `ASPNETCORE_ENVIRONMENT` = `Production`
+
+> Obs.: o Render injeta automaticamente a variável `PORT`. Este projeto já lê `PORT` e faz bind em `0.0.0.0:<PORT>`.
+
+### 5) Deploy e validação
+
+Depois do deploy, teste estas URLs:
+
+* **Front:** `https://SEU-SERVICO.onrender.com/`
+* **Health:** `https://SEU-SERVICO.onrender.com/health`
+* **API (ranking):** `https://SEU-SERVICO.onrender.com/api/Ranking/top5`
+
+Se o front carregar, mas a API falhar, abra **Logs** no Render e me mande as últimas linhas que eu te ajudo a ajustar.
+
+### Nota sobre o free tier
+
+No plano grátis, o serviço pode **“dormir”** após um tempo sem acessos e demorar alguns segundos pra voltar quando alguém abrir (isso é normal). Pra recruiters, geralmente é ok.
+
+
+
+## Troubleshooting (Render)
+
+Se o serviço ficar **OFF** / crashando:
+
+* Confira em **Logs** se aparece algo como `Now listening on: http://0.0.0.0:<PORT>`.
+* Garanta que o **Start Command** está usando o publish: `dotnet out/MemoriaGameServer.dll`.
+* Se o erro for de SQLite/permissão (pasta read-only), como você não precisa persistência, a solução mais simples é aceitar que o `ranking.db` pode ser recriado no runtime (ephemeral). Se precisar, eu ajusto o caminho do SQLite pra uma pasta temporária.
+

@@ -3,6 +3,14 @@ using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Hosting in platforms like Render/Fly injects a PORT env var.
+// When present, ensure Kestrel binds to 0.0.0.0:<PORT>.
+var portEnv = Environment.GetEnvironmentVariable("PORT");
+if (int.TryParse(portEnv, out var port))
+{
+    builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
+}
+
 builder.Services.AddControllers(); 
 
 
@@ -17,12 +25,19 @@ builder.Services.AddCors(opt =>
 builder.Services.AddSingleton<Repositorio>();
 
 var app = builder.Build();
+
+// Simple health/page route (also helps Render health checks)
+app.MapGet("/", () => Results.Redirect("/index.html"));
+app.MapGet("/health", () => Results.Ok(new { status = "ok" }));
+
+app.UseDefaultFiles();
+app.UseStaticFiles();
+
 app.UseRouting();
-app.UseAuthorization();
-app.MapControllers(); 
 app.UseCors();
-app.UseDefaultFiles();    
-app.UseStaticFiles();     
+app.UseAuthorization();
+
+app.MapControllers(); 
 
 // ================== ROTAS PRINCIPAIS ==================
 
